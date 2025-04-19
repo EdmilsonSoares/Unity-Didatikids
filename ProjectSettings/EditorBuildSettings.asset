@@ -12,6 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Cadastro.unity
     guid: c0f6fee0dfe300a4aace6cc67e0546c6
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 449458151dbdc0340975ebcd2dfa9bc9, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: efa2d58fa34cd2545b0da8e64258816c, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: e74b7bc0eb3b20444b069c7e71aa1ea5, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
