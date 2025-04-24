@@ -8,6 +8,7 @@ public class TelaCadastro : MonoBehaviour
 {
     [SerializeField] private Button btnEnviar;
     [SerializeField] private Button btnPossuoConta;
+    [SerializeField] private TelaGerenciador telaGerenc; //Referência ao TelaGerenciador
 
     private void Awake(){
         btnEnviar.onClick.AddListener(Enviar);
@@ -21,6 +22,7 @@ public class TelaCadastro : MonoBehaviour
     private void PossuoConta()
     {
         //Debug.Log("Botão Enviar clicado!");
-        SceneManager.LoadScene("Main", LoadSceneMode.Single);
+        //SceneManager.LoadScene("Main", LoadSceneMode.Single);
+        telaGerenc.MostrarLogin();
     }
 }

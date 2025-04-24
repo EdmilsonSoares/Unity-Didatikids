@@ -9,6 +9,7 @@ public class TelaLogin : MonoBehaviour
     [SerializeField] private Button btnEntrar;
     [SerializeField] private Button btnEsqueceuSenha;
     [SerializeField] private Button btnCadastro;
+    [SerializeField] private TelaGerenciador telaGerenc; //Referência ao TelaManager
 
     private void Awake()
     {
@@ -28,6 +29,9 @@ public class TelaLogin : MonoBehaviour
     private void Cadastro()
     {
         //Debug.Log("Botão Cadastro clicado!");
-        SceneManager.LoadScene("Cadastro", LoadSceneMode.Single);
+        //SceneManager.LoadScene("Cadastro", LoadSceneMode.Single); // Usado anteriormente para carregar a cena de cadastro
+        // Agora, em vez de carregar uma nova cena, vamos mostrar a tela de cadastro
+        telaGerenc.MostrarCadastro();
+        
     }
 }
