@@ -9,7 +9,7 @@ public class TelaLogin : MonoBehaviour
     [SerializeField] private Button btnEntrar;
     [SerializeField] private Button btnEsqueceuSenha;
     [SerializeField] private Button btnCadastro;
-    [SerializeField] private TelaGerenciador telaGerenc; //Referência ao TelaManager
+    [SerializeField] private TelaGerenciador telaGerenc; //Referência ao TelaGerenciador
 
     private void Awake()
     {
