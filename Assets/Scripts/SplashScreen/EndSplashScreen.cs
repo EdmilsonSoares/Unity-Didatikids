@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class EndAnimationLoad : MonoBehaviour
+public class EndSplashScreen : MonoBehaviour
 {
     [SerializeField] private string sceneToLoad; // Nome da cena que você quer carregar
 
