@@ -43,14 +43,13 @@ public class DataInputValidador : MonoBehaviour
         if (DateTime.TryParseExact(text, dataFormato, null, System.Globalization.DateTimeStyles.None, out dataAnalizada))
         {
             Debug.Log("Data válida inserida: " + dataAnalizada.ToString("yyyy-MM-dd"));
-            feedbackText.text = "Data válida: " + dataAnalizada.ToString("dd/MM/yyyy"); // Exibe na caixa de texto
+            feedbackText.text = ""; // Limpa o feedbackText se data válida
             OnValidDateEntered?.Invoke(dataAnalizada); // Invoca um evento com a data válida
         }
         else
         {
             Debug.LogWarning("Data inválida inserida. Formato esperado: " + dataFormato);
-            feedbackText.text = "Data inválida. Formato: " + dataFormato; // Exibe na caixa de texto
-            // Aqui você pode exibir uma mensagem de erro para o usuário
+            feedbackText.text = "Data inválida. Use Dia/Mês/Ano"; // Exibe erro no feedbackText
         }
     }
 }
