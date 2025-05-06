@@ -33,7 +33,7 @@ public class AnimOfLoading : MonoBehaviour
             {
                 loadingImage.fillAmount = count; // Usa 'count' se carregamento for rápido
                 Debug.Log("Count (Carregamento Rápido): " + count + " Barra: " + loadingImage.fillAmount);
-                count += 0.002f;
+                count += 0.02f;
             }
 
             yield return null;

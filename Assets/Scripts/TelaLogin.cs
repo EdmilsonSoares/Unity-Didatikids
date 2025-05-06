@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using TMPro;
 
 public class TelaLogin : MonoBehaviour
 {
@@ -12,7 +9,7 @@ public class TelaLogin : MonoBehaviour
     [SerializeField] private Button btnEntrar;
     [SerializeField] private Button btnEsqueceuSenha;
     [SerializeField] private Button btnCadastro;
-    [SerializeField] private TelaGerenciador telaGerenc; //Referência ao script TelaGerenciador
+    [SerializeField] private TelaGerenciador telaGerenciador; //Referência ao script TelaGerenciador
 
     private void Awake()
     {
@@ -23,15 +20,18 @@ public class TelaLogin : MonoBehaviour
 
     private void Entrar()
     {
-        Debug.Log("Botão Entrar clicado!");
-        LoadGerenciador.Instance.Carregar("CenaTeste"); // Chama o método Carregar da classe LoadGerenciador para carregar a cena desejada
+        // Ao entrar vai para a tela de perfis
+        telaGerenciador.MostrarPerfis(); // Desativa todas telas e ativa tela de perfis
+        //LoadGerenciador.Instance.Carregar("CenaTeste"); // Chama o método Carregar da classe LoadGerenciador para carregar a cena desejada
     }
+
     private void EsqueceuSenha()
     {
         Debug.Log("Botão Esqueceu senha clicado!");
     }
+    
     private void Cadastro()
     {
-        telaGerenc.MostrarCadastro(); // Desativa tela login e ativa tela de cadastro
+        telaGerenciador.MostrarCadastro(); // Desativa todas telas e ativa tela de cadastro
     }
 }

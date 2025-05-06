@@ -4,30 +4,53 @@ public class TelaGerenciador : MonoBehaviour
 {
     [SerializeField] private GameObject telaLogin;
     [SerializeField] private GameObject telaCadastro;
+    [SerializeField] private GameObject telaPerfis;
+    [SerializeField] private GameObject telaNovoPerfil;
+    [SerializeField] private GameObject telaAvatares;
 
     public void MostrarLogin()
     {
-        if (telaLogin != null)
-        {
-            telaLogin.SetActive(true);
-        }
-        if (telaCadastro != null)
-        {
-            telaCadastro.SetActive(false);
-        }
+        telaLogin.SetActive(true);
+        telaCadastro.SetActive(false);
+        telaPerfis.SetActive(false);
+        telaNovoPerfil.SetActive(false);
+        telaAvatares.SetActive(false);
     }
 
     public void MostrarCadastro()
     {
-        if (telaLogin != null)
-        {
-            telaLogin.SetActive(false);
-        }
-        if (telaCadastro != null)
-        {
-            telaCadastro.SetActive(true);
-        }
+        telaLogin.SetActive(false);
+        telaCadastro.SetActive(true);
+        telaPerfis.SetActive(false);
+        telaNovoPerfil.SetActive(false);
+        telaAvatares.SetActive(false);
     }
 
-    // Adicione outros métodos para gerenciar outras telas do seu aplicativo
+    public void MostrarPerfis()
+    {
+        telaLogin.SetActive(false);
+        telaCadastro.SetActive(false);
+        telaPerfis.SetActive(true);
+        telaNovoPerfil.SetActive(false);
+        telaAvatares.SetActive(false);
+    }
+
+    public void MostrarNovoPerfil()
+    {
+        telaLogin.SetActive(false);
+        telaCadastro.SetActive(false);
+        telaPerfis.SetActive(false);
+        telaNovoPerfil.SetActive(true);
+        telaAvatares.SetActive(false);
+    }
+
+    public void MostrarAvatares()
+    {
+        telaLogin.SetActive(false);
+        telaCadastro.SetActive(false);
+        telaPerfis.SetActive(false);
+        telaNovoPerfil.SetActive(false);
+        telaAvatares.SetActive(true);
+    }
+
 }
