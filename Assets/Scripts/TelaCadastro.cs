@@ -33,11 +33,11 @@ public class TelaCadastro : MonoBehaviour
             return;
         }
         Debug.Log("Nome: " + nome + ", Data: " + data + ", Email: " + email + ", Senha: " + senha);
-        telaGerenciador.MostrarPerfis(); // Desativa todas telas e ativa tela de perfis
+        telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
     }
 
     private void PossuoConta()
     {
-        telaGerenciador.MostrarLogin(); // Desativa todas as telas e ativa tela login
+        telaGerenciador.MostrarTela("Login"); // Desativa todas as telas e ativa tela login
     }
 }

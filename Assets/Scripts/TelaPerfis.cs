@@ -16,7 +16,7 @@ public class TelaPerfis : MonoBehaviour
 
     private void NovoPerfil()
     {
-        telaGerenciador.MostrarNovoPerfil(); // Desativa todas telas e ativa tela Novo perfil
+        telaGerenciador.MostrarTela("NovoPerfil"); // Desativa todas telas e ativa tela Novo perfil
     }
 
     private void TesteLoading()

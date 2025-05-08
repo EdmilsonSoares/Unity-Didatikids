@@ -35,9 +35,9 @@ public class TelaNovoPerfil : MonoBehaviour
         }
     }
 
-    void MostrarTelaAvatares()
+    private void MostrarTelaAvatares()
     {
-        telaGerenciador.MostrarAvatares(); // Desativa todas telas e ativa tela de Avatares
+        telaGerenciador.MostrarTela("Avatares"); // Desativa todas telas e ativa tela de Avatares
     }
 
     private void Cadastrar()
@@ -52,13 +52,26 @@ public class TelaNovoPerfil : MonoBehaviour
             return;
         }
         Debug.Log("Nome: " + nome + ", Data: " + data);
-        telaGerenciador.MostrarPerfis(); // Desativa todas telas e ativa tela de perfis
+        telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
     }
 
     private void Cancelar()
     {
-        telaGerenciador.MostrarPerfis(); // Desativa todas telas e ativa tela de perfis
+        telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
     }
 
+    public void DropdownTopicos(int indice)
+    {
+        string topico;
+        switch (indice)
+        {
+            case 0: topico = "Nenhum"; Debug.Log(topico); break;
+            case 1: topico = "Computação Quântica"; Debug.Log(topico); break;
+            case 2: topico = "Relatividade Geral"; Debug.Log(topico); break;
+            case 3: topico = "Neurociência"; Debug.Log(topico); break;
+            case 4: topico = "Astrofísica"; Debug.Log(topico); break;
+            case 5: topico = "Física Nuclear"; Debug.Log(topico); break;
+        }
+    }
 
 }

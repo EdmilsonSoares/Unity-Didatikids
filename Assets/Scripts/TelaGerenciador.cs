@@ -8,49 +8,13 @@ public class TelaGerenciador : MonoBehaviour
     [SerializeField] private GameObject telaNovoPerfil;
     [SerializeField] private GameObject telaAvatares;
 
-    public void MostrarLogin()
+    public void MostrarTela(string telaNome)
     {
-        telaLogin.SetActive(true);
-        telaCadastro.SetActive(false);
-        telaPerfis.SetActive(false);
-        telaNovoPerfil.SetActive(false);
-        telaAvatares.SetActive(false);
+        // Compara a string com argumento passado, onde true ativa, onde false desativa 
+        telaLogin.SetActive(telaNome == "Login");
+        telaCadastro.SetActive(telaNome == "Cadastro");
+        telaPerfis.SetActive(telaNome == "Perfis");
+        telaNovoPerfil.SetActive(telaNome == "NovoPerfil");
+        telaAvatares.SetActive(telaNome == "Avatares");
     }
-
-    public void MostrarCadastro()
-    {
-        telaLogin.SetActive(false);
-        telaCadastro.SetActive(true);
-        telaPerfis.SetActive(false);
-        telaNovoPerfil.SetActive(false);
-        telaAvatares.SetActive(false);
-    }
-
-    public void MostrarPerfis()
-    {
-        telaLogin.SetActive(false);
-        telaCadastro.SetActive(false);
-        telaPerfis.SetActive(true);
-        telaNovoPerfil.SetActive(false);
-        telaAvatares.SetActive(false);
-    }
-
-    public void MostrarNovoPerfil()
-    {
-        telaLogin.SetActive(false);
-        telaCadastro.SetActive(false);
-        telaPerfis.SetActive(false);
-        telaNovoPerfil.SetActive(true);
-        telaAvatares.SetActive(false);
-    }
-
-    public void MostrarAvatares()
-    {
-        telaLogin.SetActive(false);
-        telaCadastro.SetActive(false);
-        telaPerfis.SetActive(false);
-        telaNovoPerfil.SetActive(false);
-        telaAvatares.SetActive(true);
-    }
-
 }

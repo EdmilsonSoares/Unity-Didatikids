@@ -21,7 +21,7 @@ public class TelaLogin : MonoBehaviour
     private void Entrar()
     {
         // Ao entrar vai para a tela de perfis
-        telaGerenciador.MostrarPerfis(); // Desativa todas telas e ativa tela de perfis
+        telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
         //LoadGerenciador.Instance.Carregar("CenaTeste"); // Chama o método Carregar da classe LoadGerenciador para carregar a cena desejada
     }
 
@@ -32,6 +32,6 @@ public class TelaLogin : MonoBehaviour
     
     private void Cadastro()
     {
-        telaGerenciador.MostrarCadastro(); // Desativa todas telas e ativa tela de cadastro
+        telaGerenciador.MostrarTela("Cadastro"); // Desativa todas telas e ativa tela de cadastro
     }
 }
