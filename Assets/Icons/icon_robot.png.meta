@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b399ad2e44af0d94f9f8dc13fd872a64
+guid: df4546012e978404cbe47433a911c27c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7547239121526686342
-    second: InputField_0
+      213: -4743760536399035112
+    second: icon_robot_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -97,19 +97,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -126,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: InputField_0
+      name: icon_robot_0
       rect:
         serializedVersion: 2
-        x: 22
-        y: 16
-        width: 1243
-        height: 211
+        x: 0
+        y: 0
+        width: 1080
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 68287897efd2db860800000000000000
-      internalID: 7547239121526686342
+      spriteID: 8154b68fce6ca2eb0800000000000000
+      internalID: -4743760536399035112
       vertices: []
       indices: 
       edges: []
@@ -160,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      InputField_0: 7547239121526686342
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
