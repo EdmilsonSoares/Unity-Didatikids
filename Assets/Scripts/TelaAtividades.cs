@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TelaAtividades : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class TelaAtividades : MonoBehaviour
     private void Awake()
     {
         btnVoltarPerfis.onClick.AddListener(Perfis);
+        btnAtividadeCC.onClick.AddListener(ConnectColors);
     }
 
     public void Perfis()
@@ -22,7 +24,7 @@ public class TelaAtividades : MonoBehaviour
     
     public void ConnectColors()
     {
-        LoadGerenciador.Instance.Carregar("ConnectColors");
+        SceneManager.LoadScene("MainMenu");        
     }
     public void Matematica()
     {
