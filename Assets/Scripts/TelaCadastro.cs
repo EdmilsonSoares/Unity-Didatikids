@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 public class TelaCadastro : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class TelaCadastro : MonoBehaviour
 
     private void Awake()
     {
+        inputData.placeholder.GetComponent<UnityEngine.UI.Text>().text = "DD/MM/AAAA";
         // Adiciona um Listener para o evento de clique do botão
         btnCadastrar.onClick.AddListener(Cadastrar);
         btnPossuoConta.onClick.AddListener(PossuoConta);
@@ -27,11 +30,38 @@ public class TelaCadastro : MonoBehaviour
         string email = inputEmail.text;
         string senha = inputSenha.text;
 
-        if (nome == "" || data == "" || email == "" || senha == "")
+        if (string.IsNullOrEmpty(nome))
         {
-            Debug.LogError("Todos os campos devem ser preenchidos!");
+            Debug.LogError("Digite o nome!");
             return;
         }
+        else if(string.IsNullOrEmpty(data))
+        {
+            Debug.LogError("Digite a data de nascimento!");
+            return;
+        }
+        else if(string.IsNullOrEmpty(email))
+        {
+            Debug.LogError("Digite o e-mail!");
+            return;
+        }
+        else if (string.IsNullOrEmpty(senha))
+        {
+            Debug.LogError("Digite a senha!");
+            return;
+        }
+
+        if (!Regex.IsMatch(email, @"^[^@]+@[^@]+\.[a-zA-Z]{2,}$"))
+        {
+            Debug.LogError("Digite a um e-mail válido!");
+            return;
+        }
+
+        //if (nome == "" || data == "" || email == "" || senha == "")
+        //{
+        //    Debug.LogError("Todos os campos devem ser preenchidos!");
+        //    return;
+        //}
         Debug.Log("Nome: " + nome + ", Data: " + data + ", Email: " + email + ", Senha: " + senha);
         telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
     }

@@ -22,7 +22,8 @@ public class LoadGerenciador : MonoBehaviour
     }
 
     public void Carregar(string sceneName)
-    {        
-        SceneManager.LoadScene(sceneName);
+    {
+        NomeProxCena = sceneName;
+        SceneManager.LoadScene("Loading");
     }
 }

@@ -24,15 +24,17 @@ public class TelaAtividades : MonoBehaviour
     
     public void ConnectColors()
     {
-        SceneManager.LoadScene("MainMenu");        
-    }
-    public void Matematica()
-    {
-        LoadGerenciador.Instance.Carregar("Matematica");
-    }
-    public void Portugeus()
-    {
-        LoadGerenciador.Instance.Carregar("Portugues");
+        SceneManager.LoadScene("MainMenu");
+        //telaGerenciador.ChangeScene("MainMenu");
     }
 
+    public void Matematica()
+    {
+        SceneManager.LoadScene("Matematica");
+    }
+
+    public void Portugeus()
+    {
+        SceneManager.LoadScene("Portugues");
+    }
 }

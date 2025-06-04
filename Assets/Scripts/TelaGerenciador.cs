@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TelaGerenciador : MonoBehaviour
 {
@@ -18,5 +19,10 @@ public class TelaGerenciador : MonoBehaviour
         telaNovoPerfil.SetActive(telaNome == "NovoPerfil");
         telaAvatares.SetActive(telaNome == "Avatares");
         telaAtividades.SetActive(telaNome == "Atividades");
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }
