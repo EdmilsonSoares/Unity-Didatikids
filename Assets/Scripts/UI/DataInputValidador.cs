@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using System;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 public class DataInputValidador : MonoBehaviour
 {
@@ -11,6 +13,12 @@ public class DataInputValidador : MonoBehaviour
 
     void Start()
     {
+        if (tmpInputField != null)
+        {
+            UnityEngine.Debug.Log("teste2");
+
+            tmpInputField.onValueChanged.AddListener(FormatDate); //Formata a data enquanto o usuário digita
+        }
         tmpInputField = GetComponent<TMP_InputField>();
         if (tmpInputField != null)
         {
@@ -42,14 +50,34 @@ public class DataInputValidador : MonoBehaviour
          * ano bissexto e se o dia, mês e ano são válidos.*/
         if (DateTime.TryParseExact(text, dataFormato, null, System.Globalization.DateTimeStyles.None, out dataAnalizada))
         {
-            Debug.Log("Data válida inserida: " + dataAnalizada.ToString("yyyy-MM-dd"));
+            UnityEngine.Debug.Log("Data válida inserida: " + dataAnalizada.ToString("yyyy-MM-dd"));
             feedbackText.text = ""; // Limpa o feedbackText se data válida
             OnValidDateEntered?.Invoke(dataAnalizada); // Invoca um evento com a data válida
         }
         else
         {
-            Debug.LogWarning("Data inválida inserida. Formato esperado: " + dataFormato);
+            UnityEngine.Debug.LogWarning("Data inválida inserida. Formato esperado: " + dataFormato);
             feedbackText.text = "Data inválida. Use Dia/Mês/Ano"; // Exibe erro no feedbackText
         }
+    }
+
+    void FormatDate(string input)
+    {
+        UnityEngine.Debug.Log(input);
+        // Limita a quantidade de caracteres
+        if (input.Length > 8)
+            input = input.Substring(0, 8);
+
+        // Formata a string para DD/MM/AAAA
+        string formatted = "";
+        if (input.Length > 0)
+            formatted += input.Substring(0, Mathf.Min(2, input.Length));
+        if (input.Length > 2)
+            formatted += "/" + input.Substring(2, Mathf.Min(2, input.Length - 2));
+        if (input.Length > 4)
+            formatted += "/" + input.Substring(4, Mathf.Min(4, input.Length - 4));
+
+        // Define o valor formatado no campo de entrada
+        tmpInputField.text = formatted;
     }
 }

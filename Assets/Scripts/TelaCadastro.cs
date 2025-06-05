@@ -16,9 +16,7 @@ public class TelaCadastro : MonoBehaviour
 
     private void Awake()
     {
-        inputData.placeholder.GetComponent<UnityEngine.UI.Text>().text = "DD/MM/AAAA";
-        // Adiciona um Listener para o evento de clique do botão
-        btnCadastrar.onClick.AddListener(Cadastrar);
+        btnCadastrar.onClick.AddListener(Cadastrar); // Adiciona um Listener para o evento de clique do botão
         btnPossuoConta.onClick.AddListener(PossuoConta);
     }
 
@@ -30,30 +28,15 @@ public class TelaCadastro : MonoBehaviour
         string email = inputEmail.text;
         string senha = inputSenha.text;
 
-        if (string.IsNullOrEmpty(nome))
+        if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(data) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
         {
-            Debug.LogError("Digite o nome!");
-            return;
-        }
-        else if(string.IsNullOrEmpty(data))
-        {
-            Debug.LogError("Digite a data de nascimento!");
-            return;
-        }
-        else if(string.IsNullOrEmpty(email))
-        {
-            Debug.LogError("Digite o e-mail!");
-            return;
-        }
-        else if (string.IsNullOrEmpty(senha))
-        {
-            Debug.LogError("Digite a senha!");
+            Debug.LogError("Todos os campos devem ser preenchidos!");
             return;
         }
 
         if (!Regex.IsMatch(email, @"^[^@]+@[^@]+\.[a-zA-Z]{2,}$"))
         {
-            Debug.LogError("Digite a um e-mail válido!");
+            Debug.LogError("Digite um e-mail válido!");
             return;
         }
 
