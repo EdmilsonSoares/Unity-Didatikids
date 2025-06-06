@@ -21,15 +21,14 @@ public class TelaLogin : MonoBehaviour
 
     private void Entrar()
     {
-        if (!Regex.IsMatch(inputEmail.text, @"^[^@]+@[^@]+\.[a-zA-Z]{2,}$"))
-        {
-            Debug.LogError("Digite um e-mail válido!");
-            return;
-        }
-
         if (string.IsNullOrEmpty(inputEmail.text))
         {
             Debug.LogError("Digite o e-mail!");
+            return;
+        }
+        else if (!Regex.IsMatch(inputEmail.text, @"^[^@]+@[^@]+\.[a-zA-Z]{2,}$"))
+        {
+            Debug.LogError("Digite um e-mail válido!");
             return;
         }
 
@@ -38,6 +37,7 @@ public class TelaLogin : MonoBehaviour
             Debug.LogError("Digite a senha!");
             return;
         }
+
         // Ao entrar vai para a tela de perfis
         telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
         //LoadGerenciador.Instance.Carregar("CenaTeste"); // Chama o método Carregar da classe LoadGerenciador para carregar a cena desejada

@@ -66,11 +66,9 @@ public class TelaNovoPerfil : MonoBehaviour
         switch (indice)
         {
             case 0: topico = "Nenhum"; Debug.Log(topico); break;
-            case 1: topico = "Computação Quântica"; Debug.Log(topico); break;
-            case 2: topico = "Relatividade Geral"; Debug.Log(topico); break;
-            case 3: topico = "Neurociência"; Debug.Log(topico); break;
-            case 4: topico = "Astrofísica"; Debug.Log(topico); break;
-            case 5: topico = "Física Nuclear"; Debug.Log(topico); break;
+            case 1: topico = "Matemática"; Debug.Log(topico); break;
+            case 2: topico = "Gramática"; Debug.Log(topico); break;
+            case 3: topico = "Lógica"; Debug.Log(topico); break;
         }
     }
 

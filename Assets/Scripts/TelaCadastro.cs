@@ -28,23 +28,39 @@ public class TelaCadastro : MonoBehaviour
         string email = inputEmail.text;
         string senha = inputSenha.text;
 
-        if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(data) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+        if (string.IsNullOrEmpty(nome))
         {
-            Debug.LogError("Todos os campos devem ser preenchidos!");
+            Debug.LogError("Digite o nome!");
             return;
         }
 
-        if (!Regex.IsMatch(email, @"^[^@]+@[^@]+\.[a-zA-Z]{2,}$"))
+        if (string.IsNullOrEmpty(data))
+        {
+            Debug.LogError("Digite a data de nascimento!");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(email))
+        {
+            Debug.LogError("Digite o e-mail!");
+            return;
+        }
+        else if (!Regex.IsMatch(email, @"^[^@]+@[^@]+\.[a-zA-Z]{2,}$"))
         {
             Debug.LogError("Digite um e-mail válido!");
             return;
         }
 
-        //if (nome == "" || data == "" || email == "" || senha == "")
-        //{
-        //    Debug.LogError("Todos os campos devem ser preenchidos!");
-        //    return;
-        //}
+        if(string.IsNullOrEmpty(senha))
+        {
+            Debug.LogError("Digite a senha!");
+            return;
+        }
+        else if (!Regex.IsMatch(inputSenha.text, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{5,}$"))
+        {
+            Debug.LogError("Digite uma senha válida!");
+            return;
+        }
         Debug.Log("Nome: " + nome + ", Data: " + data + ", Email: " + email + ", Senha: " + senha);
         telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
     }

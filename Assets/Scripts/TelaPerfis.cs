@@ -22,10 +22,12 @@ public class TelaPerfis : MonoBehaviour
     {
         telaGerenciador.MostrarTela("NovoPerfil"); // Desativa todas telas e ativa tela Novo perfil
     }
+
     public void Atividades()
     { 
         telaGerenciador.MostrarTela("Atividades"); 
     }
+
     private void TesteLoading()
     {
         LoadGerenciador.Instance.Carregar("CenaTeste"); // Chama o método Carregar da classe LoadGerenciador para carregar a cena desejada
