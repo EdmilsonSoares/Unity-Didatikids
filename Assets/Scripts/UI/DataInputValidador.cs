@@ -3,6 +3,7 @@ using TMPro;
 using System;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Collections;
 
 public class DataInputValidador : MonoBehaviour
 {
@@ -10,16 +11,18 @@ public class DataInputValidador : MonoBehaviour
     public string dataFormato = "dd/MM/yyyy";
     private TMP_InputField tmpInputField;
     public Action<DateTime> OnValidDateEntered;
+    private bool isUserUpdating = true;
 
     void Start()
     {
+        tmpInputField = GetComponent<TMP_InputField>();
         if (tmpInputField != null)
         {
             UnityEngine.Debug.Log("teste2");
 
             tmpInputField.onValueChanged.AddListener(FormatDate); //Formata a data enquanto o usuário digita
         }
-        tmpInputField = GetComponent<TMP_InputField>();
+
         if (tmpInputField != null)
         {
             // Registra a função ValidateChar ao evento onValidateInput para validar caracteres durante a digitação
@@ -54,7 +57,7 @@ public class DataInputValidador : MonoBehaviour
             feedbackText.text = ""; // Limpa o feedbackText se data válida
             OnValidDateEntered?.Invoke(dataAnalizada); // Invoca um evento com a data válida
         }
-        else
+        else if(!string.IsNullOrEmpty(text))
         {
             UnityEngine.Debug.LogWarning("Data inválida inserida. Formato esperado: " + dataFormato);
             feedbackText.text = "Data inválida. Use Dia/Mês/Ano"; // Exibe erro no feedbackText
@@ -63,21 +66,34 @@ public class DataInputValidador : MonoBehaviour
 
     void FormatDate(string input)
     {
-        UnityEngine.Debug.Log(input);
-        // Limita a quantidade de caracteres
-        if (input.Length > 8)
-            input = input.Substring(0, 8);
+        if (!isUserUpdating) return;
+        isUserUpdating = false;
 
-        // Formata a string para DD/MM/AAAA
+        input = input.Replace("/", "");
+ 
         string formatted = "";
         if (input.Length > 0)
             formatted += input.Substring(0, Mathf.Min(2, input.Length));
+
         if (input.Length > 2)
             formatted += "/" + input.Substring(2, Mathf.Min(2, input.Length - 2));
+
         if (input.Length > 4)
             formatted += "/" + input.Substring(4, Mathf.Min(4, input.Length - 4));
 
-        // Define o valor formatado no campo de entrada
-        tmpInputField.text = formatted;
+        tmpInputField.SetTextWithoutNotify(formatted);
+
+        // Força o cursor pro final no próximo frame
+        StartCoroutine(ForceCursorToEnd(formatted.Length));
+
+        isUserUpdating = true;
+    }
+
+    private IEnumerator ForceCursorToEnd(int position)
+    {
+        yield return new WaitForEndOfFrame();
+        tmpInputField.caretPosition = position;
+        tmpInputField.selectionAnchorPosition = position;
+        tmpInputField.selectionFocusPosition = position;
     }
 }

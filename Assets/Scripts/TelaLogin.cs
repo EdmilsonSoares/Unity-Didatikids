@@ -35,7 +35,7 @@ public class TelaLogin : MonoBehaviour
 
         if (string.IsNullOrEmpty(inputSenha.text))
         {
-            Debug.LogError("Digite o e-mail!");
+            Debug.LogError("Digite a senha!");
             return;
         }
         // Ao entrar vai para a tela de perfis
