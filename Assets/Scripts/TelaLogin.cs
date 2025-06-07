@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Text.RegularExpressions;
+using System.IO;
 
 public class TelaLogin : MonoBehaviour
 {
@@ -21,33 +21,53 @@ public class TelaLogin : MonoBehaviour
 
     private void Entrar()
     {
-        if (string.IsNullOrEmpty(inputEmail.text))
+        string emailDigitado = inputEmail.text;
+        string senhaDigitada = inputSenha.text;
+
+        if (string.IsNullOrEmpty(inputEmail.text) || string.IsNullOrEmpty(inputSenha.text))
         {
-            Debug.LogError("Digite o e-mail!");
-            return;
-        }
-        else if (!Regex.IsMatch(inputEmail.text, @"^[^@]+@[^@]+\.[a-zA-Z]{2,}$"))
-        {
-            Debug.LogError("Digite um e-mail válido!");
+            Debug.LogError("Todos os campos devem ser preenchidos!");
             return;
         }
 
-        if (string.IsNullOrEmpty(inputSenha.text))
+        string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
+        // Verifica se o arquivo JSON existe
+        if (!File.Exists(caminhoDoArquivo))
         {
-            Debug.LogError("Digite a senha!");
+            Debug.LogError("Arquivo 'DadosUsuario.json' não encontrado.");
             return;
         }
 
-        // Ao entrar vai para a tela de perfis
-        telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
-        //LoadGerenciador.Instance.Carregar("CenaTeste"); // Chama o método Carregar da classe LoadGerenciador para carregar a cena desejada
+        try
+        {
+            // Lê o conteúdo do arquivo JSON
+            string jsonLido = File.ReadAllText(caminhoDoArquivo);
+
+            // Desserializa o JSON para um objeto DadosUsuario
+            UserModel usuarioSalvo = JsonUtility.FromJson<UserModel>(jsonLido);
+
+            // Compara o email e a senha digitados com os dados lidos do JSON
+            if (emailDigitado == usuarioSalvo.userEmail && senhaDigitada == usuarioSalvo.userSenha)
+            {
+                Debug.Log("Login bem-sucedido!");
+                telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
+            }
+            else
+            {
+                Debug.LogError("Email ou senha incorretos.");
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
+        }
     }
 
     private void EsqueceuSenha()
     {
         Debug.Log("Botão Esqueceu senha clicado!");
     }
-    
+
     private void Cadastro()
     {
         telaGerenciador.MostrarTela("Cadastro"); // Desativa todas telas e ativa tela de cadastro

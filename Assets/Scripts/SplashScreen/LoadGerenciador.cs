@@ -21,9 +21,16 @@ public class LoadGerenciador : MonoBehaviour
         }
     }
 
+    // Enquanto a cena é carregada é mostrado a animação de loading
     public void Carregar(string sceneName)
     {
         NomeProxCena = sceneName;
         SceneManager.LoadScene("Loading");
+    }
+    // Use para carregamentos muito rapidos não passa pela animação de loading
+    public void CarregamentoRapido(string sceneName)
+    {
+        NomeProxCena = sceneName;
+        SceneManager.LoadScene(NomeProxCena);
     }
 }

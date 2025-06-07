@@ -1,10 +1,17 @@
 fileFormatVersion: 2
-guid: 80a9f5a4ea9262d4184d1560d561e3d3
+guid: aa2f9476030fe6d479136e2e9ab28fee
+AssetOrigin:
+  serializedVersion: 1
+  productId: 311704
+  packageName: Simple UI Icons
+  packageVersion: 1.1
+  assetPath: Assets/HardArtcore/UI/SimpleIcons/Sprites/Icons/Border/ic_refresh.png
+  uploadId: 742599
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4743760536399035112
-    second: icon_robot_0
+      213: -586655777937586999
+    second: ic_refresh_fill_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +44,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,7 +79,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -109,17 +116,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon_robot_0
+      name: ic_refresh_fill_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 742
-        height: 742
+        x: 30
+        y: 17
+        width: 452
+        height: 467
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +148,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8154b68fce6ca2eb0800000000000000
-      internalID: -4743760536399035112
+      spriteID: 9c4899e9da7cbd7f0800000000000000
+      internalID: -586655777937586999
       vertices: []
       indices: 
       edges: []
@@ -148,7 +168,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      icon_robot_0: -4743760536399035112
+      ic_refresh_fill_0: -586655777937586999
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,17 @@
 fileFormatVersion: 2
-guid: 80a9f5a4ea9262d4184d1560d561e3d3
+guid: dc3333c3111d1514ca535d8429bfb2a7
+AssetOrigin:
+  serializedVersion: 1
+  productId: 311704
+  packageName: Simple UI Icons
+  packageVersion: 1.1
+  assetPath: Assets/HardArtcore/UI/SimpleIcons/Sprites/Icons/Border/ic_home.png
+  uploadId: 742599
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4743760536399035112
-    second: icon_robot_0
+      213: 6681013925623385787
+    second: ic_home_fill_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +44,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,7 +79,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -109,17 +116,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon_robot_0
+      name: ic_home_fill_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 742
-        height: 742
+        x: 30
+        y: 39
+        width: 453
+        height: 443
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +148,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8154b68fce6ca2eb0800000000000000
-      internalID: -4743760536399035112
+      spriteID: bbe483094cab7bc50800000000000000
+      internalID: 6681013925623385787
       vertices: []
       indices: 
       edges: []
@@ -148,7 +168,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      icon_robot_0: -4743760536399035112
+      ic_home_fill_0: 6681013925623385787
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -2,20 +2,20 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System;
 using UnityEngine.UI;
 
 public class AnimOfLoading : MonoBehaviour
 {
     [SerializeField] private Image loadingImage;// Image Radial fill
+    private string nomeProxCena;
     private float count = 0f;
     
     void Start()
     {
-        StartCoroutine(CarregarAsync(LoadGerenciador.Instance.NomeProxCena)); // Inicia o carregamento assíncrono da próxima cena
+        StartCoroutine(CarregarAsync()); // Inicia o carregamento assíncrono da próxima cena
     }
 
-    private IEnumerator CarregarAsync(String nomeProxCena)
+    private IEnumerator CarregarAsync()
     {
         AsyncOperation carregamento = SceneManager.LoadSceneAsync(nomeProxCena);
         carregamento.allowSceneActivation = false;

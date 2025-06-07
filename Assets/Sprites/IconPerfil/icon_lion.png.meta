@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 80a9f5a4ea9262d4184d1560d561e3d3
+guid: d0cf564c317bd634685e49ee6ec51dcd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4743760536399035112
-    second: icon_robot_0
+      213: 8725521239302825827
+    second: icon_lion_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon_robot_0
+      name: icon_lion_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 742
-        height: 742
+        width: 999
+        height: 999
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8154b68fce6ca2eb0800000000000000
-      internalID: -4743760536399035112
+      spriteID: 36765cc5657471970800000000000000
+      internalID: 8725521239302825827
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      icon_robot_0: -4743760536399035112
+      icon_lion_0: 8725521239302825827
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
