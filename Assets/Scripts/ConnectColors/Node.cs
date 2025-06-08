@@ -15,7 +15,7 @@ namespace Connect.Core
 
         private Dictionary<Node, GameObject> ConnectedEdges;
 
-        [HideInInspector] public int colorId;
+        [SerializeField] public int colorId;
 
         public bool IsWin
         {
