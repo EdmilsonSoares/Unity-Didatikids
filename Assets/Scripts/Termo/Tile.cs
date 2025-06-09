@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Threading;
 
 public class Tile : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Tile : MonoBehaviour
         public Color fillColor;
         public Color outlineColor;
     }
+    [SerializeField]
+    public GameObject tile;
 
     public State state { get; private set; }
     public char letter { get; private set; }
