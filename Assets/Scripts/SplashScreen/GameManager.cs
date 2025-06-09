@@ -3,9 +3,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadGerenciador : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static LoadGerenciador Instance { get; private set; }
+    public static GameManager Instance { get; private set; }
     public string NomeProxCena { get; set; }
 
     private void Awake()
@@ -22,13 +22,13 @@ public class LoadGerenciador : MonoBehaviour
     }
 
     // Enquanto a cena é carregada é mostrado a animação de loading
-    public void Carregar(string sceneName)
+    public void CarregarComAnimacao(string sceneName)
     {
         NomeProxCena = sceneName;
         SceneManager.LoadScene("Loading");
     }
-    // Use para carregamentos muito rapidos não passa pela animação de loading
-    public void CarregamentoRapido(string sceneName)
+    // Use para carregamentos rapidos que não passam pela animação de loading
+    public void Carregar(string sceneName)
     {
         NomeProxCena = sceneName;
         SceneManager.LoadScene(NomeProxCena);

@@ -21,11 +21,10 @@ public class TelaAtividades : MonoBehaviour
     { 
         telaGerenciador.MostrarTela("Perfis"); 
     }
-    
+
     public void ConnectColors()
     {
-        SceneManager.LoadScene("MainMenu");
-        //telaGerenciador.ChangeScene("MainMenu");
+        GameManager.Instance.CarregarComAnimacao("MainMenu");
     }
 
     public void Matematica()

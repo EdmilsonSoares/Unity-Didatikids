@@ -12,6 +12,7 @@ public class AnimOfLoading : MonoBehaviour
     
     void Start()
     {
+        nomeProxCena = GameManager.Instance.NomeProxCena;
         StartCoroutine(CarregarAsync()); // Inicia o carregamento assíncrono da próxima cena
     }
 
@@ -27,12 +28,12 @@ public class AnimOfLoading : MonoBehaviour
             if (progresso < 1f)
             {
                 loadingImage.fillAmount = progresso; // Usa 'progresso' se demorar mais
-                Debug.Log("Progresso (Carregamento Lento): " + progresso + " Barra: " + loadingImage.fillAmount);
+                //Debug.Log("Progresso (Carregamento Lento): " + progresso + " Barra: " + loadingImage.fillAmount);
             }
             else if (loadingImage.fillAmount < 1f)
             {
                 loadingImage.fillAmount = count; // Usa 'count' se carregamento for rápido
-                Debug.Log("Count (Carregamento Rápido): " + count + " Barra: " + loadingImage.fillAmount);
+                //Debug.Log("Count (Carregamento Rápido): " + count + " Barra: " + loadingImage.fillAmount);
                 count += 0.02f;
             }
 

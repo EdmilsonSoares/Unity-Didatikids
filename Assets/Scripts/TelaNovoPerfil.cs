@@ -14,6 +14,9 @@ public class TelaNovoPerfil : MonoBehaviour
     [SerializeField] private TelaGerenciador telaGerenciador; // Referência ao script TelaGerenciador
     private Image avatarImageBTN; // Componente Image do botão de escolha de avatar
     private string selectedAvatarPath = "";
+    private string nomeCrianca;
+    private string dataCrianca;
+    private string topico;
     private const int MAX_CHILDREN_PROFILES = 3;
     
     private void Awake()
@@ -48,8 +51,9 @@ public class TelaNovoPerfil : MonoBehaviour
     private void Cadastrar()
     {
         // Pega o texto dos InputFields
-        string nomeCrianca = inputNome.text;
-        string dataCrianca = inputData.text;
+        nomeCrianca = inputNome.text;
+        dataCrianca = inputData.text;
+        
 
         if (string.IsNullOrEmpty(nomeCrianca) || string.IsNullOrEmpty(dataCrianca))
         {
@@ -84,7 +88,7 @@ public class TelaNovoPerfil : MonoBehaviour
             }
 
             // 5. Cria um novo perfil de criança
-            ChildModel novaCrianca = new ChildModel(nomeCrianca, dataCrianca, selectedAvatarPath);
+            ChildModel novaCrianca = new ChildModel(nomeCrianca, dataCrianca, topico, selectedAvatarPath);
             // 6. Adiciona o novo perfil da criança à lista de crianças do responsável
             currentUser.AddChildProfile(novaCrianca);
 
@@ -111,12 +115,11 @@ public class TelaNovoPerfil : MonoBehaviour
 
     public void DropdownTopicos(int indice)
     {
-        string topico;
         switch (indice)
         {
             case 0: topico = "Nenhum"; Debug.Log(topico); break;
-            case 1: topico = "Lógica"; Debug.Log(topico); break;
-            case 2: topico = "Gramática"; Debug.Log(topico); break;
+            case 1: topico = "Gramática"; Debug.Log(topico); break;
+            case 2: topico = "Lógica"; Debug.Log(topico); break;
             case 3: topico = "Ciências"; Debug.Log(topico); break;
         }
     }

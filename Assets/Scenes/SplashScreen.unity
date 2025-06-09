@@ -455,7 +455,7 @@ GameObject:
   - component: {fileID: 1075853444}
   - component: {fileID: 1075853443}
   m_Layer: 0
-  m_Name: LoadGerenciador
+  m_Name: Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
