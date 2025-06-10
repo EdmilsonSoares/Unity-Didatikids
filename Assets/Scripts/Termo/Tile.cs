@@ -12,8 +12,6 @@ public class Tile : MonoBehaviour
         public Color fillColor;
         public Color outlineColor;
     }
-    [SerializeField]
-    public GameObject tile;
 
     public State state { get; private set; }
     public char letter { get; private set; }
