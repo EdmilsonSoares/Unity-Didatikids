@@ -20,9 +20,9 @@ public class TelaPerfis : MonoBehaviour
     private void Awake()
     {
         btnAdicionarPerfil.onClick.AddListener(NovoPerfil);
-        btnChild1.onClick.AddListener(Atividades);
-        btnChild2.onClick.AddListener(Atividades);
-        btnChild3.onClick.AddListener(Atividades);
+        btnChild1.onClick.AddListener(PerfilSelecionado);
+        btnChild2.onClick.AddListener(PerfilSelecionado);
+        btnChild3.onClick.AddListener(PerfilSelecionado);
     }
 
     private void OnEnable()
@@ -32,52 +32,33 @@ public class TelaPerfis : MonoBehaviour
 
     private void LoadAndDisplayChildProfiles()
     {
-        string caminhoDoArquivoUser = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
-
         btnChild1.gameObject.SetActive(false);
         btnChild2.gameObject.SetActive(false);
         btnChild3.gameObject.SetActive(false);
 
-        if (!File.Exists(caminhoDoArquivoUser))
+        List<ChildModel> children = GameManager.Instance.ChildProfiles;
+        // 3. Itera sobre a lista de crianças e exibe até 3
+        if (children.Count == 0)
         {
-            Debug.LogWarning("Arquivo de dados do responsável não encontrado. Nenhum perfil de criança para exibir.");
+            Debug.Log("O responsável logado não possui perfis de crianças cadastrados.");
             return;
         }
-
-        try
+        // Exibe os perfis das crianças existentes
+        for (int i = 0; i < children.Count && i < 3; i++)
         {
-            string jsonResponsavel = File.ReadAllText(caminhoDoArquivoUser); // Lê o conteúdo do arquivo JSON
-            UserModel user = JsonUtility.FromJson<UserModel>(jsonResponsavel); // Desserializa o JSON para um objeto UserModel
-            // Verifica se há perfis de crianças e os exibe
-            if (user != null && user.children != null)
+            ChildModel child = children[i];
+            switch (i)
             {
-                // Itera sobre a lista de crianças e exibe até 3
-                for (int i = 0; i < user.children.Count && i < 3; i++)
-                {
-                    ChildModel child = user.children[i];
-                    // Usa um switch ou if-else para atribuir ao TMP_Text e ativar o GameObject correto
-                    switch (i)
-                    {
-                        case 0:
-                            SetChildPerfil(btnChild1, childNameText1, child);
-                            break;
-                        case 1:
-                            SetChildPerfil(btnChild2, childNameText2, child);
-                            break;
-                        case 2:
-                            SetChildPerfil(btnChild3, childNameText3, child);
-                            break;
-                    }
-                }
+                case 0:
+                    SetChildPerfil(btnChild1, childNameText1, child);
+                    break;
+                case 1:
+                    SetChildPerfil(btnChild2, childNameText2, child);
+                    break;
+                case 2:
+                    SetChildPerfil(btnChild3, childNameText3, child);
+                    break;
             }
-            else
-            {
-                Debug.Log("O responsável não possui perfis de crianças cadastrados.");
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"Erro ao carregar ou exibir perfis de crianças: {e.Message}");
         }
     }
 
@@ -85,7 +66,7 @@ public class TelaPerfis : MonoBehaviour
     {
         childNameText.text = child.childNome;
         btnChild.gameObject.SetActive(true);
-        
+
         if (!string.IsNullOrEmpty(child.avatarIconPath))
         {
             Sprite avatarSprite = Resources.Load<Sprite>(child.avatarIconPath);
@@ -94,6 +75,10 @@ public class TelaPerfis : MonoBehaviour
                 btnChild.GetComponentInChildren<Image>().sprite = avatarSprite;
             }
         }
+        else
+        {
+            Debug.LogWarning($"Caminho do avatar vazio para a criança: {child.childNome}");
+        }
     }
 
     private void NovoPerfil()
@@ -101,9 +86,9 @@ public class TelaPerfis : MonoBehaviour
         telaGerenciador.MostrarTela("NovoPerfil");
     }
 
-    public void Atividades()
+    public void PerfilSelecionado()
     {
-        telaGerenciador.MostrarTela("Atividades");
+        telaGerenciador.MostrarTela("PerfilSelecionado");
     }
 
 }

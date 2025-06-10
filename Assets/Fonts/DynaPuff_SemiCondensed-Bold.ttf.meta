@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a0bee5116aaf53044b01e5b5a0862f77
+guid: 0b27f31c9bf8c5546a72381211854d73
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Super Funnel
+  - DynaPuff SemiCondensed
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

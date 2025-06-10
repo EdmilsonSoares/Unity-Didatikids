@@ -1,8 +1,6 @@
 using UnityEngine;
 using TMPro;
 using System;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
 using System.Collections;
 
 public class DataInputValidador : MonoBehaviour
@@ -16,12 +14,6 @@ public class DataInputValidador : MonoBehaviour
     void Start()
     {
         tmpInputField = GetComponent<TMP_InputField>();
-        if (tmpInputField != null)
-        {
-            UnityEngine.Debug.Log("teste2");
-
-            tmpInputField.onValueChanged.AddListener(FormatDate); //Formata a data enquanto o usuário digita
-        }
 
         if (tmpInputField != null)
         {
@@ -29,20 +21,17 @@ public class DataInputValidador : MonoBehaviour
             tmpInputField.onValidateInput += ValidateChar;
             // Adiciona o método ValidateDate à lista de listeners (ouvintes) do evento onEndEdit do tmpInputField
             tmpInputField.onEndEdit.AddListener(ValidateDate);
+            tmpInputField.onValueChanged.AddListener(FormatDate); //Formata a data enquanto o usuário digita
         }
     }
 
     // Função que corresponde à assinatura do delegado OnValidateInput para validar caracteres permitidos
     public char ValidateChar(string text, int pos, char ch)
     {
-        if (char.IsDigit(ch) || ch == '/')
-        {
+        if (char.IsDigit(ch))
             return ch;
-        }
         else
-        {
             return '\0';
-        }
     }
 
     private void ValidateDate(string text)
@@ -53,13 +42,13 @@ public class DataInputValidador : MonoBehaviour
          * ano bissexto e se o dia, mês e ano são válidos.*/
         if (DateTime.TryParseExact(text, dataFormato, null, System.Globalization.DateTimeStyles.None, out dataAnalizada))
         {
-            UnityEngine.Debug.Log("Data válida inserida: " + dataAnalizada.ToString("yyyy-MM-dd"));
+            Debug.Log("Data válida inserida: " + dataAnalizada.ToString("yyyy-MM-dd"));
             feedbackText.text = ""; // Limpa o feedbackText se data válida
             OnValidDateEntered?.Invoke(dataAnalizada); // Invoca um evento com a data válida
         }
         else if(!string.IsNullOrEmpty(text))
         {
-            UnityEngine.Debug.LogWarning("Data inválida inserida. Formato esperado: " + dataFormato);
+            Debug.LogWarning("Data inválida inserida. Formato esperado: " + dataFormato);
             feedbackText.text = "Data inválida. Use Dia/Mês/Ano"; // Exibe erro no feedbackText
         }
     }

@@ -18,7 +18,7 @@ public class TelaNovoPerfil : MonoBehaviour
     private string dataCrianca;
     private string topico;
     private const int MAX_CHILDREN_PROFILES = 3;
-    
+
     private void Awake()
     {
         btnAvatar.onClick.AddListener(MostrarTelaAvatares);
@@ -33,13 +33,13 @@ public class TelaNovoPerfil : MonoBehaviour
     }
 
     // Método para receber e exibir a imagem de avatar selecionada
-    public void AtualizarAvatarSelecionado(Sprite avatar, string avatarResourcePath)
+    public void AtualizarAvatarSelecionado(Sprite avatar, string avatarPath)
     {
         if (avatarImageBTN != null)
         {
             avatarImageBTN.sprite = avatar;
             avatarImageBTN.preserveAspect = true; // Manter a proporção (círculo)
-            selectedAvatarPath = avatarResourcePath;
+            selectedAvatarPath = avatarPath;
         }
     }
 
@@ -53,7 +53,6 @@ public class TelaNovoPerfil : MonoBehaviour
         // Pega o texto dos InputFields
         nomeCrianca = inputNome.text;
         dataCrianca = inputData.text;
-        
 
         if (string.IsNullOrEmpty(nomeCrianca) || string.IsNullOrEmpty(dataCrianca))
         {
@@ -61,10 +60,7 @@ public class TelaNovoPerfil : MonoBehaviour
             return;
         }
 
-        // 1. Define o caminho do arquivo JSON do responsável
         string caminhoDoArquivoUser = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
-
-        // 2. Verifica se o arquivo JSON do responsável existe
         if (!File.Exists(caminhoDoArquivoUser))
         {
             Debug.LogError("Erro: O arquivo de dados do responsável não foi encontrado. Cadastre-se primeiro.");
@@ -73,10 +69,8 @@ public class TelaNovoPerfil : MonoBehaviour
 
         try
         {
-            // 3. Lê o conteúdo do arquivo JSON do responsável
-            string jsonResponsavel = File.ReadAllText(caminhoDoArquivoUser);
-            // 4. Desserializa o JSON para um objeto UserModel
-            UserModel currentUser = JsonUtility.FromJson<UserModel>(jsonResponsavel);
+            string jsonResponsavel = File.ReadAllText(caminhoDoArquivoUser); // 3. Lê o conteúdo do arquivo JSON do responsável
+            UserModel currentUser = JsonUtility.FromJson<UserModel>(jsonResponsavel); // 4. Desserializa o JSON para um objeto UserModel
 
             if (currentUser.children != null && currentUser.children.Count >= MAX_CHILDREN_PROFILES)
             {
@@ -86,20 +80,20 @@ public class TelaNovoPerfil : MonoBehaviour
                 telaGerenciador.MostrarTela("Perfis"); // Retorna para a tela de perfis sem cadastrar
                 return;
             }
-
             // 5. Cria um novo perfil de criança
             ChildModel novaCrianca = new ChildModel(nomeCrianca, dataCrianca, topico, selectedAvatarPath);
-            // 6. Adiciona o novo perfil da criança à lista de crianças do responsável
-            currentUser.AddChildProfile(novaCrianca);
+            currentUser.AddChildProfile(novaCrianca); // 6. Adiciona o novo perfil da criança à lista de crianças do responsável
+            // Atualiza os dados no objeto persistente GameManager
+            if (GameManager.Instance != null)
+                GameManager.Instance.AddChildProfile(novaCrianca);
+            else
+                Debug.LogError("GameManager.Instance não encontrado!");
 
             // 7. Serializa o objeto UserModel atualizado de volta para JSON
             string updatedJsonResponsavel = JsonUtility.ToJson(currentUser, true);
             // 8. Salva o JSON atualizado, sobrescrevendo o arquivo existente
             File.WriteAllText(caminhoDoArquivoUser, updatedJsonResponsavel);
-
             Debug.Log($"Perfil da criança '{nomeCrianca}' salvo com sucesso!");
-            Debug.Log($"Dados atualizados do responsável: {updatedJsonResponsavel}");
-
             telaGerenciador.MostrarTela("Perfis"); // Volta para a tela de perfis
         }
         catch (System.Exception e)

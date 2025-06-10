@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
+using System.Collections.Generic;
 
 public class TelaLogin : MonoBehaviour
 {
@@ -31,7 +32,6 @@ public class TelaLogin : MonoBehaviour
         }
 
         string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
-        // Verifica se o arquivo JSON existe
         if (!File.Exists(caminhoDoArquivo))
         {
             Debug.LogError("Arquivo 'DadosUsuario.json' não encontrado.");
@@ -40,16 +40,17 @@ public class TelaLogin : MonoBehaviour
 
         try
         {
-            // Lê o conteúdo do arquivo JSON
-            string jsonLido = File.ReadAllText(caminhoDoArquivo);
-
-            // Desserializa o JSON para um objeto DadosUsuario
-            UserModel usuarioSalvo = JsonUtility.FromJson<UserModel>(jsonLido);
-
+            string jsonLido = File.ReadAllText(caminhoDoArquivo); // Lê o conteúdo do arquivo JSON
+            UserModel usuarioSalvo = JsonUtility.FromJson<UserModel>(jsonLido); // Desserializa o JSON para um objeto DadosUsuario
             // Compara o email e a senha digitados com os dados lidos do JSON
             if (emailDigitado == usuarioSalvo.userEmail && senhaDigitada == usuarioSalvo.userSenha)
             {
                 Debug.Log("Login bem-sucedido!");
+                // Salvar os dados no objeto persistente GameManager
+                if (GameManager.Instance != null)
+                    GameManager.Instance.SetChildProfiles(usuarioSalvo.children); // Passa a lista de childrenProfiles diretamente
+                else
+                    Debug.LogError("GameManager.Instance não encontrado!");
                 telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
             }
             else

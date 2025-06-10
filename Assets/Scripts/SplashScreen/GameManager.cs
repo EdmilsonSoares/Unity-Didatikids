@@ -1,12 +1,13 @@
-// Singleton para receber o nome da próxima cena a ser carregada, carregar a cena de loading
-// e depois a próxima cena. O script AnimOfLoading irá carregar a cena desejada
+// Singleton para gerir algumas cenas e carregar consigo dados importantes para as atividades
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public string NomeProxCena { get; set; }
+    public List<ChildModel> ChildProfiles { get; private set; } = new List<ChildModel>();
 
     private void Awake()
     {
@@ -20,6 +21,30 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    // Método para definir a lista de crianças após um login bem-sucedido
+    public void SetChildProfiles(List<ChildModel> profiles)
+    {
+        // Limpa a lista atual e adiciona todos os perfis recebidos
+        ChildProfiles.Clear();
+        if (profiles != null)
+        {
+            ChildProfiles.AddRange(profiles);
+        }
+        Debug.Log($"GameManager: {ChildProfiles.Count} perfis de crianças carregados.");
+    }
+
+    // Método para adicionar um novo perfil de criança ao usuário atual no GameManager
+    public void AddChildProfile(ChildModel child)
+    {
+        if (ChildProfiles == null)
+        {
+            ChildProfiles = new List<ChildModel>(); // Garante que a lista exista
+        }
+        ChildProfiles.Add(child);
+        Debug.Log($"GameManager: Criança '{child.childNome}' adicionada à lista em memória.");
+    }
+
 
     // Enquanto a cena é carregada é mostrado a animação de loading
     public void CarregarComAnimacao(string sceneName)
