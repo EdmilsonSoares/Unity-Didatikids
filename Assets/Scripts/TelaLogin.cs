@@ -25,11 +25,16 @@ public class TelaLogin : MonoBehaviour
         string emailDigitado = inputEmail.text;
         string senhaDigitada = inputSenha.text;
 
-        if (string.IsNullOrEmpty(inputEmail.text) || string.IsNullOrEmpty(inputSenha.text))
+        //====================================================
+        emailDigitado = "Rui@gmail.com";
+        senhaDigitada = "123aA*";
+        //====================================================
+
+        /*if (string.IsNullOrEmpty(inputEmail.text) || string.IsNullOrEmpty(inputSenha.text))
         {
             Debug.LogError("Todos os campos devem ser preenchidos!");
             return;
-        }
+        }*/
 
         string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
         if (!File.Exists(caminhoDoArquivo))

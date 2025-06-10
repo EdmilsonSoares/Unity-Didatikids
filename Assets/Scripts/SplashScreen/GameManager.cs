@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public string NomeProxCena { get; set; }
     public List<ChildModel> ChildProfiles { get; private set; } = new List<ChildModel>();
+    public ChildModel CurrentSelectedChild { get; private set; } // Armazenar a criança atualmente selecionada/ativa
 
     private void Awake()
     {
@@ -45,6 +46,19 @@ public class GameManager : MonoBehaviour
         Debug.Log($"GameManager: Criança '{child.childNome}' adicionada à lista em memória.");
     }
 
+    // Método para definir a criança que foi selecionada na TelaPerfis
+    public void SetCurrentSelectedChild(ChildModel child)
+    {
+        CurrentSelectedChild = child;
+        if (child != null)
+        {
+            Debug.Log($"GameManager: Criança selecionada: {child.childNome}");
+        }
+        else
+        {
+            Debug.Log("GameManager: Nenhuma criança selecionada (ou seleção removida).");
+        }
+    }
 
     // Enquanto a cena é carregada é mostrado a animação de loading
     public void CarregarComAnimacao(string sceneName)

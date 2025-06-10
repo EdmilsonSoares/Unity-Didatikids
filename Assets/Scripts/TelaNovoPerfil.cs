@@ -6,13 +6,16 @@ using System.Collections.Generic; // Para usar List
 
 public class TelaNovoPerfil : MonoBehaviour
 {
-    public Button btnAvatar;
     [SerializeField] private TMP_InputField inputNome;
     [SerializeField] private TMP_InputField inputData;
+    [SerializeField] private TMP_Dropdown dropdownTopicos; // Menu Dropdow
     [SerializeField] private Button btnCadastrar;
     [SerializeField] private Button btnCancelar;
     [SerializeField] private TelaGerenciador telaGerenciador; // Referência ao script TelaGerenciador
+    [SerializeField] private GameObject telaAvatares; // Referencia ao CanvasAvatares
+    public Button btnAvatar; // Botão de escolha do avatar
     private Image avatarImageBTN; // Componente Image do botão de escolha de avatar
+    private Sprite defaultAvatarSprite; // Guarda o sprite default do botão de excolha de avatar
     private string selectedAvatarPath = "";
     private string nomeCrianca;
     private string dataCrianca;
@@ -24,12 +27,21 @@ public class TelaNovoPerfil : MonoBehaviour
         btnAvatar.onClick.AddListener(MostrarTelaAvatares);
         btnCadastrar.onClick.AddListener(Cadastrar);
         btnCancelar.onClick.AddListener(Cancelar);
+        avatarImageBTN = btnAvatar.GetComponent<Image>();
+        defaultAvatarSprite = avatarImageBTN.sprite;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        // Garante que o componente Image exista no botão de escolha de avatar
-        avatarImageBTN = btnAvatar.GetComponent<Image>();
+        selectedAvatarPath = "";
+        nomeCrianca = "";
+        dataCrianca = "";
+        topico = "Nenhum"; // Define o tópico padrão inicial
+        inputNome.text = ""; // Limpa o texto do campo de nome
+        inputData.text = ""; // Limpa o texto do campo de data
+        avatarImageBTN.sprite = defaultAvatarSprite;
+        dropdownTopicos.value = 0; // Define o valor para o primeiro item (Nenhum)
+        dropdownTopicos.RefreshShownValue(); // Atualiza a UI do dropdown
     }
 
     // Método para receber e exibir a imagem de avatar selecionada
@@ -45,7 +57,7 @@ public class TelaNovoPerfil : MonoBehaviour
 
     private void MostrarTelaAvatares()
     {
-        telaGerenciador.MostrarTela("Avatares"); // Desativa todas telas e ativa tela de Avatares
+        telaAvatares.SetActive(true); // Ativa tela de Avatares
     }
 
     private void Cadastrar()
