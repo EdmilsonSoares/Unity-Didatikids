@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Connect.Core
+namespace Termo
 {
     public class MainMenuManagerTermo : MonoBehaviour
     {
