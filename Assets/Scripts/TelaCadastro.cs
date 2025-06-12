@@ -7,11 +7,11 @@ using System.IO;
 public class TelaCadastro : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputNome;
-    [SerializeField] private TMP_InputField inputData;
     [SerializeField] private TMP_InputField inputEmail;
     [SerializeField] private TMP_InputField inputSenha;
     [SerializeField] private Button btnCadastrar;
     [SerializeField] private Button btnPossuoConta;
+    [SerializeField] private DataInputValidador dataInputValidador;
     [SerializeField] private TelaGerenciador telaGerenciador; //Referência ao script TelaGerenciador
     private string nome;
     private string data;
@@ -28,13 +28,13 @@ public class TelaCadastro : MonoBehaviour
     {
         // Pega o texto dos InputFields
         nome = inputNome.text;
-        data = inputData.text;
+        data = dataInputValidador.GetDataTextValidada();
         email = inputEmail.text;
         senha = inputSenha.text;
 
         if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(data) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
         {
-            Debug.LogError("Todos os campos devem ser preenchidos!");
+            Debug.LogError("Todos os campos devem ser preenchidos corretamente!");
             return;
         }
         else
@@ -52,7 +52,7 @@ public class TelaCadastro : MonoBehaviour
             }
             SalvarUsuario();
             Debug.Log("Nome: " + nome + ", Data: " + data + ", Email: " + email + ", Senha: " + senha);
-            telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
+            telaGerenciador.MostrarTela("Login"); // Desativa todas telas e ativa tela de perfis
         }
     }
 

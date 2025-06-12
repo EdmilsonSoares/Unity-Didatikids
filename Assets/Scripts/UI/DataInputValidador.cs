@@ -5,23 +5,30 @@ using System.Collections;
 
 public class DataInputValidador : MonoBehaviour
 {
+    [SerializeField] private TMP_InputField inputData;
     [SerializeField] private TMP_Text feedbackText; // Referência para a caixa de texto TMP
-    public string dataFormato = "dd/MM/yyyy";
-    private TMP_InputField tmpInputField;
-    public Action<DateTime> OnValidDateEntered;
     private bool isUserUpdating = true;
+    private string dataTextValidada = "";
+
+    public string GetDataTextValidada()
+    {
+        return dataTextValidada;
+    }
+
+    private void OnEnable()
+    {
+        dataTextValidada = "";
+    }
 
     void Start()
     {
-        tmpInputField = GetComponent<TMP_InputField>();
-
-        if (tmpInputField != null)
+        if (inputData != null)
         {
             // Registra a função ValidateChar ao evento onValidateInput para validar caracteres durante a digitação
-            tmpInputField.onValidateInput += ValidateChar;
+            inputData.onValidateInput += ValidateChar;
             // Adiciona o método ValidateDate à lista de listeners (ouvintes) do evento onEndEdit do tmpInputField
-            tmpInputField.onEndEdit.AddListener(ValidateDate);
-            tmpInputField.onValueChanged.AddListener(FormatDate); //Formata a data enquanto o usuário digita
+            inputData.onEndEdit.AddListener(ValidateDate);
+            inputData.onValueChanged.AddListener(FormatDate); //Formata a data enquanto o usuário digita
         }
     }
 
@@ -34,21 +41,29 @@ public class DataInputValidador : MonoBehaviour
             return '\0';
     }
 
-    private void ValidateDate(string text)
+    private void ValidateDate(string dataText)
     {
+        // Reorganizar a string text em dd/MM/yyyy
+        if (dataText.Length == 10 && dataText[2] == '/' && dataText[5] == '/')
+        {
+            string dia = dataText.Substring(0, 2);
+            string mes = dataText.Substring(3, 2);
+            string ano = dataText.Substring(6, 4);
+            dataText = $"{mes}/{dia}/{ano}"; // Reorganiza para "MM/dd/yyyy"
+        }
         DateTime dataAnalizada; // Variável para armazenar a data analisada
         /* A próxima linha tenta analisar a string digitada pelo usuario (text)
-         * como uma data no formato especificado (dataFormato). Também verifica
-         * ano bissexto e se o dia, mês e ano são válidos.*/
-        if (DateTime.TryParseExact(text, dataFormato, null, System.Globalization.DateTimeStyles.None, out dataAnalizada))
+         * como uma data no formato especificado (dataFormato). 
+         * Também verifica ano bissexto e se o dia, mês e ano são válidos.*/
+        if (DateTime.TryParseExact(dataText, "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.None, out dataAnalizada))
         {
-            Debug.Log("Data válida inserida: " + dataAnalizada.ToString("yyyy-MM-dd"));
             feedbackText.text = ""; // Limpa o feedbackText se data válida
-            OnValidDateEntered?.Invoke(dataAnalizada); // Invoca um evento com a data válida
+            dataTextValidada = dataText;
+            Debug.Log("Data válida inserida: " + dataText);
         }
-        else if(!string.IsNullOrEmpty(text))
+        else if (!string.IsNullOrEmpty(dataText))
         {
-            Debug.LogWarning("Data inválida inserida. Formato esperado: " + dataFormato);
+            Debug.LogWarning("Data inválida inserida. Formato esperado: dd/MM/yyyy");
             feedbackText.text = "Data inválida. Use Dia/Mês/Ano"; // Exibe erro no feedbackText
         }
     }
@@ -59,7 +74,7 @@ public class DataInputValidador : MonoBehaviour
         isUserUpdating = false;
 
         input = input.Replace("/", "");
- 
+
         string formatted = "";
         if (input.Length > 0)
             formatted += input.Substring(0, Mathf.Min(2, input.Length));
@@ -70,7 +85,7 @@ public class DataInputValidador : MonoBehaviour
         if (input.Length > 4)
             formatted += "/" + input.Substring(4, Mathf.Min(4, input.Length - 4));
 
-        tmpInputField.SetTextWithoutNotify(formatted);
+        inputData.SetTextWithoutNotify(formatted);
 
         // Força o cursor pro final no próximo frame
         StartCoroutine(ForceCursorToEnd(formatted.Length));
@@ -81,8 +96,8 @@ public class DataInputValidador : MonoBehaviour
     private IEnumerator ForceCursorToEnd(int position)
     {
         yield return new WaitForEndOfFrame();
-        tmpInputField.caretPosition = position;
-        tmpInputField.selectionAnchorPosition = position;
-        tmpInputField.selectionFocusPosition = position;
+        inputData.caretPosition = position;
+        inputData.selectionAnchorPosition = position;
+        inputData.selectionFocusPosition = position;
     }
 }
