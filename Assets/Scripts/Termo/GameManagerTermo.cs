@@ -1,5 +1,6 @@
 using Connect.Common;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace Termo
@@ -11,6 +12,9 @@ namespace Termo
         public static GameManagerTermo Instance;
         [SerializeField] private GameObject telaMenu;
         [SerializeField] private GameObject telaGameplay;
+        [SerializeField] private GameObject easyBoard;
+        [SerializeField] private GameObject mediumBoard;
+        [SerializeField] private GameObject hardBoard;
 
         private void Awake()
         {
@@ -32,7 +36,7 @@ namespace Termo
             CurrentStage = 1;
             CurrentLevel = 1;
 
-            Levels = new Dictionary<string, LevelData>();
+            Levels = new Dictionary<string, LevelDataTermo>();
 
             foreach (var item in _allLevels.Levels)
             {
@@ -56,7 +60,7 @@ namespace Termo
 
         public bool IsLevelUnlocked(int level)
         {
-            string levelName = "Level" + CurrentStage.ToString() + level.ToString();
+            string levelName = "Level" + "T" + CurrentStage.ToString() + level.ToString();
 
             if (level == 1)
             {
@@ -89,7 +93,7 @@ namespace Termo
                 }
             }
 
-            string levelName = "Level" + CurrentStage.ToString() + CurrentLevel.ToString();
+            string levelName = "Level" + "T" + CurrentStage.ToString() + CurrentLevel.ToString();
             PlayerPrefs.SetInt(levelName, 1);
         }
 
@@ -98,14 +102,14 @@ namespace Termo
         #region LEVEL_DATA
 
         [SerializeField]
-        private LevelData DefaultLevel;
+        private LevelDataTermo DefaultLevel;
 
         [SerializeField]
-        private LevelList _allLevels;
+        private LevelListTermo _allLevels;
 
-        private Dictionary<string, LevelData> Levels;
+        private Dictionary<string, LevelDataTermo> Levels;
 
-        public LevelData GetLevel()
+        public LevelDataTermo GetLevel()
         {
             string levelName = "Level" + CurrentStage.ToString() + CurrentLevel.ToString();
 
@@ -121,18 +125,37 @@ namespace Termo
 
         #region SCENE_LOAD
 
-        private const string MainMenu = "MainMenu";
-        private const string Gameplay = "Gameplay";
+        //private const string MainMenu = "MainMenu";
+        //private const string Gameplay = "Gameplay";
 
         public void GoToMainMenu()
         {
             telaMenu.SetActive(true);
-            telaGameplay.SetActive(true);
+            telaGameplay.SetActive(false);
         }
 
         public void GoToGameplay()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(Gameplay);
+            UnityEngine.Debug.Log("aaa"+CurrentLevel);
+            switch (CurrentStage)
+            {
+                case 1:
+                    easyBoard.SetActive(true);
+                    break;
+
+                case 2:
+                    mediumBoard.SetActive(true);
+                    break;
+
+                case 3:
+                    hardBoard.SetActive(true);
+                    break;
+
+                default:
+                    break;
+            }
+            telaMenu.SetActive(false);
+            telaGameplay.SetActive(true);
         }
 
         #endregion

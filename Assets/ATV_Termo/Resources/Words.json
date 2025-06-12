@@ -1,0 +1,66 @@
+{
+  "difficulties": {
+    "easy": {
+      "level_1": "sol",
+      "level_2": "lua",
+      "level_3": "estrela",
+      "level_4": "nuvem",
+      "level_5": "vento"
+    },
+    "medium": {
+      "level_1": "montanha",
+      "level_2": "oceano",
+      "level_3": "floresta",
+      "level_4": "deserto",
+      "level_5": "rio"
+    },
+    "hard": {
+      "level_1": "constelação",
+      "level_2": "tornado",
+      "level_3": "aurora",
+      "level_4": "tsunami",
+      "level_5": "eclipse"
+    }
+  }
+}
+
+
+using UnityEngine;
+using System.IO;
+
+public class JsonLoader : MonoBehaviour
+{
+    private DifficultyLevels data;
+
+    void Start()
+    {
+        LoadJson();
+        string palavra = GetWord("medium", "level_3");
+        Debug.Log($"Palavra encontrada: {palavra}");
+    }
+
+    void LoadJson()
+    {
+        string path = Path.Combine(Application.streamingAssetsPath, "palavras.json");
+        
+        if (File.Exists(path))
+        {
+            string jsonContent = File.ReadAllText(path);
+            data = JsonUtility.FromJson<DifficultyLevels>(jsonContent);
+        }
+        else
+        {
+            Debug.LogError("Arquivo JSON não encontrado!");
+        }
+    }
+
+    string GetWord(string difficulty, string level)
+    {
+        if (data != null && data.difficulties.ContainsKey(difficulty) && data.difficulties[difficulty].ContainsKey(level))
+        {
+            return data.difficulties[difficulty][level];
+        }
+
+        return "Palavra não encontrada!";
+    }
+}
