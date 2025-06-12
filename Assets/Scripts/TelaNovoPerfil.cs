@@ -11,6 +11,7 @@ public class TelaNovoPerfil : MonoBehaviour
     [SerializeField] private TMP_Dropdown dropdownTopicos; // Menu Dropdow
     [SerializeField] private Button btnCadastrar;
     [SerializeField] private Button btnCancelar;
+    [SerializeField] private DataInputValidador dataInputValidador;
     [SerializeField] private TelaGerenciador telaGerenciador; // Referência ao script TelaGerenciador
     [SerializeField] private GameObject telaAvatares; // Referencia ao CanvasAvatares
     public Button btnAvatar; // Botão de escolha do avatar
@@ -64,11 +65,11 @@ public class TelaNovoPerfil : MonoBehaviour
     {
         // Pega o texto dos InputFields
         nomeCrianca = inputNome.text;
-        dataCrianca = inputData.text;
+        dataCrianca = dataInputValidador.GetDataTextValidada();
 
         if (string.IsNullOrEmpty(nomeCrianca) || string.IsNullOrEmpty(dataCrianca))
         {
-            Debug.LogError("Todos os campos devem ser preenchidos!");
+            Debug.LogError("Todos os campos devem ser preenchidos corretamente!");
             return;
         }
 
