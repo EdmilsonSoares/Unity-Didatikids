@@ -1,157 +1,222 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
+using System.IO;
 using UnityEngine;
+using static System.Net.Mime.MediaTypeNames;
 
-public class BoardTermo : MonoBehaviour
+namespace Termo
 {
-    private static readonly KeyCode[] SUPPORTED_KEYS = new KeyCode[]
+    public class BoardTermo : MonoBehaviour
     {
-        KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E,
-        KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J,
-        KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
-        KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
-        KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
-        KeyCode.Z,
-    };
-
-    private Row[] rows;
-
-    private string[] solutions;
-    private string[] validWords;
-    private string word;
-
-    private int rowIndex;
-    private int columnIndex;
-
-    [Header("States")]
-    public Tile.State emptyState;
-    public Tile.State occupiedState;
-    public Tile.State CorrectState;
-    public Tile.State wrongSpotState;
-    public Tile.State incorrectState;
-
-    private void Awake()
-    {
-        rows = GetComponentsInChildren<Row>();
-    }
-
-    private void Start()
-    {
-        LoadData();
-        SetRandomWord();
-    }
-
-    private void LoadData()
-    {
-        TextAsset textFile = Resources.Load("WordsListAnimals") as TextAsset;
-        validWords = textFile.text.Split('\n');
-
-        textFile = Resources.Load("WordsListAnimals") as TextAsset;
-        solutions = textFile.text.Split('\n');
-    }
-
-    private void SetRandomWord()
-    {
-        word = solutions[UnityEngine.Random.Range(0, solutions.Length)];
-        word = word.ToLower().Trim();
-    }
-
-    private void Update()
-    {
-        Row currentRow = rows[rowIndex];
-
-        if (Input.GetKeyDown(KeyCode.Backspace))
+        private static readonly KeyCode[] SUPPORTED_KEYS = new KeyCode[]
         {
-            columnIndex = Mathf.Max(columnIndex - 1, 0);
-            currentRow.tiles[columnIndex].SetLetter('\0');
-            currentRow.tiles[columnIndex].SetState(emptyState);
+            KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E,
+            KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J,
+            KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
+            KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
+            KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
+            KeyCode.Z,
+        };
+
+        private Row[] rows;
+
+        //private string[] solutions;
+        //private string[] validWords;
+        private string word;
+
+        private int rowIndex;
+        private int columnIndex;
+
+        [Header("States")]
+        public Tile.State emptyState;
+        public Tile.State occupiedState;
+        public Tile.State CorrectState;
+        public Tile.State wrongSpotState;
+        public Tile.State incorrectState;
+
+        private RootData data;
+
+        private void Awake()
+        {
+            rows = GetComponentsInChildren<Row>();
         }
-        else if(columnIndex >= rows[rowIndex].tiles.Length)
+
+        private void Start()
         {
-            if(Input.GetKeyDown(KeyCode.Return))
+            LoadJson();
+            //SetRandomWord();
+            word = GetWord();
+            UnityEngine.Debug.Log(word);
+
+        }
+
+        private void LoadJson()
+        {
+            //TextAsset textFile = Resources.Load("WordsListAnimals") as TextAsset;
+            //validWords = textFile.text.Split('\n');
+
+            //TextAsset textFile = Resources.Load("WordsListAnimals") as TextAsset;
+            //solutions = textFile.text.Split('\n');
+            TextAsset jsonFile = Resources.Load<TextAsset>("Words");
+            data = JsonUtility.FromJson<RootData>(jsonFile.text);
+        }
+
+        //private void SetRandomWord()
+        //{
+        //    word = solutions[UnityEngine.Random.Range(0, solutions.Length)];
+        //    word = word.ToLower().Trim();
+        //}
+
+        public string GetWord()
+        {
+            string difficulty = GameManagerTermo.Instance.CurrentStage.ToString();
+            string level = "level_" + GameManagerTermo.Instance.CurrentLevel.ToString();
+            UnityEngine.Debug.Log(level + "|"+difficulty);
+
+            if (data == null)
             {
-                SubmitRow(currentRow);
+                UnityEngine.Debug.LogError("O JSON não foi carregado corretamente!");
             }
-        }
-        else
-        {
-            for (int i = 0; i < SUPPORTED_KEYS.Length; i++)
+            if (data.difficulties == null)
             {
-                if (Input.GetKeyDown(SUPPORTED_KEYS[i]))
+                UnityEngine.Debug.LogError("O dicionário difficulties está nulo!");
+            }
+
+            DifficultyData entry = data.difficulties.Find(d => d.id == difficulty);
+            if (entry != null)
+            {
+                return level switch
                 {
-                    currentRow.tiles[columnIndex].SetLetter((char)SUPPORTED_KEYS[i]);
-                    currentRow.tiles[columnIndex].SetState(occupiedState);
-                    columnIndex++;
-                    break;
+                    "level_1" => entry.level_1,
+                    "level_2" => entry.level_2,
+                    "level_3" => entry.level_3,
+                    "level_4" => entry.level_4,
+                    "level_5" => entry.level_5,
+                    _ => null
+                };
+            }
+
+            return null;
+        }
+
+        private void Update()
+        {
+            Row currentRow = rows[rowIndex];
+
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                columnIndex = Mathf.Max(columnIndex - 1, 0);
+                currentRow.tiles[columnIndex].SetLetter('\0');
+                currentRow.tiles[columnIndex].SetState(emptyState);
+            }
+            else if (columnIndex >= rows[rowIndex].tiles.Length)
+            {
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    SubmitRow(currentRow);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < SUPPORTED_KEYS.Length; i++)
+                {
+                    if (Input.GetKeyDown(SUPPORTED_KEYS[i]))
+                    {
+                        currentRow.tiles[columnIndex].SetLetter((char)SUPPORTED_KEYS[i]);
+                        currentRow.tiles[columnIndex].SetState(occupiedState);
+                        columnIndex++;
+                        break;
+                    }
                 }
             }
         }
-    }
 
-    private void SubmitRow(Row row)
-    {
-        string remaining = word;
-
-        for(int i = 0; i < row.tiles.Length; i++)
+        private void SubmitRow(Row row)
         {
-            Tile tile = row.tiles[i];
+            string remaining = word;
 
-            if(tile.letter == word[i])
+            for (int i = 0; i < row.tiles.Length; i++)
             {
-                tile.SetState(CorrectState);
+                Tile tile = row.tiles[i];
 
-                remaining = remaining.Remove(i, 1);
-                remaining = remaining.Insert(i, " ");
-            }
-            else if(!word.Contains(tile.letter))
-            {
-                tile.SetState(incorrectState);
-            }            
-        }
-
-        for (int i = 0; i < row.tiles.Length; i++)
-        {
-            Tile tile = row.tiles[i];
-
-            if(tile.state != CorrectState && tile.state != incorrectState)
-            {
-                if(remaining.Contains(tile.letter))
+                if (tile.letter == word[i])
                 {
-                    tile.SetState(wrongSpotState);
+                    tile.SetState(CorrectState);
 
-                    int index = remaining.IndexOf(tile.letter);
-                    remaining = remaining.Remove(index, 1);
-                    remaining = remaining.Insert(index, " ");
+                    remaining = remaining.Remove(i, 1);
+                    remaining = remaining.Insert(i, " ");
                 }
-                else
+                else if (!word.Contains(tile.letter))
                 {
                     tile.SetState(incorrectState);
                 }
             }
-        }
-        if(HasWon(row))
-        {
-            enabled = false;
-        }
 
-        rowIndex++;
-        columnIndex = 0;
-
-        if(rowIndex >= rows.Length)
-        {
-            enabled = false;
-        }
-    }
-
-    private bool HasWon(Row row)
-    {
-        for (int i = 0; i < row.tiles.Length; i++)
-        {
-            if (row.tiles[i].state != CorrectState)
+            for (int i = 0; i < row.tiles.Length; i++)
             {
-                return false;
+                Tile tile = row.tiles[i];
+
+                if (tile.state != CorrectState && tile.state != incorrectState)
+                {
+                    if (remaining.Contains(tile.letter))
+                    {
+                        tile.SetState(wrongSpotState);
+
+                        int index = remaining.IndexOf(tile.letter);
+                        remaining = remaining.Remove(index, 1);
+                        remaining = remaining.Insert(index, " ");
+                    }
+                    else
+                    {
+                        tile.SetState(incorrectState);
+                    }
+                }
+            }
+            if (HasWon(row))
+            {
+                enabled = false;
+            }
+
+            rowIndex++;
+            columnIndex = 0;
+
+            if (rowIndex >= rows.Length)
+            {
+                enabled = false;
             }
         }
-        return true;
+
+        private bool HasWon(Row row)
+        {
+            for (int i = 0; i < row.tiles.Length; i++)
+            {
+                if (row.tiles[i].state != CorrectState)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
+
+    #region classes para pegar o json
+    [System.Serializable]
+    public class RootData
+    {
+        public List<DifficultyData> difficulties;
+    }
+
+    [System.Serializable]
+    public class DifficultyData
+    {
+        public string id;
+        public string level_1;
+        public string level_2;
+        public string level_3;
+        public string level_4;
+        public string level_5;
+    }
+    #endregion
 }

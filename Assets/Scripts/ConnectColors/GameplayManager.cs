@@ -179,10 +179,12 @@ namespace Connect.Core
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
                 RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+                //Collider2D hitCollider = Physics2D.OverlapPoint(mousePos2D);
 
                 if(startNode == null) 
                 {
                     if(hit && hit.collider.gameObject.TryGetComponent(out Node tNode)
+                    //if (hitCollider && hitCollider.TryGetComponent(out Node tNode))
                         && tNode.IsClickable)
                     {
                         startNode = tNode;
