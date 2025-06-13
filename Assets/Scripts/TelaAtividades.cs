@@ -6,15 +6,16 @@ using UnityEngine.SceneManagement;
 public class TelaAtividades : MonoBehaviour
 {
     [SerializeField] private Button btnVoltarPerfis;
-    [SerializeField] private Button btnAtividadeCC;
+    [SerializeField] private Button btnAtividadeLink;
     [SerializeField] private Button btnAtividadeMat;
-    [SerializeField] private Button btnAtividadePort;
-    [SerializeField] private TelaGerenciador telaGerenciador; // Referência ao script TelaGerenciador
+    [SerializeField] private Button btnAtividadeTermo;
+    [SerializeField] private TelaGerenciador telaGerenciador;
 
     private void Awake()
     {
         btnVoltarPerfis.onClick.AddListener(Perfis);
-        btnAtividadeCC.onClick.AddListener(ConnectColors);
+        btnAtividadeLink.onClick.AddListener(ActivityLink);
+        btnAtividadeLink.onClick.AddListener(ActivityTermo);
     }
 
     public void Perfis()
@@ -22,7 +23,7 @@ public class TelaAtividades : MonoBehaviour
         telaGerenciador.MostrarTela("Perfis"); 
     }
 
-    public void ConnectColors()
+    public void ActivityLink()
     {
         GameManager.Instance.CarregarComAnimacao("MainMenu");
     }
@@ -32,8 +33,8 @@ public class TelaAtividades : MonoBehaviour
         SceneManager.LoadScene("Matematica");
     }
 
-    public void Portugeus()
+    public void ActivityTermo()
     {
-        SceneManager.LoadScene("Portugues");
+        SceneManager.LoadScene("Termo");
     }
 }

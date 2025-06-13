@@ -2,6 +2,7 @@ using Connect.Common;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using TMPro;
 
 namespace Termo
 {
@@ -10,12 +11,14 @@ namespace Termo
         #region START_METHODS
 
         public static GameManagerTermo Instance;
+        [SerializeField] private TMP_Text _titleText;
+        [SerializeField] public GameObject _winText;
         [SerializeField] private GameObject telaMenu;
         [SerializeField] private GameObject telaGameplay;
         [SerializeField] private GameObject easyBoard;
         [SerializeField] private GameObject mediumBoard;
         [SerializeField] private GameObject hardBoard;
-
+        
         private void Awake()
         {
             if (Instance == null)
@@ -136,7 +139,6 @@ namespace Termo
 
         public void GoToGameplay()
         {
-            UnityEngine.Debug.Log("aaa"+CurrentLevel);
             switch (CurrentStage)
             {
                 case 1:
@@ -154,6 +156,12 @@ namespace Termo
                 default:
                     break;
             }
+
+            _winText.SetActive(false);
+            _titleText.gameObject.SetActive(true);
+            _titleText.text = StageName +
+                " - " + CurrentLevel.ToString();
+
             telaMenu.SetActive(false);
             telaGameplay.SetActive(true);
         }
