@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO; // Necessário para manipulacao de arquivos
 using System.Collections.Generic; // Necessário para List
@@ -7,7 +8,7 @@ using System.Collections.Generic; // Necessário para List
 public class TelaPerfilSelecionado : MonoBehaviour
 {
     [SerializeField] private Button btnBack;
-    [SerializeField] private Button btnSettings; // Vai para outra tela de configurações
+    [SerializeField] private Button btnSettings;
     [SerializeField] private Button btnEditar;
     [SerializeField] private Button btnExcluir;
     [SerializeField] private Button btnAtividades;
@@ -31,7 +32,7 @@ public class TelaPerfilSelecionado : MonoBehaviour
         btnAtividades.onClick.AddListener(Atividades);
     }
 
-    public void Perfis()
+    private void Perfis()
     {
         telaGerenciador.MostrarTela("Perfis");
         if (GameManager.Instance != null)
@@ -40,16 +41,16 @@ public class TelaPerfilSelecionado : MonoBehaviour
         }
     }
 
-    public void Settings()
+    private void Settings()
     {
-        telaGerenciador.MostrarTela("Settings");
         if (GameManager.Instance != null)
         {
             GameManager.Instance.SetCurrentSelectedChild(null); // limpar a criança selecionada no GameManager
         }
+        SceneManager.LoadSceneAsync("Configuracoes", LoadSceneMode.Additive);
     }
 
-    public void Atividades()
+    private void Atividades()
     {
         telaGerenciador.MostrarTela("Atividades");
     }

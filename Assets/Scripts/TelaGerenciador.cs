@@ -8,7 +8,6 @@ public class TelaGerenciador : MonoBehaviour
     [SerializeField] private GameObject telaNovoPerfil;
     [SerializeField] private GameObject telaAvatares;
     [SerializeField] private GameObject telaPerfilSelecionado;
-    [SerializeField] private GameObject telaSettings;
     [SerializeField] private GameObject telaAtividades;
 
     public void MostrarTela(string telaNome)
@@ -20,7 +19,6 @@ public class TelaGerenciador : MonoBehaviour
         telaNovoPerfil.SetActive(telaNome == "NovoPerfil");
         telaAvatares.SetActive(telaNome == "Avatares");
         telaPerfilSelecionado.SetActive(telaNome == "PerfilSelecionado");
-        telaSettings.SetActive(telaNome == "Settings");
         telaAtividades.SetActive(telaNome == "Atividades");
     }
 }

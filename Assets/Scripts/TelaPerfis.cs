@@ -2,14 +2,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 using System.IO;  // Para manipulação de arquivos
 using System.Collections.Generic;
 
 public class TelaPerfis : MonoBehaviour
 {
     [Header("Botões")]
-    //[SerializeField] private Button btnBack; // Descomente se dessa tela puder voltar a outra tela
-    [SerializeField] private Button btnSettings; // Vai para outra tela de configurações
+    [SerializeField] private Button btnSettings;
     [SerializeField] private Button btnChild1;
     [SerializeField] private Button btnChild2;
     [SerializeField] private Button btnChild3;
@@ -19,6 +19,7 @@ public class TelaPerfis : MonoBehaviour
     [SerializeField] private TMP_Text childNameText2;
     [SerializeField] private TMP_Text childNameText3;
     [SerializeField] private TelaGerenciador telaGerenciador; // Referência ao script TelaGerenciador
+    [SerializeField] private Image imageMax;
     private ChildModel currentChild1;
     private ChildModel currentChild2;
     private ChildModel currentChild3;
@@ -121,9 +122,9 @@ public class TelaPerfis : MonoBehaviour
         telaGerenciador.MostrarTela("NovoPerfil");
     }
 
-    public void Settings()
+    private void Settings()
     {
-        telaGerenciador.MostrarTela("Settings");
+        SceneManager.LoadSceneAsync("Configuracoes", LoadSceneMode.Additive);
     }
 
     private void SetVisibilityBotaoAdicionarPerfil(int currentChildCount)
@@ -131,6 +132,7 @@ public class TelaPerfis : MonoBehaviour
         if (btnAdicionarPerfil != null)
         {
             btnAdicionarPerfil.gameObject.SetActive(currentChildCount < 3);
+            imageMax.gameObject.SetActive(currentChildCount == 3);
             if (currentChildCount >= 3)
             {
                 Debug.Log("Botão 'Adicionar Perfil' desativado, limite de crianças atingido.");
