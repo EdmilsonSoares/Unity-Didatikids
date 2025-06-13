@@ -5,18 +5,21 @@ using TMPro;
 
 public class TelaAtividades : MonoBehaviour
 {
+
     [SerializeField] private Button btnBack;
     [SerializeField] private Button btnSettings;
-    [SerializeField] private Button btnAtividadeCC;
+
+    [SerializeField] private Button btnAtividadeLink;
     [SerializeField] private Button btnAtividadeMat;
-    [SerializeField] private Button btnAtividadePort;
-    [SerializeField] private TelaGerenciador telaGerenciador; // Referência ao script TelaGerenciador
+    [SerializeField] private Button btnAtividadeTermo;
+    [SerializeField] private TelaGerenciador telaGerenciador;
 
     private void Awake()
     {
+        btnAtividadeLink.onClick.AddListener(ActivityLink);
+        btnAtividadeTermo.onClick.AddListener(ActivityTermo);
         btnBack.onClick.AddListener(Perfis);
         btnSettings.onClick.AddListener(Settings);
-        btnAtividadeCC.onClick.AddListener(ConnectColors);
     }
 
     private void Perfis()
@@ -29,7 +32,7 @@ public class TelaAtividades : MonoBehaviour
         SceneManager.LoadSceneAsync("Configuracoes", LoadSceneMode.Additive);
     }
 
-    public void ConnectColors()
+    public void ActivityLink()
     {
         GameManager.Instance.CarregarComAnimacao("MainMenu");
     }
@@ -39,8 +42,8 @@ public class TelaAtividades : MonoBehaviour
         SceneManager.LoadScene("Matematica");
     }
 
-    public void Portugeus()
+    public void ActivityTermo()
     {
-        SceneManager.LoadScene("Portugues");
+        SceneManager.LoadScene("Termo");
     }
 }

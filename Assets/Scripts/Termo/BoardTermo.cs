@@ -48,8 +48,6 @@ namespace Termo
             LoadJson();
             //SetRandomWord();
             word = GetWord();
-            UnityEngine.Debug.Log(word);
-
         }
 
         private void LoadJson()
@@ -73,16 +71,6 @@ namespace Termo
         {
             string difficulty = GameManagerTermo.Instance.CurrentStage.ToString();
             string level = "level_" + GameManagerTermo.Instance.CurrentLevel.ToString();
-            UnityEngine.Debug.Log(level + "|"+difficulty);
-
-            if (data == null)
-            {
-                UnityEngine.Debug.LogError("O JSON não foi carregado corretamente!");
-            }
-            if (data.difficulties == null)
-            {
-                UnityEngine.Debug.LogError("O dicionário difficulties está nulo!");
-            }
 
             DifficultyData entry = data.difficulties.Find(d => d.id == difficulty);
             if (entry != null)
@@ -176,7 +164,9 @@ namespace Termo
             }
             if (HasWon(row))
             {
+                GameManagerTermo.Instance._winText.SetActive(true);
                 enabled = false;
+                GameManagerTermo.Instance.UnlockLevel();
             }
 
             rowIndex++;
