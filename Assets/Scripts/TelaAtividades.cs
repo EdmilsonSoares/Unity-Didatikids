@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class TelaAtividades : MonoBehaviour
 {
-    [SerializeField] private Button btnVoltarPerfis;
+    [SerializeField] private Button btnBack;
+    [SerializeField] private Button btnSettings;
     [SerializeField] private Button btnAtividadeCC;
     [SerializeField] private Button btnAtividadeMat;
     [SerializeField] private Button btnAtividadePort;
@@ -13,13 +14,19 @@ public class TelaAtividades : MonoBehaviour
 
     private void Awake()
     {
-        btnVoltarPerfis.onClick.AddListener(Perfis);
+        btnBack.onClick.AddListener(Perfis);
+        btnSettings.onClick.AddListener(Settings);
         btnAtividadeCC.onClick.AddListener(ConnectColors);
     }
 
-    public void Perfis()
+    private void Perfis()
     { 
         telaGerenciador.MostrarTela("Perfis"); 
+    }
+
+    private void Settings()
+    {
+        SceneManager.LoadSceneAsync("Configuracoes", LoadSceneMode.Additive);
     }
 
     public void ConnectColors()
