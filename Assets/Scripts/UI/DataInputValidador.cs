@@ -49,13 +49,13 @@ public class DataInputValidador : MonoBehaviour
             string dia = dataText.Substring(0, 2);
             string mes = dataText.Substring(3, 2);
             string ano = dataText.Substring(6, 4);
-            dataText = $"{mes}/{dia}/{ano}"; // Reorganiza para "MM/dd/yyyy"
+            dataText = $"{ano}/{mes}/{dia}"; // Reorganiza para "MM/dd/yyyy"
         }
         DateTime dataAnalizada; // Variável para armazenar a data analisada
         /* A próxima linha tenta analisar a string digitada pelo usuario (text)
          * como uma data no formato especificado (dataFormato). 
          * Também verifica ano bissexto e se o dia, mês e ano são válidos.*/
-        if (DateTime.TryParseExact(dataText, "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.None, out dataAnalizada))
+        if (DateTime.TryParseExact(dataText, "yyyy/MM/dd", null, System.Globalization.DateTimeStyles.None, out dataAnalizada))
         {
             feedbackText.text = ""; // Limpa o feedbackText se data válida
             dataTextValidada = dataText;

@@ -72,4 +72,9 @@ public class GameManager : MonoBehaviour
         NomeProxCena = sceneName;
         SceneManager.LoadScene(NomeProxCena);
     }
+
+    public void CarregarConfiguracao()
+    {
+        SceneManager.LoadSceneAsync("Configuracoes", LoadSceneMode.Additive);
+    }
 }

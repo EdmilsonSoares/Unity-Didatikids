@@ -2,8 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
-using System.IO;  // Para manipulação de arquivos
 using System.Collections.Generic;
 
 public class TelaPerfis : MonoBehaviour
@@ -124,7 +122,7 @@ public class TelaPerfis : MonoBehaviour
 
     private void Settings()
     {
-        SceneManager.LoadSceneAsync("Configuracoes", LoadSceneMode.Additive);
+        GameManager.Instance.CarregarConfiguracao();
     }
 
     private void SetVisibilityBotaoAdicionarPerfil(int currentChildCount)

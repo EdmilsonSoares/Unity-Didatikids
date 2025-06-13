@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO; // Necessário para manipulacao de arquivos
 using System.Collections.Generic; // Necessário para List
@@ -47,7 +46,7 @@ public class TelaPerfilSelecionado : MonoBehaviour
         {
             GameManager.Instance.SetCurrentSelectedChild(null); // limpar a criança selecionada no GameManager
         }
-        SceneManager.LoadSceneAsync("Configuracoes", LoadSceneMode.Additive);
+        GameManager.Instance.CarregarConfiguracao();
     }
 
     private void Atividades()
@@ -76,7 +75,12 @@ public class TelaPerfilSelecionado : MonoBehaviour
             }
             if (childDataText != null)
             {
-                childDataText.text = currentChildBeingEdited.childData;
+                string data = currentChildBeingEdited.childData;
+                string ano = data.Substring(0, 4);
+                string mes = data.Substring(5, 2);
+                string dia = data.Substring(8, 2);
+                data = $"{dia}/{mes}/{ano}";
+                childDataText.text = data;
             }
             if (childTopicoText != null)
             {
