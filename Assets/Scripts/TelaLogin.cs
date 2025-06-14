@@ -12,6 +12,9 @@ public class TelaLogin : MonoBehaviour
     [SerializeField] private Button btnEsqueceuSenha;
     [SerializeField] private Button btnCadastro;
     [SerializeField] private TelaGerenciador telaGerenciador; //Referência ao script TelaGerenciador
+    [SerializeField] private Toggle toggleLembrar;
+    private const string LAST_USER_EMAIL = "LastUserEmail";
+    private const string REMEMBER_EMAIL = "RememberEmail"; // Para a preferência do toggle
     private UserModel usuarioSalvo;
 
     private void OnEnable()
@@ -24,27 +27,64 @@ public class TelaLogin : MonoBehaviour
         btnEntrar.onClick.AddListener(Entrar);
         btnEsqueceuSenha.onClick.AddListener(EsqueceuSenha);
         btnCadastro.onClick.AddListener(Cadastro);
+        // Inicializa o Toggle com o valor salvo e adiciona o listener
+        if (toggleLembrar != null)
+        {
+            // Lê a preferência do PlayerPrefs (0 = false, 1 = true, padrão é 0)
+            toggleLembrar.isOn = PlayerPrefs.GetInt(REMEMBER_EMAIL, 0) == 1;
+
+            // Adiciona um listener para quando o valor do toggle mudar
+            toggleLembrar.onValueChanged.AddListener(SeToggleLembrarMudar);
+        }
+        else
+        {
+            Debug.LogError("Remember Me Toggle não atribuído no Inspector do script TelaLogin!");
+        }
     }
 
     private void LembrarUsuario()
     {
-        bool retorno = ProcurarUsuario();
-        if (retorno)
+        // Verifica se a opção "Lembrar Usuário" está ativada (lida do PlayerPrefs)
+        bool rememberEmail = PlayerPrefs.GetInt(REMEMBER_EMAIL, 0) == 1;
+
+        if (rememberEmail)
         {
-            if (string.IsNullOrEmpty(usuarioSalvo.userEmail) || string.IsNullOrEmpty(usuarioSalvo.userSenha))
+            string savedEmail = PlayerPrefs.GetString(LAST_USER_EMAIL, "");
+            if (!string.IsNullOrEmpty(savedEmail))
             {
-                Debug.LogWarning("DadosUsuario.json encontrado, mas 'userNome' ou 'userDataNascimento' ausentes/vazios.");
-                return;
+                inputEmail.text = savedEmail;
+                //inputSenha.text = "123Aa*";
+                Debug.Log($"Email lembrado: {savedEmail}");
             }
             else
             {
-                Debug.Log("Dados do usuário encontrados e válidos: " + usuarioSalvo.userNome);
-                inputEmail.text = usuarioSalvo.userEmail;
-                inputSenha.text = usuarioSalvo.userSenha;
+                Debug.Log("Opção 'Lembrar Email' ativada, mas nenhum email foi salvo anteriormente.");
+                inputEmail.text = ""; // Garante que o campo esteja vazio se não houver email salvo
             }
         }
+        else
+        {
+            Debug.Log("Opção 'Lembrar Email' desativada.");
+            inputEmail.text = ""; // Limpa o campo se a opção não estiver ativa
+        }
+
     }
 
+    // Chamado quando o Toggle "Lembrar Usuário" muda de estado
+    private void SeToggleLembrarMudar(bool isOn)
+    {
+        PlayerPrefs.SetInt(REMEMBER_EMAIL, isOn ? 1 : 0); // Salva 1 se true, 0 se false
+        PlayerPrefs.Save(); // Garante que os dados sejam salvos imediatamente
+        Debug.Log($"Preferência 'Lembrar Email' salva como: {isOn}");
+
+        // Se o usuário desabilitar "Lembrar Usuário", limpa o e-mail salvo
+        if (!isOn)
+        {
+            PlayerPrefs.DeleteKey(LAST_USER_EMAIL);
+            PlayerPrefs.Save();
+            Debug.Log("Email salvo removido dos PlayerPrefs.");
+        }
+    }
 
     private void Entrar()
     {
@@ -57,13 +97,20 @@ public class TelaLogin : MonoBehaviour
             return;
         }
 
-        bool retorno = ProcurarUsuario();
-        if (retorno)
+        bool usuarioEncontrado = ProcurarUsuario();
+        if (usuarioEncontrado)
         {
             // Compara o email e a senha digitados com os dados lidos do JSON
             if (emailDigitado == usuarioSalvo.userEmail && senhaDigitada == usuarioSalvo.userSenha)
             {
                 Debug.Log("Login bem-sucedido!");
+                // Salva o e-mail recém-logado APENAS se o toggle "Lembrar Usuário" estiver ativo
+                if (toggleLembrar != null && toggleLembrar.isOn)
+                {
+                    PlayerPrefs.SetString(LAST_USER_EMAIL, emailDigitado);
+                    PlayerPrefs.Save();
+                    Debug.Log($"Email '{emailDigitado}' salvo para lembrar.");
+                }
                 // Salvar apenas as crianças no objeto persistente GameManager
                 if (GameManager.Instance != null)
                     GameManager.Instance.SetChildProfiles(usuarioSalvo.children); // Passa a lista de childrenProfiles diretamente
@@ -84,6 +131,7 @@ public class TelaLogin : MonoBehaviour
         if (!File.Exists(caminhoDoArquivo))
         {
             Debug.LogWarning("Arquivo 'DadosUsuario.json' não encontrado.");
+            usuarioSalvo = null;
             return false;
         }
 
@@ -96,6 +144,7 @@ public class TelaLogin : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.LogError($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
+            usuarioSalvo = null;
             return false;
         }
     }
