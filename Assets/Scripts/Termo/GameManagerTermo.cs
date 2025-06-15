@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 namespace Termo
 {
@@ -11,6 +12,7 @@ namespace Termo
         #region START_METHODS
 
         public static GameManagerTermo Instance;
+        public static BoardTermo board;
         [SerializeField] private TMP_Text _titleText;
         [SerializeField] public GameObject _winText;
         [SerializeField] private GameObject telaMenu;
@@ -18,7 +20,7 @@ namespace Termo
         [SerializeField] private GameObject easyBoard;
         [SerializeField] private GameObject mediumBoard;
         [SerializeField] private GameObject hardBoard;
-        
+        [SerializeField] private Button btnNextLevel;
         private void Awake()
         {
             if (Instance == null)
@@ -32,6 +34,10 @@ namespace Termo
             {
                 Destroy(gameObject);
             }
+        }
+        public void Start()
+        {
+            GoToMainMenu(null);
         }
 
         private void Init()
@@ -92,7 +98,7 @@ namespace Termo
                 if (CurrentStage == 8)
                 {
                     CurrentStage = 1;
-                    GoToMainMenu();
+                    GoToMainMenu(null);
                 }
             }
 
@@ -131,41 +137,33 @@ namespace Termo
         //private const string MainMenu = "MainMenu";
         //private const string Gameplay = "Gameplay";
 
-        public void GoToMainMenu()
+        public void GoToMainMenu(string panel)
         {
             telaMenu.SetActive(true);
-            telaGameplay.SetActive(false);
+            telaGameplay.SetActive(false);    
         }
 
         public void GoToGameplay()
         {
-            switch (CurrentStage)
-            {
-                case 1:
-                    easyBoard.SetActive(true);
-                    break;
+            telaMenu.SetActive(false);
+            telaGameplay.SetActive(true);
 
-                case 2:
-                    mediumBoard.SetActive(true);
-                    break;
-
-                case 3:
-                    hardBoard.SetActive(true);
-                    break;
-
-                default:
-                    break;
-            }
+            easyBoard.SetActive(CurrentStage == 1);
+            mediumBoard.SetActive(CurrentStage == 2);
+            hardBoard.SetActive(CurrentStage == 3);       
 
             _winText.SetActive(false);
             _titleText.gameObject.SetActive(true);
             _titleText.text = StageName +
                 " - " + CurrentLevel.ToString();
-
-            telaMenu.SetActive(false);
-            telaGameplay.SetActive(true);
         }
+        #endregion
 
+        #region ON GAME BUTTONS
+        public void ResetLevel()
+        {
+            board.ResetBoard();
+        }
         #endregion
     }
 }

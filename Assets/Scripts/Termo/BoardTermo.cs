@@ -189,6 +189,23 @@ namespace Termo
             }
             return true;
         }
+
+        public void ResetBoard()
+        {
+            if (rows == null)
+                return;
+
+            for (int row = 0; row < rows.Length; row++)
+            {
+                for (int col = 0; col < rows[row].tiles.Length; col++)
+                {
+                    rows[row].tiles[col].SetLetter('\0');
+                    rows[row].tiles[col].SetState(emptyState);
+                }
+            }
+            rowIndex = 0;
+            columnIndex = 0;
+        }
     }
 
     #region classes para pegar o json
