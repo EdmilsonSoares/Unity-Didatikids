@@ -1,8 +1,8 @@
-
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+
 
 public class TelaPerfis : MonoBehaviour
 {
@@ -33,10 +33,27 @@ public class TelaPerfis : MonoBehaviour
 
     private void OnEnable()
     {
-        LoadAndDisplayChildProfiles();
+        CarregarExibirCriancas();
+
+        // Inscreve-se no evento do GameManager
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.QuandoListaCriancaMudar.AddListener(CarregarExibirCriancas);
+            Debug.Log("TelaPerfis: Inscrita no evento do GameManager.");
+        }
     }
 
-    private void LoadAndDisplayChildProfiles()
+    private void OnDisable()
+    {
+        // Remove a inscrição do evento ao desabilitar
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.QuandoListaCriancaMudar.RemoveListener(CarregarExibirCriancas);
+            Debug.Log("TelaPerfis: Removida a inscrição do evento do GameManager.");
+        }
+    }
+
+    private void CarregarExibirCriancas()
     {
         btnChild1.gameObject.SetActive(false);
         btnChild2.gameObject.SetActive(false);

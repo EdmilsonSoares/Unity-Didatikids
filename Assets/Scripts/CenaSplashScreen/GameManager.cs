@@ -2,13 +2,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public string NomeProxCena { get; set; }
-    public List<ChildModel> ChildProfiles { get; private set; } = new List<ChildModel>();
-    public ChildModel CurrentSelectedChild { get; private set; } // Armazenar a criança atualmente selecionada/ativa
+    public List<ChildModel> ChildProfiles { get; private set; } = new List<ChildModel>(); // Lista de crianças
+    public ChildModel CurrentSelectedChild { get; private set; } // Criança atualmente selecionada/ativa
+    public UserModel UserProfile { get; private set; } // Dados do usuário (nome, senha, lista de crianças ...)
+    public bool fromPerfis = false;
+    public UnityEvent QuandoListaCriancaMudar = new UnityEvent();
 
     private void Awake()
     {
@@ -20,6 +24,19 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    public void SetUserProfile(UserModel user)
+    {
+        UserProfile = user;
+        if (UserProfile != null)
+        {
+            Debug.LogWarning($"GameManager: Usuario carregado: {UserProfile.userNome}");
+        }
+        else
+        {
+            Debug.LogWarning("GameManager: Nenhum usuário carregado (ou seleção removida).");
         }
     }
 
@@ -35,7 +52,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"GameManager: {ChildProfiles.Count} perfis de crianças carregados.");
     }
 
-    // Método para adicionar um novo perfil de criança ao usuário atual no GameManager
+    // Método para adicionar um novo perfil de criança na lista do GameManager
     public void AddChildProfile(ChildModel child)
     {
         if (ChildProfiles == null)
@@ -44,19 +61,20 @@ public class GameManager : MonoBehaviour
         }
         ChildProfiles.Add(child);
         Debug.Log($"GameManager: Criança '{child.childNome}' adicionada à lista em memória.");
+        QuandoListaCriancaMudar?.Invoke(); // Invoca o evento após adicionar um perfil
     }
 
-    // Método para definir a criança que foi selecionada na TelaPerfis
+    // Método para definir a criança que for selecionada
     public void SetCurrentSelectedChild(ChildModel child)
     {
         CurrentSelectedChild = child;
         if (child != null)
         {
-            Debug.Log($"GameManager: Criança selecionada: {child.childNome}");
+            Debug.LogWarning($"GameManager: Criança selecionada: {child.childNome}");
         }
         else
         {
-            Debug.Log("GameManager: Nenhuma criança selecionada (ou seleção removida).");
+            Debug.LogWarning("GameManager: Nenhuma criança selecionada (ou seleção removida).");
         }
     }
 

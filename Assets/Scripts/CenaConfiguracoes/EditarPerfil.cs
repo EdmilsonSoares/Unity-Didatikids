@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.IO; // Necessário para manipulacao de arquivos
 
-public class TelaPerfilSelecionado : MonoBehaviour
+public class EditarPerfil : MonoBehaviour
 {
+
+    [SerializeField] private SwitchTela switchTela;
     [SerializeField] private Button btnBack;
-    [SerializeField] private Button btnSettings;
-    [SerializeField] private Button btnAtividades;
-    [SerializeField] private TelaGerenciador telaGerenciador;
+    [SerializeField] private Button btnEditar;
+    [SerializeField] private Button btnExcluir;
 
     [Header("Elementos da Criança Selecionada")]
     [SerializeField] private Image childAvatarImage;
@@ -15,53 +17,35 @@ public class TelaPerfilSelecionado : MonoBehaviour
     [SerializeField] private TMP_Text childDataText;
     [SerializeField] private TMP_Text childTopicoText;
 
-    // Esta variável armazena a referência para a ChildModel que está sendo exibida e manipulada.
     private ChildModel currentChildBeingEdited;
-
-    private void Awake()
-    {
-        btnBack.onClick.AddListener(Perfis);
-        btnSettings.onClick.AddListener(Settings);
-        btnAtividades.onClick.AddListener(Atividades);
-    }
 
     private void OnEnable()
     {
-        CarregarCriancaSelecionada(); // Chamada ao método para carregar e exibir os detalhes da crianca
+        LoadSelectedChildProfile();
     }
 
-    private void Perfis()
+    private void Awake()
     {
-        telaGerenciador.MostrarTela("Perfis");
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.SetCurrentSelectedChild(null); // limpar a criança selecionada no GameManager
-        }
+        btnBack.onClick.AddListener(Back);
+        btnEditar.onClick.AddListener(HabilitarAvisoEditar);
+        btnExcluir.onClick.AddListener(HabilitarAvisoDeletar);
     }
 
-    private void Settings()
+    private void Back()
     {
         if (GameManager.Instance != null)
         {
             GameManager.Instance.SetCurrentSelectedChild(null); // limpar a criança selecionada no GameManager
         }
-        GameManager.Instance.CarregarConfiguracao();
-        telaGerenciador.MostrarTela("Perfis");
+        switchTela.Mostrar("Childrens");
     }
 
-    private void Atividades()
-    {
-        telaGerenciador.MostrarTela("Atividades");
-    }
-
-    // Metodo para carregar e exibir os dados da crianca selecionada
-    private void CarregarCriancaSelecionada()
+    // Carregar a criança na tela
+    private void LoadSelectedChildProfile()
     {
         if (GameManager.Instance != null && GameManager.Instance.CurrentSelectedChild != null)
         {
-            // Atribui a crianca selecionada a nossa variavel local
-            currentChildBeingEdited = GameManager.Instance.CurrentSelectedChild;
-
+            currentChildBeingEdited = GameManager.Instance.CurrentSelectedChild; // Atribui a crianca selecionada
             // Preenche os elementos da UI com os dados da crianca
             if (childNameText != null)
             {
@@ -106,8 +90,18 @@ public class TelaPerfilSelecionado : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Tela Perfil Selecionado: Nenhuma criança selecionada no GameManager para exibir. Voltando para a tela de perfis.");
-            Perfis(); // Volta para a tela de perfis se nao houver crianca selecionada
+            Debug.LogError("Erro: Nenhuma criança selecionada no GameManager para exibir.");
+            Back(); // Volta para a tela anterior se nao houver crianca selecionada
         }
+    }
+
+    private void HabilitarAvisoDeletar()
+    {
+        switchTela.ExibirAviso("DeleteConfirm"); // Lógica de deletar na tela de confirmar senha
+    }
+
+    private void HabilitarAvisoEditar()
+    {
+        Debug.Log("Botão Editar pressionado");
     }
 }
