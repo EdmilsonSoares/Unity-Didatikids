@@ -55,7 +55,7 @@ public class TelaLogin : MonoBehaviour
             if (!string.IsNullOrEmpty(savedEmail))
             {
                 inputEmail.text = savedEmail;
-                //inputSenha.text = "123Aa*";
+                inputSenha.text = "123Aa*";
                 Debug.Log($"Email lembrado: {savedEmail}");
             }
             else
@@ -132,7 +132,7 @@ public class TelaLogin : MonoBehaviour
                     PlayerPrefs.Save();
                     Debug.Log($"Email '{emailDigitado}' salvo para lembrar.");
                 }
-                // Salvar apenas as crianças no objeto persistente GameManager
+                // Aqui os dados do usuário não são carregados, apeas a lista de crianças é carregada no GameManager
                 if (GameManager.Instance != null)
                     GameManager.Instance.SetChildProfiles(usuarioSalvo.children); // Passa a lista de childrenProfiles diretamente
                 else

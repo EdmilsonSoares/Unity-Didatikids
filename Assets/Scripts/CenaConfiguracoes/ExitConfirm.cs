@@ -17,7 +17,7 @@ public class ExitConfirm : MonoBehaviour
         switchTela.ExibirAviso("");
     }
 
-    public void SairDoAplicativo()
+    private void SairDoAplicativo()
     {
         Debug.LogWarning("Saindo do aplicativo...");
         Application.Quit();
