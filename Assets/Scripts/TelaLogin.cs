@@ -16,6 +16,8 @@ public class TelaLogin : MonoBehaviour
     private const string LAST_USER_EMAIL = "LastUserEmail";
     private const string REMEMBER_EMAIL = "RememberEmail"; // Para a preferência do toggle
     private UserModel usuarioSalvo;
+    private string email { get; set; }
+    private string senha { get; set; }
 
     private void OnEnable()
     {
@@ -86,7 +88,7 @@ public class TelaLogin : MonoBehaviour
         }
     }
 
-    private void Entrar()
+    private async void Entrar()
     {
         string emailDigitado = inputEmail.text;
         string senhaDigitada = inputSenha.text;
@@ -96,6 +98,25 @@ public class TelaLogin : MonoBehaviour
             Debug.LogError("Todos os campos devem ser preenchidos!");
             return;
         }
+
+
+        //#############################################################################################
+        var responsavel = new Responsavel()
+        {
+            Email = email,
+            Senha = senha
+        };
+
+        // faz login
+        var response = await responsavel.LoginAsync(); 
+        responsavel.Access = response.Access;
+        responsavel.Refresh = response.Refresh;
+
+        var id = response.IdResponsavel;
+        var nome = response.Nome;
+        var perfis = await responsavel.GetCriancas(); // retorna uma lista de crianças
+
+        //#############################################################################################
 
         bool usuarioEncontrado = ProcurarUsuario();
         if (usuarioEncontrado)
