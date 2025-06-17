@@ -5,20 +5,21 @@ using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 using static System.Net.Mime.MediaTypeNames;
+using TMPro;
 
 namespace Termo
 {
     public class BoardTermo : MonoBehaviour
     {
-        private static readonly KeyCode[] SUPPORTED_KEYS = new KeyCode[]
-        {
-            KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E,
-            KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J,
-            KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
-            KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
-            KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
-            KeyCode.Z,
-        };
+        //private static readonly KeyCode[] SUPPORTED_KEYS = new KeyCode[]
+        //{
+        //    KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E,
+        //    KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J,
+        //    KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
+        //    KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
+        //    KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
+        //    KeyCode.Z,
+        //};
 
         private Row[] rows;
 
@@ -38,6 +39,9 @@ namespace Termo
 
         private RootData data;
 
+        [SerializeField] private TMP_InputField inputField;
+
+
         private void Awake()
         {
             rows = GetComponentsInChildren<Row>();
@@ -48,6 +52,24 @@ namespace Termo
             LoadJson();
             //SetRandomWord();
             word = GetWord();
+
+            GameObject letraObj = GameObject.Find("Letra");
+            if (letraObj == null)
+            {
+                UnityEngine.Debug.LogError("Objeto 'Letra' não foi encontrado na Hierarchy!");
+                return;
+            }
+
+            inputField = letraObj.GetComponent<TMP_InputField>();
+            if (inputField == null)
+            {
+                UnityEngine.Debug.LogError("TMP_InputField não encontrado no objeto 'Letra'!");
+                return;
+            }
+            inputField.ActivateInputField();
+            inputField.characterLimit = 1;
+            inputField.caretWidth = 0; // esconde o caret
+            inputField.onValueChanged.AddListener(HandleInput);          
         }
 
         private void LoadJson()
@@ -106,20 +128,42 @@ namespace Termo
                     SubmitRow(currentRow);
                 }
             }
-            else
-            {
-                for (int i = 0; i < SUPPORTED_KEYS.Length; i++)
-                {
-                    if (Input.GetKeyDown(SUPPORTED_KEYS[i]))
-                    {
-                        currentRow.tiles[columnIndex].SetLetter((char)SUPPORTED_KEYS[i]);
-                        currentRow.tiles[columnIndex].SetState(occupiedState);
-                        columnIndex++;
-                        break;
-                    }
-                }
-            }
+            //else
+            //{
+                //for (int i = 0; i < SUPPORTED_KEYS.Length; i++) //Só funciona pro teclado físico do PC
+                //{
+                //    if (Input.GetKeyDown(SUPPORTED_KEYS[i]))
+                //    {
+                //        currentRow.tiles[columnIndex].SetLetter((char)SUPPORTED_KEYS[i]);
+                //        currentRow.tiles[columnIndex].SetState(occupiedState);
+                //        columnIndex++;
+                //        break;
+                //    }
+                //}
+            //}
         }
+
+        private void HandleInput(string input)
+        {
+            UnityEngine.Debug.Log("aaa");
+            if (string.IsNullOrEmpty(input)) return;
+
+            char newChar = input[0];
+
+            if (char.IsLetter(newChar) && columnIndex < rows[rowIndex].tiles.Length)
+            {
+                newChar = char.ToLower(newChar); // opcional
+                Row currentRow = rows[rowIndex];
+                currentRow.tiles[columnIndex].SetLetter(newChar);
+                currentRow.tiles[columnIndex].SetState(occupiedState);
+                columnIndex++;
+            }
+
+            inputField.text = ""; // limpa o input pra próxima letra
+            inputField.ActivateInputField(); // mantém o foco no campo
+            inputField.caretWidth = 0; // esconde o caret
+        }
+
 
         private void SubmitRow(Row row)
         {
