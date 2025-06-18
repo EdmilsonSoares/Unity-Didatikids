@@ -90,17 +90,15 @@ public class TelaLogin : MonoBehaviour
 
     private async void Entrar()
     {
-        string emailDigitado = inputEmail.text;
-        string senhaDigitada = inputSenha.text;
+        email = inputEmail.text;
+        senha = inputSenha.text;
 
-        if (string.IsNullOrEmpty(inputEmail.text) || string.IsNullOrEmpty(inputSenha.text))
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
         {
             Debug.LogError("Todos os campos devem ser preenchidos!");
             return;
         }
 
-
-        //#############################################################################################
         var responsavel = new Responsavel()
         {
             Email = email,
@@ -116,21 +114,19 @@ public class TelaLogin : MonoBehaviour
         var nome = response.Nome;
         var perfis = await responsavel.GetCriancas(); // retorna uma lista de crianças
 
-        //#############################################################################################
-
-        bool usuarioEncontrado = ProcurarUsuario();
-        if (usuarioEncontrado)
+        //bool usuarioEncontrado = ProcurarUsuario();
+        if (perfis is not null)
         {
             // Compara o email e a senha digitados com os dados lidos do JSON
-            if (emailDigitado == usuarioSalvo.userEmail && senhaDigitada == usuarioSalvo.userSenha)
+            if (email == usuarioSalvo.userEmail && senha == usuarioSalvo.userSenha)
             {
                 Debug.Log("Login bem-sucedido!");
                 // Salva o e-mail recém-logado APENAS se o toggle "Lembrar Usuário" estiver ativo
                 if (toggleLembrar != null && toggleLembrar.isOn)
                 {
-                    PlayerPrefs.SetString(LAST_USER_EMAIL, emailDigitado);
+                    PlayerPrefs.SetString(LAST_USER_EMAIL, email);
                     PlayerPrefs.Save();
-                    Debug.Log($"Email '{emailDigitado}' salvo para lembrar.");
+                    Debug.Log($"Email '{email}' salvo para lembrar.");
                 }
                 // Salvar apenas as crianças no objeto persistente GameManager
                 if (GameManager.Instance != null)
