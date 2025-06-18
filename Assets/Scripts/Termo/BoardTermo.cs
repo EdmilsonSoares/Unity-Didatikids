@@ -39,8 +39,7 @@ namespace Termo
 
         private RootData data;
 
-        [SerializeField] private TMP_InputField inputField;
-
+        [SerializeField] private TMP_InputField hiddenInputField;
 
         private void Awake()
         {
@@ -53,23 +52,11 @@ namespace Termo
             //SetRandomWord();
             word = GetWord();
 
-            GameObject letraObj = GameObject.Find("Letra");
-            if (letraObj == null)
-            {
-                UnityEngine.Debug.LogError("Objeto 'Letra' não foi encontrado na Hierarchy!");
-                return;
-            }
-
-            inputField = letraObj.GetComponent<TMP_InputField>();
-            if (inputField == null)
-            {
-                UnityEngine.Debug.LogError("TMP_InputField não encontrado no objeto 'Letra'!");
-                return;
-            }
-            inputField.ActivateInputField();
-            inputField.characterLimit = 1;
-            inputField.caretWidth = 0; // esconde o caret
-            inputField.onValueChanged.AddListener(HandleInput);          
+            hiddenInputField.characterLimit = 1;
+            hiddenInputField.caretWidth = 0; // esconde o caret
+            hiddenInputField.text = "";
+            hiddenInputField.onValueChanged.AddListener(HandleInput);
+            hiddenInputField.ActivateInputField();
         }
 
         private void LoadJson()
@@ -130,16 +117,16 @@ namespace Termo
             }
             //else
             //{
-                //for (int i = 0; i < SUPPORTED_KEYS.Length; i++) //Só funciona pro teclado físico do PC
-                //{
-                //    if (Input.GetKeyDown(SUPPORTED_KEYS[i]))
-                //    {
-                //        currentRow.tiles[columnIndex].SetLetter((char)SUPPORTED_KEYS[i]);
-                //        currentRow.tiles[columnIndex].SetState(occupiedState);
-                //        columnIndex++;
-                //        break;
-                //    }
-                //}
+            //    for (int i = 0; i < SUPPORTED_KEYS.Length; i++) //Só funciona pro teclado físico do PC
+            //    {
+            //        if (Input.GetKeyDown(SUPPORTED_KEYS[i]))
+            //        {
+            //            currentRow.tiles[columnIndex].SetLetter((char)SUPPORTED_KEYS[i]);
+            //            currentRow.tiles[columnIndex].SetState(occupiedState);
+            //            columnIndex++;
+            //            break;
+            //        }
+            //    }
             //}
         }
 
@@ -149,19 +136,19 @@ namespace Termo
             if (string.IsNullOrEmpty(input)) return;
 
             char newChar = input[0];
+            if (!char.IsLetter(newChar)) return;
 
-            if (char.IsLetter(newChar) && columnIndex < rows[rowIndex].tiles.Length)
+            Row currentRow = rows[rowIndex];
+            if (columnIndex < currentRow.tiles.Length)
             {
-                newChar = char.ToLower(newChar); // opcional
-                Row currentRow = rows[rowIndex];
                 currentRow.tiles[columnIndex].SetLetter(newChar);
                 currentRow.tiles[columnIndex].SetState(occupiedState);
                 columnIndex++;
             }
 
-            inputField.text = ""; // limpa o input pra próxima letra
-            inputField.ActivateInputField(); // mantém o foco no campo
-            inputField.caretWidth = 0; // esconde o caret
+            hiddenInputField.text = ""; // limpa o input pra próxima letra
+            hiddenInputField.ActivateInputField(); // mantém o foco no campo
+            hiddenInputField.caretWidth = 0; // esconde o caret
         }
 
 
