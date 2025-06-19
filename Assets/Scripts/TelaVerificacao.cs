@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Responsavel;
 
 namespace Assets.Scripts
 {
@@ -43,8 +44,14 @@ namespace Assets.Scripts
 
             string path = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
             string json = File.ReadAllText(path);
-            Responsavel responsavel = JsonConvert.DeserializeObject<Responsavel>(json);
-
+            var responsavelLocal = JsonConvert.DeserializeObject<ResponsavelLocal>(json);
+            var responsavel = new Responsavel()
+            {
+                Nome = responsavelLocal.nome,
+                Email = responsavelLocal.email,
+                DtNascimento = responsavelLocal.dt_nascimento,
+                Senha = responsavelLocal.senha,
+            };
 
             if (Codigo is not null && Codigo.Length > 0)
             {
@@ -52,22 +59,21 @@ namespace Assets.Scripts
             }
 
             var response = await responsavel.CadastroAsync();
-
-            if (response == System.Net.HttpStatusCode.OK)
-            {
-                telaGerenciador.MostrarTela("Login");
-            }
-            else
-            {
-                Debug.LogError("Código inválido.");
-            }
+            telaGerenciador.MostrarTela("Login"); 
         }
 
         private async void ReenviarCodigo()
         {
             string path = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
             string json = File.ReadAllText(path);
-            Responsavel responsavel = JsonConvert.DeserializeObject<Responsavel>(json);
+            var responsavelLocal = JsonConvert.DeserializeObject<ResponsavelLocal>(json);
+            var responsavel = new Responsavel()
+            {
+                Nome = responsavelLocal.nome,
+                Email = responsavelLocal.email,
+                DtNascimento = responsavelLocal.dt_nascimento,
+                Senha = responsavelLocal.senha,
+            };
             await responsavel.EnviarCodigoAsync();
         }
         

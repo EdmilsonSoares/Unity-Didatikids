@@ -4,6 +4,8 @@ using TMPro;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using System.IO;
+using UnityEditor;
+using static Responsavel;
 public class TelaCadastro : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputNome;
@@ -70,12 +72,15 @@ public class TelaCadastro : MonoBehaviour
 
     private void SalvarUsuario()
     {
-        // 1. Cria uma instância da classe DadosUsuario
-        UserModel novoUsuario = new UserModel(nome, data, email, senha);
-        // 2. Converte a instância para uma string JSON
-        // O segundo parâmetro 'true' é para formatar o JSON de forma legível (pretty print)
-        string json = JsonUtility.ToJson(novoUsuario, true);
-        // 3. Define o caminho do arquivo para Application.persistentDataPath
+        var responsavel = new ResponsavelLocal()
+        {
+            nome = nome,
+            email = email,
+            senha = senha,
+            dt_nascimento = data
+        };
+
+        string json = JsonConvert.SerializeObject(responsavel);
         string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
 
         try

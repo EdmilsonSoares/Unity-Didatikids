@@ -22,6 +22,15 @@ internal class Responsavel : Connection
     private readonly string RouteCadastro = "/cadastro/verificar_codigo/";
     private readonly string RouteCriancas = "/criancas/";
 
+    public class ResponsavelLocal
+    {
+        public string nome { get; set; }
+        public string email { get; set; }
+        public string dt_nascimento { get; set; }
+        public string senha { get; set; }
+
+    }
+
     private class LoginRequest
     {
         [JsonProperty("username")]

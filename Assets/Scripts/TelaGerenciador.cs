@@ -21,6 +21,6 @@ public class TelaGerenciador : MonoBehaviour
         telaAvatares.SetActive(telaNome == "Avatares");
         telaPerfilSelecionado.SetActive(telaNome == "PerfilSelecionado");
         telaAtividades.SetActive(telaNome == "Atividades");
-        telaAtividades.SetActive(telaNome == "Verificacao");
+        telaVerificacao.SetActive(telaNome == "Verificacao");
     }
 }
