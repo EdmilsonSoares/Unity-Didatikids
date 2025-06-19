@@ -11,8 +11,8 @@ using UnityEditor.ShaderGraph.Serialization;
 public class Connection
 {
     protected readonly HttpClient _httpClient;
-    protected readonly string _baseUrl = "http://127.0.0.1:8000";
-    //protected readonly string _baseUrl = "https://didatikidsapi.onrender.com";
+    //protected readonly string _baseUrl = "http://127.0.0.1:8000";
+    protected readonly string _baseUrl = "https://didatikidsapi.onrender.com";
     public Connection()
     {
         _httpClient = new HttpClient
