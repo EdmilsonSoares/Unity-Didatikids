@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEditor.ShaderGraph.Serialization;
 
-internal class Connection
+public class Connection
 {
     protected readonly HttpClient _httpClient;
     protected readonly string _baseUrl = "http://127.0.0.1:8000";

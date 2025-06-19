@@ -144,8 +144,10 @@ internal class Responsavel : Connection
         public int? TempoTela { get; set; }
         [JsonProperty("id_dificuldade")]
         public int? IdDificuldade { get; set; }
-        [JsonProperty("id_avatar")]
-        public int? IdAvatar { get; set; }
+        [JsonProperty("avatar")]
+        public string Avatar { get; set; }
+        [JsonProperty("topicos_interesse")]
+        public List<string> TopicosInteresse { get; set; }
     }
     internal async Task<List<CriancaResponse>> GetCriancas()
     {

@@ -3,6 +3,9 @@ using UnityEngine.UI;
 using TMPro;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Linq;
+using System;
 
 public class TelaLogin : MonoBehaviour
 {
@@ -15,7 +18,6 @@ public class TelaLogin : MonoBehaviour
     [SerializeField] private Toggle toggleLembrar;
     private const string LAST_USER_EMAIL = "LastUserEmail";
     private const string REMEMBER_EMAIL = "RememberEmail"; // Para a preferência do toggle
-    private UserModel usuarioSalvo;
     private string email { get; set; }
     private string senha { get; set; }
 
@@ -110,61 +112,71 @@ public class TelaLogin : MonoBehaviour
         responsavel.Access = response.Access;
         responsavel.Refresh = response.Refresh;
 
+        string json = JsonConvert.SerializeObject(response);
+        string caminhoTokens = Path.Combine(Application.persistentDataPath, "Tokens.json");
+
         var id = response.IdResponsavel;
         var nome = response.Nome;
         var perfis = await responsavel.GetCriancas(); // retorna uma lista de crianças
 
-        //bool usuarioEncontrado = ProcurarUsuario();
         if (perfis is not null)
         {
-            // Compara o email e a senha digitados com os dados lidos do JSON
-            if (email == usuarioSalvo.userEmail && senha == usuarioSalvo.userSenha)
+            Debug.Log("Login bem-sucedido!");
+            // Salva o e-mail recém - logado APENAS se o toggle "Lembrar Usuário" estiver ativo
+            if (toggleLembrar != null && toggleLembrar.isOn)
             {
-                Debug.Log("Login bem-sucedido!");
-                // Salva o e-mail recém-logado APENAS se o toggle "Lembrar Usuário" estiver ativo
-                if (toggleLembrar != null && toggleLembrar.isOn)
+                PlayerPrefs.SetString(LAST_USER_EMAIL, email);
+                PlayerPrefs.Save();
+                Debug.Log($"Email '{email}' salvo para lembrar.");
+            }
+
+            if (perfis.Count > 0)
+            {
+                System.Random random = new System.Random();
+                var children = new List<ChildModel>();
+                foreach (var perfil in perfis)
                 {
-                    PlayerPrefs.SetString(LAST_USER_EMAIL, email);
-                    PlayerPrefs.Save();
-                    Debug.Log($"Email '{email}' salvo para lembrar.");
+                    var topicos_length = perfil.TopicosInteresse.Count;
+                    //Debug.Log(topicos_length);
+                    var topico = perfil.TopicosInteresse[random.Next(1, topicos_length)];
+                    //Debug.Log(topico);
+                    var child = new ChildModel(perfil.Nome, perfil.DtNascimento, topico, perfil.Avatar);
+                    children.Add(child);
                 }
-                // Salvar apenas as crianças no objeto persistente GameManager
+
+                //Salvar apenas as crianças no objeto persistente GameManager
                 if (GameManager.Instance != null)
-                    GameManager.Instance.SetChildProfiles(usuarioSalvo.children); // Passa a lista de childrenProfiles diretamente
+                    GameManager.Instance.SetChildProfiles(children); // Passa a lista de childrenProfiles diretamente
                 else
                     Debug.LogError("GameManager.Instance não encontrado!");
-                telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
             }
-            else
-            {
-                Debug.LogError("Email ou senha incorretos.");
-            }
+            telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
         }
     }
 
-    private bool ProcurarUsuario()
-    {
-        string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
-        if (!File.Exists(caminhoDoArquivo))
-        {
-            Debug.LogWarning("Arquivo 'DadosUsuario.json' não encontrado.");
-            usuarioSalvo = null;
-            return false;
-        }
+    //private bool ProcurarUsuario()
+    //{
+    //    string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuarioLogin.json");
+    //    if (!File.Exists(caminhoDoArquivo))
+    //    {
+    //        Debug.LogWarning("Arquivo 'DadosUsuario.json' não encontrado.");
+    //        usuarioSalvo = null;
+    //        return false;
+    //    }
 
-        try
-        {
-            string jsonLido = File.ReadAllText(caminhoDoArquivo); // Lê o conteúdo do arquivo JSON
-            usuarioSalvo = JsonUtility.FromJson<UserModel>(jsonLido); // Desserializa o JSON para um objeto DadosUsuario
-            return true;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
-            usuarioSalvo = null;
-            return false;
-        }
-    }
+    //    try
+    //    {
+    //        string jsonLido = File.ReadAllText(caminhoDoArquivo); // Lê o conteúdo do arquivo JSON
+    //        usuarioSalvo = JsonConvert.DeserializeObject<Responsavel>(jsonLido); // Desserializa o JSON para um objeto DadosUsuario
+    //        return true;
+    //    }
+    //    catch (System.Exception e)
+    //    {
+    //        Debug.LogError($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
+    //        usuarioSalvo = null;
+    //        return false;
+    //    }
+    //}
 
     private void EsqueceuSenha()
     {
