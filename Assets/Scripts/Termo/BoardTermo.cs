@@ -5,20 +5,21 @@ using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 using static System.Net.Mime.MediaTypeNames;
+using TMPro;
 
 namespace Termo
 {
     public class BoardTermo : MonoBehaviour
     {
-        private static readonly KeyCode[] SUPPORTED_KEYS = new KeyCode[]
-        {
-            KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E,
-            KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J,
-            KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
-            KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
-            KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
-            KeyCode.Z,
-        };
+        //private static readonly KeyCode[] SUPPORTED_KEYS = new KeyCode[]
+        //{
+        //    KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E,
+        //    KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J,
+        //    KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
+        //    KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
+        //    KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
+        //    KeyCode.Z,
+        //};
 
         private Row[] rows;
 
@@ -38,6 +39,8 @@ namespace Termo
 
         private RootData data;
 
+        [SerializeField] private TMP_InputField hiddenInputField;
+
         private void Awake()
         {
             rows = GetComponentsInChildren<Row>();
@@ -48,6 +51,12 @@ namespace Termo
             LoadJson();
             //SetRandomWord();
             word = GetWord();
+
+            hiddenInputField.characterLimit = 1;
+            hiddenInputField.caretWidth = 0; // esconde o caret
+            hiddenInputField.text = "";
+            hiddenInputField.onValueChanged.AddListener(HandleInput);
+            hiddenInputField.ActivateInputField();
         }
 
         private void LoadJson()
@@ -106,20 +115,42 @@ namespace Termo
                     SubmitRow(currentRow);
                 }
             }
-            else
-            {
-                for (int i = 0; i < SUPPORTED_KEYS.Length; i++)
-                {
-                    if (Input.GetKeyDown(SUPPORTED_KEYS[i]))
-                    {
-                        currentRow.tiles[columnIndex].SetLetter((char)SUPPORTED_KEYS[i]);
-                        currentRow.tiles[columnIndex].SetState(occupiedState);
-                        columnIndex++;
-                        break;
-                    }
-                }
-            }
+            //else
+            //{
+            //    for (int i = 0; i < SUPPORTED_KEYS.Length; i++) //Só funciona pro teclado físico do PC
+            //    {
+            //        if (Input.GetKeyDown(SUPPORTED_KEYS[i]))
+            //        {
+            //            currentRow.tiles[columnIndex].SetLetter((char)SUPPORTED_KEYS[i]);
+            //            currentRow.tiles[columnIndex].SetState(occupiedState);
+            //            columnIndex++;
+            //            break;
+            //        }
+            //    }
+            //}
         }
+
+        private void HandleInput(string input)
+        {
+            UnityEngine.Debug.Log("aaa");
+            if (string.IsNullOrEmpty(input)) return;
+
+            char newChar = input[0];
+            if (!char.IsLetter(newChar)) return;
+
+            Row currentRow = rows[rowIndex];
+            if (columnIndex < currentRow.tiles.Length)
+            {
+                currentRow.tiles[columnIndex].SetLetter(newChar);
+                currentRow.tiles[columnIndex].SetState(occupiedState);
+                columnIndex++;
+            }
+
+            hiddenInputField.text = ""; // limpa o input pra próxima letra
+            hiddenInputField.ActivateInputField(); // mantém o foco no campo
+            hiddenInputField.caretWidth = 0; // esconde o caret
+        }
+
 
         private void SubmitRow(Row row)
         {
@@ -188,6 +219,23 @@ namespace Termo
                 }
             }
             return true;
+        }
+
+        public void ResetBoard()
+        {
+            if (rows == null)
+                return;
+
+            for (int row = 0; row < rows.Length; row++)
+            {
+                for (int col = 0; col < rows[row].tiles.Length; col++)
+                {
+                    rows[row].tiles[col].SetLetter('\0');
+                    rows[row].tiles[col].SetState(emptyState);
+                }
+            }
+            rowIndex = 0;
+            columnIndex = 0;
         }
     }
 
