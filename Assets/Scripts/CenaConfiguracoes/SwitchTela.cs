@@ -6,20 +6,22 @@ public class SwitchTela : MonoBehaviour
     [SerializeField] private GameObject telaChildrens;
     [SerializeField] private GameObject telaEditarPerfil;
     [Header("Referências aos avisos")]
-    [SerializeField] private GameObject ConfirmExit;
-
-
+    [SerializeField] private GameObject ExitConfirm;
+    [SerializeField] private GameObject DeleteConfirm;
+    [SerializeField] private GameObject SenhaConfirm;
+    
     public void Mostrar(string telaNome)
     {
         telaSettings.SetActive(telaNome == "Settings");
         telaChildrens.SetActive(telaNome == "Childrens");
         telaEditarPerfil.SetActive(telaNome == "EditarPerfil");
-
     }
 
     public void ExibirAviso(string aviso)
     {
-        ConfirmExit.SetActive(aviso == "ConfirmExit");
+        ExitConfirm.SetActive(aviso == "ExitConfirm");
+        DeleteConfirm.SetActive(aviso == "DeleteConfirm");
+        SenhaConfirm.SetActive(aviso == "SenhaConfirm");
     }
 
 }
