@@ -45,7 +45,7 @@ namespace Termo
         {
             if (!isLevelUnlocked)
                 return;
-
+            
             GameManagerTermo.Instance.CurrentLevel = currentLevel;
             GameManagerTermo.Instance.GoToGameplay();
         }

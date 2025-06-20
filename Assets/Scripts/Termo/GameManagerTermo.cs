@@ -17,9 +17,9 @@ namespace Termo
         [SerializeField] public GameObject _winText;
         [SerializeField] private GameObject telaMenu;
         [SerializeField] private GameObject telaGameplay;
-        [SerializeField] private GameObject easyBoard;
-        [SerializeField] private GameObject mediumBoard;
-        [SerializeField] private GameObject hardBoard;
+        [SerializeField] public GameObject easyBoard;
+        [SerializeField] public GameObject mediumBoard;
+        [SerializeField] public GameObject hardBoard;
         [SerializeField] private Button btnNextLevel;
         private void Awake()
         {
@@ -37,7 +37,7 @@ namespace Termo
         }
         public void Start()
         {
-            GoToMainMenu(null);
+            GoToMainMenu();
         }
 
         private void Init()
@@ -98,7 +98,7 @@ namespace Termo
                 if (CurrentStage == 8)
                 {
                     CurrentStage = 1;
-                    GoToMainMenu(null);
+                    GoToMainMenu();
                 }
             }
 
@@ -137,7 +137,7 @@ namespace Termo
         //private const string MainMenu = "MainMenu";
         //private const string Gameplay = "Gameplay";
 
-        public void GoToMainMenu(string panel)
+        public void GoToMainMenu()
         {
             telaMenu.SetActive(true);
             telaGameplay.SetActive(false);    
@@ -145,6 +145,7 @@ namespace Termo
 
         public void GoToGameplay()
         {
+            UnityEngine.Debug.Log("goToGameplay");
             telaMenu.SetActive(false);
             telaGameplay.SetActive(true);
 
@@ -156,6 +157,13 @@ namespace Termo
             _titleText.gameObject.SetActive(true);
             _titleText.text = StageName +
                 " - " + CurrentLevel.ToString();
+
+            if (CurrentStage == 1)
+                easyBoard.GetComponent<BoardTermo>().GetWord();
+            else if (CurrentStage == 2)
+                mediumBoard.GetComponent<BoardTermo>().GetWord();
+            else if (CurrentStage == 3)
+                hardBoard.GetComponent<BoardTermo>().GetWord();
         }
         #endregion
 

@@ -3,14 +3,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
+using UnityEngine.SceneManagement;
 
 namespace Termo
 {
     public class MainMenuManagerTermo : MonoBehaviour
     {
         public static MainMenuManagerTermo Instance;
-
-        [SerializeField] private GameObject _titlePanel;
+        //[SerializeField] private GameObject _titlePanel;
         [SerializeField] private GameObject _stagePanel;
         [SerializeField] private GameObject _levelPanel;
 
@@ -18,21 +18,20 @@ namespace Termo
         {
             Instance = this;
 
-            _titlePanel.SetActive(true);
+            //_titlePanel.SetActive(true);
             _stagePanel.SetActive(false);
             _levelPanel.SetActive(false);
         }
 
         public void ClickedPlay()
         {
-            _titlePanel.SetActive(false);
+            //_titlePanel.SetActive(false);
             _stagePanel.SetActive(true);
         }
 
-        public void ClickedBackToTitle()
+        public void ClickedBackToActivities()
         {
-            _titlePanel.SetActive(true);
-            _stagePanel.SetActive(false);
+            SceneManager.LoadScene("Main");
         }
 
         public void ClickedBackToStage()

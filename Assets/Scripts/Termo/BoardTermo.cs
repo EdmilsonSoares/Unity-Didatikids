@@ -10,21 +10,8 @@ using TMPro;
 namespace Termo
 {
     public class BoardTermo : MonoBehaviour
-    {
-        //private static readonly KeyCode[] SUPPORTED_KEYS = new KeyCode[]
-        //{
-        //    KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E,
-        //    KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J,
-        //    KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O,
-        //    KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T,
-        //    KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y,
-        //    KeyCode.Z,
-        //};
-
+    {   
         private Row[] rows;
-
-        //private string[] solutions;
-        //private string[] validWords;
         private string word;
 
         private int rowIndex;
@@ -40,51 +27,41 @@ namespace Termo
         private RootData data;
 
         [SerializeField] private TMP_InputField hiddenInputField;
-
+        public bool wonGame = false;
         private void Awake()
         {
             rows = GetComponentsInChildren<Row>();
+            GameManagerTermo.board = this;
         }
-
         private void Start()
         {
-            LoadJson();
-            //SetRandomWord();
-            word = GetWord();
+            wonGame = false;
+            GetWord();
 
-            hiddenInputField.characterLimit = 1;
             hiddenInputField.caretWidth = 0; // esconde o caret
             hiddenInputField.text = "";
             hiddenInputField.onValueChanged.AddListener(HandleInput);
-            hiddenInputField.ActivateInputField();
         }
-
         private void LoadJson()
         {
-            //TextAsset textFile = Resources.Load("WordsListAnimals") as TextAsset;
-            //validWords = textFile.text.Split('\n');
-
-            //TextAsset textFile = Resources.Load("WordsListAnimals") as TextAsset;
-            //solutions = textFile.text.Split('\n');
+            UnityEngine.Debug.Log("pqpp");
             TextAsset jsonFile = Resources.Load<TextAsset>("Words");
             data = JsonUtility.FromJson<RootData>(jsonFile.text);
-        }
-
-        //private void SetRandomWord()
-        //{
-        //    word = solutions[UnityEngine.Random.Range(0, solutions.Length)];
-        //    word = word.ToLower().Trim();
-        //}
-
-        public string GetWord()
+        }    
+        public void GetWord()
         {
+            if (data == null)
+                LoadJson();
+
             string difficulty = GameManagerTermo.Instance.CurrentStage.ToString();
             string level = "level_" + GameManagerTermo.Instance.CurrentLevel.ToString();
 
+            UnityEngine.Debug.Log(difficulty);
+            UnityEngine.Debug.Log(level);
             DifficultyData entry = data.difficulties.Find(d => d.id == difficulty);
             if (entry != null)
             {
-                return level switch
+                word = level switch
                 {
                     "level_1" => entry.level_1,
                     "level_2" => entry.level_2,
@@ -95,11 +72,13 @@ namespace Termo
                 };
             }
 
-            return null;
         }
 
         private void Update()
         {
+            if(!hiddenInputField.isFocused)
+                hiddenInputField.ActivateInputField(); // mantém o foco no campo
+
             Row currentRow = rows[rowIndex];
 
             if (Input.GetKeyDown(KeyCode.Backspace))
@@ -114,29 +93,17 @@ namespace Termo
                 {
                     SubmitRow(currentRow);
                 }
-            }
-            //else
-            //{
-            //    for (int i = 0; i < SUPPORTED_KEYS.Length; i++) //Só funciona pro teclado físico do PC
-            //    {
-            //        if (Input.GetKeyDown(SUPPORTED_KEYS[i]))
-            //        {
-            //            currentRow.tiles[columnIndex].SetLetter((char)SUPPORTED_KEYS[i]);
-            //            currentRow.tiles[columnIndex].SetState(occupiedState);
-            //            columnIndex++;
-            //            break;
-            //        }
-            //    }
-            //}
+            }         
         }
-
         private void HandleInput(string input)
         {
-            UnityEngine.Debug.Log("aaa");
+            if(wonGame) return;
+
             if (string.IsNullOrEmpty(input)) return;
 
             char newChar = input[0];
             if (!char.IsLetter(newChar)) return;
+
 
             Row currentRow = rows[rowIndex];
             if (columnIndex < currentRow.tiles.Length)
@@ -147,11 +114,8 @@ namespace Termo
             }
 
             hiddenInputField.text = ""; // limpa o input pra próxima letra
-            hiddenInputField.ActivateInputField(); // mantém o foco no campo
             hiddenInputField.caretWidth = 0; // esconde o caret
         }
-
-
         private void SubmitRow(Row row)
         {
             string remaining = word;
@@ -197,6 +161,8 @@ namespace Termo
             {
                 GameManagerTermo.Instance._winText.SetActive(true);
                 enabled = false;
+                wonGame = true;
+                hiddenInputField.gameObject.SetActive(false);
                 GameManagerTermo.Instance.UnlockLevel();
             }
 
@@ -205,10 +171,10 @@ namespace Termo
 
             if (rowIndex >= rows.Length)
             {
+                hiddenInputField.gameObject.SetActive(false);
                 enabled = false;
             }
         }
-
         private bool HasWon(Row row)
         {
             for (int i = 0; i < row.tiles.Length; i++)
@@ -220,7 +186,6 @@ namespace Termo
             }
             return true;
         }
-
         public void ResetBoard()
         {
             if (rows == null)
@@ -236,6 +201,10 @@ namespace Termo
             }
             rowIndex = 0;
             columnIndex = 0;
+            GameManagerTermo.Instance._winText.SetActive(false);
+            wonGame = false;
+            hiddenInputField.gameObject.SetActive(true);
+            this.enabled = true; //Reativa o script
         }
     }
 
