@@ -10,7 +10,6 @@ namespace Termo
     public class MainMenuManagerTermo : MonoBehaviour
     {
         public static MainMenuManagerTermo Instance;
-        //[SerializeField] private GameObject _titlePanel;
         [SerializeField] private GameObject _stagePanel;
         [SerializeField] private GameObject _levelPanel;
 
@@ -18,15 +17,8 @@ namespace Termo
         {
             Instance = this;
 
-            //_titlePanel.SetActive(true);
-            _stagePanel.SetActive(false);
-            _levelPanel.SetActive(false);
-        }
-
-        public void ClickedPlay()
-        {
-            //_titlePanel.SetActive(false);
             _stagePanel.SetActive(true);
+            _levelPanel.SetActive(false);
         }
 
         public void ClickedBackToActivities()

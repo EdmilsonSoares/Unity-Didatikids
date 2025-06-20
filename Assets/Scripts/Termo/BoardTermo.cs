@@ -28,11 +28,13 @@ namespace Termo
 
         [SerializeField] private TMP_InputField hiddenInputField;
         public bool wonGame = false;
+
         private void Awake()
         {
             rows = GetComponentsInChildren<Row>();
             GameManagerTermo.board = this;
         }
+
         private void Start()
         {
             wonGame = false;
@@ -42,12 +44,13 @@ namespace Termo
             hiddenInputField.text = "";
             hiddenInputField.onValueChanged.AddListener(HandleInput);
         }
+
         private void LoadJson()
         {
-            UnityEngine.Debug.Log("pqpp");
             TextAsset jsonFile = Resources.Load<TextAsset>("Words");
             data = JsonUtility.FromJson<RootData>(jsonFile.text);
-        }    
+        }   
+        
         public void GetWord()
         {
             if (data == null)
@@ -55,9 +58,7 @@ namespace Termo
 
             string difficulty = GameManagerTermo.Instance.CurrentStage.ToString();
             string level = "level_" + GameManagerTermo.Instance.CurrentLevel.ToString();
-
-            UnityEngine.Debug.Log(difficulty);
-            UnityEngine.Debug.Log(level);
+          
             DifficultyData entry = data.difficulties.Find(d => d.id == difficulty);
             if (entry != null)
             {

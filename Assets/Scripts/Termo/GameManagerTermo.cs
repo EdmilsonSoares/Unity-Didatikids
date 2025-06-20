@@ -134,9 +134,6 @@ namespace Termo
 
         #region SCENE_LOAD
 
-        //private const string MainMenu = "MainMenu";
-        //private const string Gameplay = "Gameplay";
-
         public void GoToMainMenu()
         {
             telaMenu.SetActive(true);
@@ -145,7 +142,6 @@ namespace Termo
 
         public void GoToGameplay()
         {
-            UnityEngine.Debug.Log("goToGameplay");
             telaMenu.SetActive(false);
             telaGameplay.SetActive(true);
 
