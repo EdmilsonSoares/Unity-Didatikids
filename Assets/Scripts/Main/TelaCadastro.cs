@@ -3,6 +3,9 @@ using UnityEngine.UI;
 using TMPro;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using System.IO;
+using UnityEditor;
+using static Responsavel;
 public class TelaCadastro : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputNome;
@@ -58,36 +61,38 @@ public class TelaCadastro : MonoBehaviour
                 DtNascimento = data
             };
 
+            telaGerenciador.MostrarTela("Verificacao");
             await responsavel.EnviarCodigoAsync();
-
             Debug.Log("Nome: " + nome + ", Data: " + data + ", Email: " + email + ", Senha: " + senha);
-            //telaGerenciador.MostrarTela("VerificarCodigo");
-            telaGerenciador.MostrarTela("Login"); // Desativa todas telas e ativa tela de perfis
+            SalvarUsuario();
         }
     }
 
     // SALVAR OS DADOS DO RESPONSÁVEL PARA SEREM ENVIADOS NA TELA DE VERIFICAÇÃO DO CÓDIGO
 
-    //private void SalvarUsuario()
-    //{
-    //    // 1. Cria uma instância da classe DadosUsuario
-    //    UserModel novoUsuario = new UserModel(nome, data, email, senha);
-    //    // 2. Converte a instância para uma string JSON
-    //    // O segundo parâmetro 'true' é para formatar o JSON de forma legível (pretty print)
-    //    string json = JsonUtility.ToJson(novoUsuario, true);
-    //    // 3. Define o caminho do arquivo para Application.persistentDataPath
-    //    string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
+    private void SalvarUsuario()
+    {
+        var responsavel = new ResponsavelLocal()
+        {
+            nome = nome,
+            email = email,
+            senha = senha,
+            dt_nascimento = data
+        };
 
-    //    try
-    //    {
-    //        File.WriteAllText(caminhoDoArquivo, json);
-    //        Debug.Log($"Dados do usuário salvos com sucesso em: {caminhoDoArquivo}");
-    //    }
-    //    catch (System.Exception e)
-    //    {
-    //        Debug.LogError($"Erro ao salvar o arquivo JSON: {e.Message}");
-    //    }
-    //}
+        string json = JsonConvert.SerializeObject(responsavel);
+        string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
+
+        try
+        {
+            File.WriteAllText(caminhoDoArquivo, json);
+            Debug.Log($"Dados do usuário salvos com sucesso em: {caminhoDoArquivo}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Erro ao salvar o arquivo JSON: {e.Message}");
+        }
+    }
 
     private void PossuoConta()
     {

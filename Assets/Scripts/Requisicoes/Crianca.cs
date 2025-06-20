@@ -4,26 +4,29 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.Http;
-internal class Crianca : Connection
+public class Crianca : Connection
 {
     public int IdCrianca { get; set; }
     public string Nome { get; set; }
     public string DtNascimento { get; set; }
     public int IdResponsavel { get; set; }
     public int IdFaixaEtaria { get; set; }
+    public List<string> TopicosInteresse { get; set; }
     public int? TempoTela { get; set; }
     public int? IdDificuldade { get; set; }
-    public int? IdAvatar { get; set; }
+    public string Avatar { get; set; }
     public string Access { get; set; }
     public string Refresh { get; set; }
 
-    public Crianca(int id_crianca, string nome, string dt_nascimento, int id_responsavel, int id_faixa_etaria, string access, string refresh) : base()
+    public Crianca(int id_crianca, string nome, string dt_nascimento, int id_responsavel, int id_faixa_etaria, List<string> topicos_interesse,
+    string access, string refresh) : base()
     {
         this.IdCrianca = id_crianca;
         this.Nome = nome;
         this.DtNascimento = dt_nascimento;
         this.IdResponsavel = id_responsavel;
         this.IdFaixaEtaria = id_faixa_etaria;
+        this.TopicosInteresse = topicos_interesse;
         this.Access = access;
         this.Refresh = refresh;
     }

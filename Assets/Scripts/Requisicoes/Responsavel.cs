@@ -22,6 +22,15 @@ internal class Responsavel : Connection
     private readonly string RouteCadastro = "/cadastro/verificar_codigo/";
     private readonly string RouteCriancas = "/criancas/";
 
+    public class ResponsavelLocal
+    {
+        public string nome { get; set; }
+        public string email { get; set; }
+        public string dt_nascimento { get; set; }
+        public string senha { get; set; }
+
+    }
+
     private class LoginRequest
     {
         [JsonProperty("username")]
@@ -135,8 +144,10 @@ internal class Responsavel : Connection
         public int? TempoTela { get; set; }
         [JsonProperty("id_dificuldade")]
         public int? IdDificuldade { get; set; }
-        [JsonProperty("id_avatar")]
-        public int? IdAvatar { get; set; }
+        [JsonProperty("avatar")]
+        public string Avatar { get; set; }
+        [JsonProperty("topicos_interesse")]
+        public List<string> TopicosInteresse { get; set; }
     }
     internal async Task<List<CriancaResponse>> GetCriancas()
     {

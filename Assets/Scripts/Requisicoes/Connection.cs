@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEditor.ShaderGraph.Serialization;
 
-internal class Connection
+public class Connection
 {
     protected readonly HttpClient _httpClient;
     //protected readonly string _baseUrl = "http://127.0.0.1:8000";
@@ -29,7 +30,7 @@ internal class Connection
         if (!response.IsSuccessStatusCode)
         {
             string errorMessage = await response.Content.ReadAsStringAsync();
-            Console.WriteLine("Mensagem da API: " + errorMessage);
+            UnityEngine.Debug.LogError("Mensagem da API: " + errorMessage);
             throw new HttpRequestException($"Erro: {(int)response.StatusCode} - {response.ReasonPhrase}");
         }
 
@@ -58,7 +59,7 @@ internal class Connection
         if (!response.IsSuccessStatusCode)
         {
             string errorMessage = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Mensagem da API: {errorMessage}");
+            UnityEngine.Debug.LogError($"Mensagem da API: {errorMessage}");
             throw new HttpRequestException($"Erro: {(int)response.StatusCode} - {response.ReasonPhrase}");
         }
 
@@ -84,8 +85,8 @@ internal class Connection
 
         if (!response.IsSuccessStatusCode)
         {
-            Console.WriteLine("Erro ao renovar token: " + responseBody);
-            Console.WriteLine("Tente fazer login novamente.");
+            UnityEngine.Debug.LogError("Erro ao renovar token: " + responseBody);
+            UnityEngine.Debug.LogError("Tente fazer login novamente.");
             throw new HttpRequestException($"Erro {response.StatusCode}");
         }
 
