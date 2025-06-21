@@ -2,27 +2,27 @@
   "difficulties": [
     {
       "id": "1",
-      "level_1": "gato",
-      "level_2": "roxo",
-      "level_3": "estrela",
-      "level_4": "nuvem",
-      "level_5": "vento"
+      "level_1": { "word": "gato", "theme": "animal" },
+      "level_2": { "word": "roxo", "theme": "cor" },
+      "level_3": { "word": "urso", "theme": "animal" },
+      "level_4": { "word": "leao", "theme": "animal" },
+      "level_5": { "word": "azul", "theme": "cor" }
     },
     {
       "id": "2",
-      "level_1": "montanha",
-      "level_2": "oceano",
-      "level_3": "floresta",
-      "level_4": "deserto",
-      "level_5": "rio"
+      "level_1": { "word": "verde", "theme": "cor" },
+      "level_2": { "word": "porco", "theme": "animal" },
+      "level_3": { "word": "cinza", "theme": "cor" },
+      "level_4": { "word": "zebra", "theme": "animal" },
+      "level_5": { "word": "cobra", "theme": "animal" }
     },
     {
       "id": "3",
-      "level_1": "constelação",
-      "level_2": "tornado",
-      "level_3": "aurora",
-      "level_4": "tsunami",
-      "level_5": "eclipse"
+      "level_1": { "word": "branco", "theme": "cor" },
+      "level_2": { "word": "abelha", "theme": "animal" },
+      "level_3": { "word": "coelho", "theme": "animal" },
+      "level_4": { "word": "marrom", "theme": "cor" },
+      "level_5": { "word": "ovelha", "theme": "animal" }
     }
   ]
 }

@@ -39,7 +39,6 @@ namespace Termo
         {
             GoToMainMenu();
         }
-
         private void Init()
         {
             CurrentStage = 1;
@@ -67,6 +66,8 @@ namespace Termo
         [HideInInspector]
         public string StageName;
 
+        [HideInInspector]
+        public string Theme;
         public bool IsLevelUnlocked(int level)
         {
             string levelName = "Level" + "T" + CurrentStage.ToString() + level.ToString();
@@ -85,10 +86,9 @@ namespace Termo
             PlayerPrefs.SetInt(levelName, 0);
             return false;
         }
-
         public void UnlockLevel()
         {
-            CurrentLevel++;
+            CurrentLevel++; //Aumenta só para desbloquear o próximo nível
 
             if (CurrentLevel == 51)
             {
@@ -104,6 +104,8 @@ namespace Termo
 
             string levelName = "Level" + "T" + CurrentStage.ToString() + CurrentLevel.ToString();
             PlayerPrefs.SetInt(levelName, 1);
+
+            CurrentLevel--; //Volta ao nível que estava
         }
 
         #endregion
@@ -117,7 +119,6 @@ namespace Termo
         private LevelListTermo _allLevels;
 
         private Dictionary<string, LevelDataTermo> Levels;
-
         public LevelDataTermo GetLevel()
         {
             string levelName = "Level" + CurrentStage.ToString() + CurrentLevel.ToString();
@@ -133,13 +134,11 @@ namespace Termo
         #endregion
 
         #region SCENE_LOAD
-
         public void GoToMainMenu()
         {
             telaMenu.SetActive(true);
             telaGameplay.SetActive(false);    
         }
-
         public void GoToGameplay()
         {
             telaMenu.SetActive(false);
@@ -147,19 +146,20 @@ namespace Termo
 
             easyBoard.SetActive(CurrentStage == 1);
             mediumBoard.SetActive(CurrentStage == 2);
-            hardBoard.SetActive(CurrentStage == 3);       
+            hardBoard.SetActive(CurrentStage == 3);
+
+            if (CurrentStage == 1)
+                Theme = easyBoard.GetComponent<BoardTermo>().GetWord();
+            else if (CurrentStage == 2)
+                Theme = mediumBoard.GetComponent<BoardTermo>().GetWord();
+            else if (CurrentStage == 3)
+                Theme = hardBoard.GetComponent<BoardTermo>().GetWord();
 
             _winText.SetActive(false);
             _titleText.gameObject.SetActive(true);
             _titleText.text = StageName +
-                " - " + CurrentLevel.ToString();
-
-            if (CurrentStage == 1)
-                easyBoard.GetComponent<BoardTermo>().GetWord();
-            else if (CurrentStage == 2)
-                mediumBoard.GetComponent<BoardTermo>().GetWord();
-            else if (CurrentStage == 3)
-                hardBoard.GetComponent<BoardTermo>().GetWord();
+                " - " + CurrentLevel.ToString() + "\n" +
+                "Tema: " + Theme;
         }
         #endregion
 
@@ -167,6 +167,35 @@ namespace Termo
         public void ResetLevel()
         {
             board.ResetBoard();
+        }
+        public void GoToNextLevel()
+        {
+            UnityEngine.Debug.Log(CurrentLevel);
+            int nextLevel = CurrentLevel + 1;
+            int nextStage = CurrentStage;
+
+            if (nextLevel > 5)
+            {
+                nextLevel = 1;
+                nextStage++;
+
+                if(nextStage == 2)
+                    StageName = "Médio";
+                else if(nextStage == 3)
+                    StageName = "Difícil";
+                if (nextStage > 3)
+                    return;
+            }
+
+            // Verifica se o próximo nível está desbloqueado
+            string levelName = "LevelT" + nextStage.ToString() + nextLevel.ToString();
+            if (PlayerPrefs.GetInt(levelName, 0) == 1)
+            {
+                CurrentLevel = nextLevel;
+                CurrentStage = nextStage;
+                ResetLevel();
+                GoToGameplay();
+            }
         }
         #endregion
     }

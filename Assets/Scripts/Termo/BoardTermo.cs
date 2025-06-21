@@ -6,16 +6,21 @@ using System.IO;
 using UnityEngine;
 using static System.Net.Mime.MediaTypeNames;
 using TMPro;
+using System.Linq;
 
 namespace Termo
 {
     public class BoardTermo : MonoBehaviour
     {   
-        private Row[] rows;
-        private string word;
+        [SerializeField] private TMP_InputField hiddenInputField;
+        public bool wonGame = false;
 
+        private Row[] rows;
         private int rowIndex;
         private int columnIndex;
+
+        private RootData data;
+        private string Word;
 
         [Header("States")]
         public Tile.State emptyState;
@@ -23,18 +28,12 @@ namespace Termo
         public Tile.State CorrectState;
         public Tile.State wrongSpotState;
         public Tile.State incorrectState;
-
-        private RootData data;
-
-        [SerializeField] private TMP_InputField hiddenInputField;
-        public bool wonGame = false;
-
         private void Awake()
         {
+            LoadJson();
             rows = GetComponentsInChildren<Row>();
             GameManagerTermo.board = this;
         }
-
         private void Start()
         {
             wonGame = false;
@@ -44,37 +43,37 @@ namespace Termo
             hiddenInputField.text = "";
             hiddenInputField.onValueChanged.AddListener(HandleInput);
         }
-
         private void LoadJson()
         {
             TextAsset jsonFile = Resources.Load<TextAsset>("Words");
             data = JsonUtility.FromJson<RootData>(jsonFile.text);
-        }   
-        
-        public void GetWord()
+        }        
+        public string GetWord()
         {
             if (data == null)
                 LoadJson();
 
             string difficulty = GameManagerTermo.Instance.CurrentStage.ToString();
-            string level = "level_" + GameManagerTermo.Instance.CurrentLevel.ToString();
+            string level = GameManagerTermo.Instance.CurrentLevel.ToString();
           
             DifficultyData entry = data.difficulties.Find(d => d.id == difficulty);
-            if (entry != null)
+            if (entry == null) return "";
+
+            LevelData currentLevelData = level switch
             {
-                word = level switch
-                {
-                    "level_1" => entry.level_1,
-                    "level_2" => entry.level_2,
-                    "level_3" => entry.level_3,
-                    "level_4" => entry.level_4,
-                    "level_5" => entry.level_5,
-                    _ => null
-                };
-            }
+                "1" => entry.level_1,
+                "2" => entry.level_2,
+                "3" => entry.level_3,
+                "4" => entry.level_4,
+                "5" => entry.level_5,
+                _ => null
+            };
 
+            if (currentLevelData == null) return "";
+
+            Word = currentLevelData.word;
+            return currentLevelData.theme;
         }
-
         private void Update()
         {
             if(!hiddenInputField.isFocused)
@@ -119,20 +118,20 @@ namespace Termo
         }
         private void SubmitRow(Row row)
         {
-            string remaining = word;
+            string remaining = Word;
 
             for (int i = 0; i < row.tiles.Length; i++)
             {
                 Tile tile = row.tiles[i];
 
-                if (tile.letter == word[i])
+                if (tile.letter == Word[i])
                 {
                     tile.SetState(CorrectState);
 
                     remaining = remaining.Remove(i, 1);
                     remaining = remaining.Insert(i, " ");
                 }
-                else if (!word.Contains(tile.letter))
+                else if (!Word.Contains(tile.letter))
                 {
                     tile.SetState(incorrectState);
                 }
@@ -165,6 +164,7 @@ namespace Termo
                 wonGame = true;
                 hiddenInputField.gameObject.SetActive(false);
                 GameManagerTermo.Instance.UnlockLevel();
+                MainMenuManagerTermo.Instance.RefreshLevelButtons(); // <-- força a atualização visual dos botões
             }
 
             rowIndex++;
@@ -220,11 +220,18 @@ namespace Termo
     public class DifficultyData
     {
         public string id;
-        public string level_1;
-        public string level_2;
-        public string level_3;
-        public string level_4;
-        public string level_5;
+        public LevelData level_1;
+        public LevelData level_2;
+        public LevelData level_3;
+        public LevelData level_4;
+        public LevelData level_5;
+    }
+
+    [Serializable]
+    public class LevelData
+    {
+        public string word;
+        public string theme;
     }
     #endregion
 }

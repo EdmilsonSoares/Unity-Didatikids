@@ -14,7 +14,6 @@ namespace Termo
 
         private bool isLevelUnlocked;
         private int currentLevel;
-
         private void Awake()
         {
             _button.onClick.AddListener(Clicked);
@@ -24,13 +23,11 @@ namespace Termo
         {
             MainMenuManagerTermo.Instance.LevelOpened += LevelOpened;
         }
-
         private void OnDisable()
         {
             MainMenuManagerTermo.Instance.LevelOpened -= LevelOpened;
         }
-
-        private void LevelOpened()
+        public void LevelOpened()
         {
             string gameObjectName = gameObject.name;
             string[] parts = gameObjectName.Split('_');
@@ -40,7 +37,6 @@ namespace Termo
 
             _image.color = isLevelUnlocked ? MainMenuManagerTermo.Instance.CurrentColor : _inactiveColor;
         }
-
         private void Clicked()
         {
             if (!isLevelUnlocked)

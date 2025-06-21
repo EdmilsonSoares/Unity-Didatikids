@@ -12,7 +12,6 @@ namespace Termo
         public static MainMenuManagerTermo Instance;
         [SerializeField] private GameObject _stagePanel;
         [SerializeField] private GameObject _levelPanel;
-
         private void Awake()
         {
             Instance = this;
@@ -20,18 +19,15 @@ namespace Termo
             _stagePanel.SetActive(true);
             _levelPanel.SetActive(false);
         }
-
         public void ClickedBackToActivities()
         {
             SceneManager.LoadScene("Main");
         }
-
         public void ClickedBackToStage()
         {
             _stagePanel.SetActive(true);
             _levelPanel.SetActive(false);
         }
-
         public void ClickedBackToLevels()
         {
             _stagePanel.SetActive(false);
@@ -44,9 +40,9 @@ namespace Termo
 
         [SerializeField]
         private TMP_Text _levelTitleText;
+
         [SerializeField]
         private UnityEngine.UI.Image _levelTitleImage;
-
         public void ClickedStage(string stageName, Color stageColor)
         {
             _stagePanel.SetActive(false);
@@ -55,6 +51,13 @@ namespace Termo
             _levelTitleText.text = stageName;
             _levelTitleImage.color = CurrentColor;
             LevelOpened?.Invoke();
+        }
+        public void RefreshLevelButtons()
+        {
+            foreach (var levelButton in _levelPanel.GetComponentsInChildren<LevelButtonTermo>(true))
+            {
+                levelButton.LevelOpened();
+            }
         }
     }
 }
