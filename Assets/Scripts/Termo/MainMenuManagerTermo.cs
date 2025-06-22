@@ -28,11 +28,7 @@ namespace Termo
             _stagePanel.SetActive(true);
             _levelPanel.SetActive(false);
         }
-        public void ClickedBackToLevels()
-        {
-            _stagePanel.SetActive(false);
-            _levelPanel.SetActive(true);
-        }
+
         public UnityAction LevelOpened;
 
         [HideInInspector]

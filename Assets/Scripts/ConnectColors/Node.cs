@@ -393,5 +393,33 @@ namespace Connect.Core
 
             return isdegreethree;
         }
-    } 
+
+        public void ResetNode()
+        {
+            // Remove conexões com outros nós
+            foreach (var connectedNode in new List<Node>(ConnectedNodes))
+            {
+                connectedNode.ConnectedNodes.Remove(this);
+                if (ConnectedEdges.ContainsKey(connectedNode))
+                    ConnectedEdges[connectedNode].SetActive(false);
+                if (connectedNode.ConnectedEdges.ContainsKey(this))
+                    connectedNode.ConnectedEdges[this].SetActive(false);
+            }
+
+            ConnectedNodes.Clear();
+
+            _highLight.SetActive(false);
+
+            if (_point.activeSelf)
+            {
+                _point.GetComponent<SpriteRenderer>().color =
+                    GameplayManager.Instance.NodeColors[colorId % GameplayManager.Instance.NodeColors.Count];
+            }
+            else
+            {
+                colorId = -1;
+            }
+        }
+
+    }
 }

@@ -2,36 +2,27 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Connect.Core
 {
     public class MainMenuManager : MonoBehaviour
     {
         public static MainMenuManager Instance;
-
-        [SerializeField] private GameObject _titlePanel;
-        [SerializeField] private GameObject _stagePanel;
-        [SerializeField] private GameObject _levelPanel;
+        [SerializeField] public GameObject _stagePanel;
+        [SerializeField] public GameObject _levelPanel;
 
         private void Awake()
         {
             Instance = this;
 
-            _titlePanel.SetActive(true);
-            _stagePanel.SetActive(false);
+            _stagePanel.SetActive(true);
             _levelPanel.SetActive(false);
         }
 
-        public void ClickedPlay()
+        public void ClickedBackToActivities()
         {
-            _titlePanel.SetActive(false);
-            _stagePanel.SetActive(true);
-        }
-
-        public void ClickedBackToTitle()
-        {
-            _titlePanel.SetActive(true);
-            _stagePanel.SetActive(false);
+            SceneManager.LoadScene("Main");
         }
 
         public void ClickedBackToStage()
@@ -39,7 +30,7 @@ namespace Connect.Core
             _stagePanel.SetActive(true);
             _levelPanel.SetActive(false);
         }
-
+    
         public UnityAction LevelOpened;
 
         [HideInInspector]
@@ -49,7 +40,6 @@ namespace Connect.Core
         private TMP_Text _levelTitleText;
         [SerializeField]
         private Image _levelTitleImage;
-
         public void ClickedStage(string stageName, Color stageColor)
         {
             _stagePanel.SetActive(false);
@@ -58,6 +48,14 @@ namespace Connect.Core
             _levelTitleText.text = stageName;
             _levelTitleImage.color = CurrentColor;
             LevelOpened?.Invoke();
+        }
+
+        public void RefreshLevelButtons()
+        {
+            foreach (var levelButton in _levelPanel.GetComponentsInChildren<LevelButton>(true))
+            {
+                levelButton.LevelOpened();
+            }
         }
     } 
 }

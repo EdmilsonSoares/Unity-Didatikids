@@ -1104,7 +1104,7 @@ GameObject:
   - component: {fileID: 538267698}
   - component: {fileID: 538267697}
   m_Layer: 5
-  m_Name: Restart
+  m_Name: BtnRestart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3361,7 +3361,7 @@ GameObject:
   - component: {fileID: 920841641}
   - component: {fileID: 920841640}
   m_Layer: 5
-  m_Name: BackToStage
+  m_Name: BtnBackToStage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4013,7 +4013,7 @@ GameObject:
   - component: {fileID: 1017189121}
   - component: {fileID: 1017189120}
   m_Layer: 5
-  m_Name: Next
+  m_Name: BtnNextLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7406,7 +7406,7 @@ GameObject:
   - component: {fileID: 1770698313}
   - component: {fileID: 1770698312}
   m_Layer: 5
-  m_Name: GoToLevels
+  m_Name: BtnGoToLevels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8194,7 +8194,7 @@ GameObject:
   - component: {fileID: 2072711661}
   - component: {fileID: 2072711660}
   m_Layer: 5
-  m_Name: BackToActivities
+  m_Name: BtnBackToActivities
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

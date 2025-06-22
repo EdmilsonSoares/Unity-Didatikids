@@ -21,6 +21,5 @@ namespace Termo
             GameManagerTermo.Instance.StageName = _stageName;
             MainMenuManagerTermo.Instance.ClickedStage(_stageName, _stageColor);
         }
-
     }
 }

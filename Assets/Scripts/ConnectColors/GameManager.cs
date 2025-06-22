@@ -119,19 +119,22 @@ namespace Connect.Core
 
         #region SCENE_LOAD
 
-        private const string MainMenu = "MainMenu";
-        private const string Gameplay = "Gameplay";
+        [SerializeField] private GameObject telaMenu;
+        [SerializeField] private GameObject telaGameplay;
 
         public void GoToMainMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(MainMenu);
+            telaMenu.SetActive(true);
+            telaGameplay.SetActive(false);
         }
-
         public void GoToGameplay()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(Gameplay);
+            telaMenu.SetActive(false);
+            telaGameplay.SetActive(true);
+            GameplayManager.Instance.ResetGameplay();
         }
 
         #endregion
+
     } 
 }

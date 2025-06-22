@@ -298,6 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec2ee5d0226c5649adafa36883674b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menu: {fileID: 0}
   hasGameFinished: 0
   _titleText: {fileID: 1132921857}
   _winText: {fileID: 1403350403}
@@ -476,7 +477,7 @@ GameObject:
   - component: {fileID: 1133795079}
   - component: {fileID: 1133795078}
   m_Layer: 5
-  m_Name: GoToMenu
+  m_Name: BtnGoToLevels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -548,7 +549,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1047115543}
         m_TargetAssemblyTypeName: Connect.Core.GameplayManager, Connect.Core
-        m_MethodName: ClickedBack
+        m_MethodName: ClickedBackToLevels
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1173,7 +1174,7 @@ GameObject:
   - component: {fileID: 1808435460}
   - component: {fileID: 1808435459}
   m_Layer: 5
-  m_Name: Next
+  m_Name: BtnNextLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1306,7 +1307,7 @@ GameObject:
   - component: {fileID: 1979792082}
   - component: {fileID: 1979792081}
   m_Layer: 5
-  m_Name: Restart
+  m_Name: BtnRestart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

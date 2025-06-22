@@ -11,7 +11,6 @@ namespace Connect.Core
 
         #region START_VARIABLES
         public static GameplayManager Instance;
-
         [HideInInspector] public bool hasGameFinished;
 
         [SerializeField] private TMP_Text _titleText;
@@ -157,6 +156,23 @@ namespace Connect.Core
 
         #endregion
 
+        #region RESET_GAMEPLAY
+        public void ResetGameplay()
+        {
+            hasGameFinished = false;
+            _winText.SetActive(false);
+            _titleText.gameObject.SetActive(true);
+            _titleText.text = GameManager.Instance.StageName + " - " + GameManager.Instance.CurrentLevel;
+
+            _nodes = new List<Node>();
+            _nodeGrid = new Dictionary<Vector2Int, Node>();
+            CurrentLevelData = GameManager.Instance.GetLevel();
+
+            SpawnBoard();
+            SpawnNodes();
+        }
+        #endregion
+
         #endregion
 
         #region UPDATE_METHODS
@@ -255,15 +271,33 @@ namespace Connect.Core
         #endregion
 
         #region BUTTON_FUNCTIONS
-
-        public void ClickedBack()
+               
+        public void ClickedBackToLevels()
         {
+            foreach (var obj in GameObject.FindGameObjectsWithTag("BoardElement"))
+            {
+                Destroy(obj);
+            }
+
             GameManager.Instance.GoToMainMenu();
+            MainMenuManager.Instance._stagePanel.SetActive(false);
+            MainMenuManager.Instance._levelPanel.SetActive(true);
+
+            //hasGameFinished = false;
+            //_winText.SetActive(false);
         }
 
-        public void ClickedRestart()
+        public void ResetLevel()
         {
-            GameManager.Instance.GoToGameplay();
+            hasGameFinished = false;
+            _clickHighlight.gameObject.SetActive(false);
+            _winText.SetActive(false);
+
+            // Resetar cada nó
+            foreach (var node in _nodes)
+            {
+                node.ResetNode();
+            }
         }
 
         public void ClickedNextLevel()
@@ -272,6 +306,35 @@ namespace Connect.Core
             
             GameManager.Instance.GoToGameplay();
         }
+
+        //public void GoToNextLevel()
+        //{
+        //    int nextLevel = CurrentLevel + 1;
+        //    int nextStage = CurrentStage;
+
+        //    if (nextLevel > 5)
+        //    {
+        //        nextLevel = 1;
+        //        nextStage++;
+
+        //        if (nextStage == 2)
+        //            StageName = "Médio";
+        //        else if (nextStage == 3)
+        //            StageName = "Difícil";
+        //        if (nextStage > 3)
+        //            return;
+        //    }
+
+        //    // Verifica se o próximo nível está desbloqueado
+        //    string levelName = "Level" + nextStage.ToString() + nextLevel.ToString();
+        //    if (PlayerPrefs.GetInt(levelName, 0) == 1)
+        //    {
+        //        CurrentLevel = nextLevel;
+        //        CurrentStage = nextStage;
+        //        //ResetLevel();
+        //        //GoToGameplay();
+        //    }
+        //}
 
         #endregion
     }

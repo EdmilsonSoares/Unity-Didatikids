@@ -13,7 +13,6 @@ namespace Connect.Core
 
         private bool isLevelUnlocked;
         private int currentLevel;
-
         private void Awake()
         {
             _button.onClick.AddListener(Clicked);
@@ -29,7 +28,7 @@ namespace Connect.Core
             MainMenuManager.Instance.LevelOpened -= LevelOpened;
         }
 
-        private void LevelOpened()
+        public void LevelOpened()
         {
             string gameObjectName = gameObject.name;
             string[]parts = gameObjectName.Split('_');

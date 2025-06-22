@@ -23,10 +23,12 @@ namespace Termo
         {
             MainMenuManagerTermo.Instance.LevelOpened += LevelOpened;
         }
+
         private void OnDisable()
         {
             MainMenuManagerTermo.Instance.LevelOpened -= LevelOpened;
         }
+
         public void LevelOpened()
         {
             string gameObjectName = gameObject.name;
@@ -37,6 +39,7 @@ namespace Termo
 
             _image.color = isLevelUnlocked ? MainMenuManagerTermo.Instance.CurrentColor : _inactiveColor;
         }
+
         private void Clicked()
         {
             if (!isLevelUnlocked)
