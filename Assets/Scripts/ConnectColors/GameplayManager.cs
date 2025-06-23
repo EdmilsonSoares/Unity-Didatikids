@@ -62,7 +62,7 @@ namespace Connect.Core
             Camera.main.orthographicSize = currentLevelSize + 2f;
             Camera.main.transform.position = new Vector3(currentLevelSize/2f,currentLevelSize/2f,-10f);
 
-            _clickHighlight.size = new Vector2(currentLevelSize/4f,currentLevelSize/4f);
+            _clickHighlight.size = new Vector2(currentLevelSize/4f,currentLevelSize/4f); //mudar isso aq para diminuir o tamanho do ponteiro
             _clickHighlight.transform.position = Vector3.zero;
             _clickHighlight.gameObject.SetActive(false);
         }
@@ -274,7 +274,7 @@ namespace Connect.Core
                
         public void ClickedBackToLevels()
         {
-            foreach (var obj in GameObject.FindGameObjectsWithTag("BoardElement"))
+            foreach (var obj in GameObject.FindGameObjectsWithTag("BoardElement")) //Deleta todo o tabuleiro.
             {
                 Destroy(obj);
             }
@@ -300,41 +300,34 @@ namespace Connect.Core
             }
         }
 
-        public void ClickedNextLevel()
+        public void GoToNextLevel()
         {
-            if (!hasGameFinished) return;
-            
-            GameManager.Instance.GoToGameplay();
+            int nextLevel = GameManager.Instance.CurrentLevel + 1;
+            int nextStage = GameManager.Instance.CurrentStage;
+
+            if (nextLevel > 5)
+            {
+                nextLevel = 1;
+                nextStage++;
+
+                if (nextStage == 2)
+                    GameManager.Instance.StageName = "Médio";
+                else if (nextStage == 3)
+                    GameManager.Instance.StageName = "Difícil";
+                if (nextStage > 3)
+                    return;
+            }
+
+            // Verifica se o próximo nível está desbloqueado
+            string levelName = "Level" + nextStage.ToString() + nextLevel.ToString();
+            if (PlayerPrefs.GetInt(levelName, 0) == 1)
+            {
+                GameManager.Instance.CurrentLevel = nextLevel;
+                GameManager.Instance.CurrentStage = nextStage;
+                ResetLevel();
+                ResetGameplay();
+            }
         }
-
-        //public void GoToNextLevel()
-        //{
-        //    int nextLevel = CurrentLevel + 1;
-        //    int nextStage = CurrentStage;
-
-        //    if (nextLevel > 5)
-        //    {
-        //        nextLevel = 1;
-        //        nextStage++;
-
-        //        if (nextStage == 2)
-        //            StageName = "Médio";
-        //        else if (nextStage == 3)
-        //            StageName = "Difícil";
-        //        if (nextStage > 3)
-        //            return;
-        //    }
-
-        //    // Verifica se o próximo nível está desbloqueado
-        //    string levelName = "Level" + nextStage.ToString() + nextLevel.ToString();
-        //    if (PlayerPrefs.GetInt(levelName, 0) == 1)
-        //    {
-        //        CurrentLevel = nextLevel;
-        //        CurrentStage = nextStage;
-        //        //ResetLevel();
-        //        //GoToGameplay();
-        //    }
-        //}
 
         #endregion
     }
