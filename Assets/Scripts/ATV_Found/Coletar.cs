@@ -10,8 +10,7 @@ public class Coletar : MonoBehaviour
     private Movimento scriptMovimentoObjetoColetado;
     private Rigidbody2D rbObjetoColetado;
     private Vector3 posicaoInicialObjetoColetado; // Posição inicial do objeto antes de ser coletado (para o reset)
-    // --- NOVO: Evento para notificar quando um objeto é coletado ou liberado ---
-    // Útil se outros sistemas (como um Gerenciador de Jogo) precisarem reagir a isso.
+    // Evento para notificar quando um objeto é coletado ou liberado
     public delegate void ColetorEstadoEventHandler(GameObject obj, bool coletado);
     public static event ColetorEstadoEventHandler OnColetorEstadoChanged;
 
@@ -79,7 +78,6 @@ public class Coletar : MonoBehaviour
         }
         objetoColetado.transform.position = posicaoDeColeta; // "Sugá-lo" para a posição central do coletor
         Debug.Log($"Coletar: '{objetoColetado.name}' sugado para a posição de coleta {posicaoDeColeta}.");
-        //objetoColetado.transform.SetParent(this.transform); // Opcional: Aninhar o objeto coletado como filho deste coletador (organização)
         // Notificar outros sistemas (se necessário)
         ValoresABC scriptValoresABC = objetoColetado.GetComponent<ValoresABC>();
         int numeroDoObjeto = (scriptValoresABC != null) ? scriptValoresABC.Numero : 0;
@@ -87,8 +85,7 @@ public class Coletar : MonoBehaviour
         OnColetorEstadoChanged?.Invoke(objetoColetado, true); // Dispara evento
     }
 
-    // Método para verificar se o objeto solto está dentro do coletor.
-    // Agora usado mais para feedback ou lógica secundária.
+    // Método para verificar se o objeto solto está dentro do coletor. Agora usado mais para feedback ou lógica secundária.
     private void VerificarObjetoSolto(GameObject objetoSolto)
     {
         // Se o objeto solto é o que já está coletado, ou se o coletor já está ocupado,
@@ -101,9 +98,6 @@ public class Coletar : MonoBehaviour
         {
             Debug.Log($"Coletar: '{objetoSolto.name}' foi solto, mas o coletor já está ocupado por '{objetoColetado.name}'.");
         }
-        // Se o objeto solto não é o coletado E o coletor está vazio, e ele está na área do trigger
-        // (o que significa que OnTriggerEnter2D deveria ter coletado), isso é um caso estranho.
-        // Você pode adicionar mais depuração aqui se necessário.
     }
 
     // --- NOVO: Método Público para "Liberar" o objeto (para o Botão de Reset) ---

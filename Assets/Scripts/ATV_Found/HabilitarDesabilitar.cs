@@ -4,6 +4,7 @@ using UnityEngine.UI; // Para usar o componente Button (se o script for associad
 
 public class HabilitarDesabilitar : MonoBehaviour
 {
+    [SerializeField] private AtivadorDeTelas ativadorDeTelas;
     [SerializeField] private Coletar coletor01;
     [SerializeField] private Coletar coletor02;
     [SerializeField] private Coletar coletor03;
@@ -33,10 +34,7 @@ public class HabilitarDesabilitar : MonoBehaviour
                 }
             }
             exibidorAtivoAtual = null; // Ninguém ativo no início
-            btnChoose00.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[0]));
-            btnChoose01.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[1]));
-            btnChoose02.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[2]));
-            btnChoose03.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[3]));
+            AdicionarListenerDosBotoes();
         }
         else
         {
@@ -44,6 +42,28 @@ public class HabilitarDesabilitar : MonoBehaviour
         }
     }
 
+    // Metodo para adicionar listeners dependendo da quantidade de botões na tela
+    private void AdicionarListenerDosBotoes()
+    {
+        if (ativadorDeTelas.GetLevelDificult() == 1)
+        {
+            btnChoose00.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[0]));
+            btnChoose01.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[1]));
+        }
+        else if (ativadorDeTelas.GetLevelDificult() == 2)
+        {
+            btnChoose00.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[0]));
+            btnChoose01.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[1]));
+            btnChoose02.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[2]));
+        }
+        else if (ativadorDeTelas.GetLevelDificult() == 3)
+        {
+            btnChoose00.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[0]));
+            btnChoose01.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[1]));
+            btnChoose02.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[2]));
+            btnChoose03.onClick.AddListener(() => AtivarExibidorPorBotao(exibidoresDeConjuntos[3]));
+        }
+    }
     // NOVO MÉTODO: Chamado diretamente pelos botões na UI
     public void AtivarExibidorPorBotao(ExibidorDeConjunto exibidorParaAtivar)
     {
@@ -118,10 +138,24 @@ public class HabilitarDesabilitar : MonoBehaviour
 
     public void SetBotoes(bool estado)
     {
-        btnChoose00.interactable = estado;
-        btnChoose01.interactable = estado;
-        btnChoose02.interactable = estado;
-        btnChoose03.interactable = estado;
+        if (ativadorDeTelas.GetLevelDificult() == 1)
+        {
+            btnChoose00.interactable = estado;
+            btnChoose01.interactable = estado;
+        }
+        else if (ativadorDeTelas.GetLevelDificult() == 2)
+        {
+            btnChoose00.interactable = estado;
+            btnChoose01.interactable = estado;
+            btnChoose02.interactable = estado;
+        }
+        else if (ativadorDeTelas.GetLevelDificult() == 3)
+        {
+            btnChoose00.interactable = estado;
+            btnChoose01.interactable = estado;
+            btnChoose02.interactable = estado;
+            btnChoose03.interactable = estado;
+        }
         btnOperador01.interactable = estado;
         btnOperador02.interactable = estado;
         btnCalcular.interactable = estado;

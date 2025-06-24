@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class ConjuntoNaoValido
@@ -34,8 +33,9 @@ public class NumerosValidos
 
 public class Sortear : MonoBehaviour
 {
-    private int limitNotValid = 3;
-    private int limitValid = 1;
+    [SerializeField] private AtivadorDeTelas ativadorDeTelas;
+    private int limitValid = 0;
+    private int limitNotValid = 0;
     private List<ConjuntoNaoValido> listaNaoValidos;
     private List<NumerosValidos> listaValidos;
     public int nivelDaTorre = 1;
@@ -47,6 +47,12 @@ public class Sortear : MonoBehaviour
 
     public delegate void ConjuntosGeradosEventHandler(List<ConjuntoNaoValido> naoValidos, List<NumerosValidos> validos);
     public static event ConjuntosGeradosEventHandler AoTerminarSorteio; // Static para outros scripts assinarem diretamente sem precisar de uma referência
+
+    void OnEnable()
+    {
+        limitValid = ativadorDeTelas.GetLimitValid();
+        limitNotValid = ativadorDeTelas.GetLimitNotValid();
+    }
 
     void Start()
     {
