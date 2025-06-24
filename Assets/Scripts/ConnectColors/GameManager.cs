@@ -89,6 +89,7 @@ namespace Connect.Core
 
             string levelName = "Level" + CurrentStage.ToString() + CurrentLevel.ToString();
             PlayerPrefs.SetInt(levelName, 1);
+            CurrentLevel--;
         }
 
         #endregion

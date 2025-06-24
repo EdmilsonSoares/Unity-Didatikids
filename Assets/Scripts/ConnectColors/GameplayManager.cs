@@ -266,6 +266,8 @@ namespace Connect.Core
             _clickHighlight.gameObject.SetActive(false);
 
             hasGameFinished = true;
+
+            MainMenuManager.Instance.RefreshLevelButtons(); // <-- força a atualização visual dos botões
         }
 
         #endregion
