@@ -25,20 +25,22 @@ public class VerificarOperacao : MonoBehaviour
     private bool isSomaOpe01;
     private bool isSomaOpe02;
     private int nivel = 1;
-    private int tentativas = 5;
+    private int maxNivel;
+    private int tentativas = 0;
 
     void Awake()
     {
         btnCalcular.onClick.AddListener(PegarNumero);
         btnAvancar.onClick.AddListener(SubirNivel);
         btnBack.onClick.AddListener(Recarregar);
-
+        maxNivel = ativadorDeTelas.GetMaxNivel();
+        tentativas = ativadorDeTelas.GetTentativas();
     }
 
     void Start()
     {
         btnAvancar.gameObject.SetActive(false);
-        textNivel.text = "Nível " + nivel.ToString() + "\nChances " + tentativas.ToString();
+        textNivel.text = "Nível " + nivel.ToString() + " de " + maxNivel.ToString() + "\nChances " + tentativas.ToString();
         textNumber.text = nivel.ToString();
         textResultado.text = "?";
         textFeedback.text = "";
@@ -116,7 +118,7 @@ public class VerificarOperacao : MonoBehaviour
         if (resultado != nivel) // Se errar
         {
             tentativas--;
-            textNivel.text = "Nível " + nivel.ToString() + "\nChances " + tentativas.ToString();
+            textNivel.text = "Nível " + nivel.ToString() + " de " + maxNivel.ToString() + "\nChances " + tentativas.ToString();
             coletar01.LiberarObjetoColetado();
             coletar02.LiberarObjetoColetado();
             coletar03.LiberarObjetoColetado();
@@ -139,7 +141,7 @@ public class VerificarOperacao : MonoBehaviour
     private void SubirNivel()
     {
         nivel++;
-        if (nivel > 5)
+        if (nivel > maxNivel)
         {
             ativadorDeTelas.MostrarTela("Victory");
             Time.timeScale = 1;
@@ -149,7 +151,7 @@ public class VerificarOperacao : MonoBehaviour
         habilitarDesabilitar.ResetarTodosExibidores();
         sortear.nivelDaTorre = nivel;
         sortear.Roletar();
-        textNivel.text = "Nível " + nivel.ToString() + "\nChances " + tentativas.ToString();
+        textNivel.text = "Nível " + nivel.ToString() + " de " + maxNivel.ToString() + "\nChances " + tentativas.ToString();
         textNumber.text = nivel.ToString();
         textFeedback.text = "";
         textResultado.text = "?";

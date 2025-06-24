@@ -18,9 +18,12 @@ public class AtivadorDeTelas : MonoBehaviour
     [SerializeField] private GameObject canvasMenu;
     [SerializeField] private GameObject canvasVictory;
     [SerializeField] private GameObject canvasGameOver;
+    // Variáveis setadas de acordo com a dificuldade
     private int levelDificult;
     private int limitValid;
     private int limitNotValid;
+    private int maxNivel;
+    private int tentativas;
 
     void Awake()
     {
@@ -47,6 +50,16 @@ public class AtivadorDeTelas : MonoBehaviour
         return levelDificult;
     }
 
+    public int GetMaxNivel()
+    {
+        return maxNivel;
+    }
+
+    public int GetTentativas()
+    {
+        return tentativas;
+    }
+
     private void VoltarParaActivity()
     {
         GameManager.Instance.Carregar("Main");
@@ -59,18 +72,25 @@ public class AtivadorDeTelas : MonoBehaviour
             levelDificult = 1;
             limitValid = 1;
             limitNotValid = 1;
+            maxNivel = 8;
+            tentativas = 7;
+
         }
         else if (gameModo == "Medio")
         {
             levelDificult = 2;
             limitValid = 1;
             limitNotValid = 2;
+            maxNivel = 10;
+            tentativas = 5;
         }
         else if (gameModo == "Dificil")
         {
             levelDificult = 3;
             limitValid = 1;
             limitNotValid = 3;
+            maxNivel = 12;
+            tentativas = 3;
         }
         else
         {
