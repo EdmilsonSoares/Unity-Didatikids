@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
 
 public class TelaLogin : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class TelaLogin : MonoBehaviour
 
     private void Awake()
     {
-        btnEntrar.onClick.AddListener(Entrar);
+        btnEntrar.onClick.AddListener(ForcedLogin);
         btnEsqueceuSenha.onClick.AddListener(EsqueceuSenha);
         btnCadastro.onClick.AddListener(Cadastro);
         // Inicializa o Toggle com o valor salvo e adiciona o listener
@@ -45,7 +46,10 @@ public class TelaLogin : MonoBehaviour
             Debug.LogError("Remember Me Toggle não atribuído no Inspector do script TelaLogin!");
         }
     }
-
+    private void ForcedLogin()
+    {
+        telaGerenciador.MostrarTela("Perfis");
+    }
     private void LembrarUsuario()
     {
         // Verifica se a opção "Lembrar Usuário" está ativada (lida do PlayerPrefs)
