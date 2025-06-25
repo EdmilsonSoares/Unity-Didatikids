@@ -29,7 +29,8 @@ public class TelaLogin : MonoBehaviour
 
     private void Awake()
     {
-        btnEntrar.onClick.AddListener(ForcedLogin);
+        //btnEntrar.onClick.AddListener(ForcedLogin);
+        btnEntrar.onClick.AddListener(Entrar);
         btnEsqueceuSenha.onClick.AddListener(EsqueceuSenha);
         btnCadastro.onClick.AddListener(Cadastro);
         // Inicializa o Toggle com o valor salvo e adiciona o listener
