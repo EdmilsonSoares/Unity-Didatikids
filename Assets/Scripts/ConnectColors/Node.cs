@@ -12,6 +12,7 @@ namespace Connect.Core
         [SerializeField] private GameObject _leftEdge;
         [SerializeField] private GameObject _rightEdge;
         [SerializeField] private GameObject _highLight;
+        public bool IsWall { get; set; } = false;
 
         private Dictionary<Node, GameObject> ConnectedEdges;
 
@@ -139,7 +140,7 @@ namespace Connect.Core
                 }
             }
 
-            //End Node has 2 Edges
+            //End Node has 2 Edges  [Modificação para melhorar as curvas]
             //if (connectedNode.ConnectedNodes.Count == 2)
             //{
             //    Node tempNode = connectedNode.ConnectedNodes[0];
@@ -233,85 +234,6 @@ namespace Connect.Core
             }
 
         }
-
-        //public void UpdateInput(Node connectedNode)
-        //{
-        //    // Verifica se são vizinhos válidos
-        //    if (!ConnectedEdges.ContainsKey(connectedNode))
-        //        return;
-
-        //    // Se já estão conectados, remove a conexão
-        //    if (ConnectedNodes.Contains(connectedNode))
-        //    {
-        //        ConnectedNodes.Remove(connectedNode);
-        //        connectedNode.ConnectedNodes.Remove(this);
-        //        RemoveEdge(connectedNode);
-        //        DeleteNode();
-        //        connectedNode.DeleteNode();
-        //        return;
-        //    }
-
-        //    // Se o connectedNode é um nó final e já está conectado a outro nó, não conecta de novo
-        //    if (connectedNode.IsEndNode && connectedNode.ConnectedNodes.Count == 1)
-        //        return;
-
-        //    // Se este nó é um ponto final e já está conectado, não conecta de novo
-        //    if (IsEndNode && ConnectedNodes.Count == 1)
-        //        return;
-
-        //    // Impede conexão de cores diferentes
-        //    if (connectedNode.ConnectedNodes.Count == 1 && connectedNode.colorId != colorId)
-        //        return;
-
-        //    // Faz a conexão
-        //    AddEdge(connectedNode);
-
-        //    // Se a cor ainda não foi propagada
-        //    if (!connectedNode.IsEndNode)
-        //        connectedNode.colorId = colorId;
-
-        //    // Validação: evitar loops (grau 3)
-        //    List<Node> checkingNodes = new List<Node> { this };
-        //    List<Node> resultNodes = new List<Node> { this };
-
-        //    while (checkingNodes.Count > 0)
-        //    {
-        //        foreach (var item in checkingNodes[0].ConnectedNodes)
-        //        {
-        //            if (!resultNodes.Contains(item))
-        //            {
-        //                resultNodes.Add(item);
-        //                checkingNodes.Add(item);
-        //            }
-        //        }
-
-        //        checkingNodes.RemoveAt(0);
-        //    }
-
-        //    foreach (var item in resultNodes)
-        //    {
-        //        if (!item.IsEndNode && item.ConnectedNodes.Count > 2)
-        //        {
-        //            // Quebrou a regra, desfaz conexão
-        //            Node tempNode = item.ConnectedNodes[0];
-        //            item.ConnectedNodes.Remove(tempNode);
-        //            tempNode.ConnectedNodes.Remove(item);
-        //            item.RemoveEdge(tempNode);
-        //            tempNode.DeleteNode();
-
-        //            if (item.ConnectedNodes.Count == 0) return;
-
-        //            tempNode = item.ConnectedNodes[0];
-        //            item.ConnectedNodes.Remove(tempNode);
-        //            tempNode.ConnectedNodes.Remove(item);
-        //            item.RemoveEdge(tempNode);
-        //            tempNode.DeleteNode();
-
-        //            return;
-        //        }
-        //    }
-        //}
-
 
         private void AddEdge(Node connectedNode)
         {

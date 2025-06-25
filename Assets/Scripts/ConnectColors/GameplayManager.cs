@@ -55,14 +55,24 @@ namespace Connect.Core
             {
                 for (int j = 0; j < currentLevelSize; j++)
                 {
-                    Instantiate(_bgCellPrefab,new Vector3(i+0.5f,j+0.5f,0f),Quaternion.identity);
+                    var cell = Instantiate(_bgCellPrefab, new Vector3(i + 0.5f, j + 0.5f, 0f), Quaternion.identity);
+
+                    // Cor da parede
+                    if (currentLevelSize > 5 && i == 0 && j == 5)
+                    {
+                        Color wallColor;
+                        if (ColorUtility.TryParseHtmlString("#E2D2AE", out wallColor)) //
+                        {
+                            cell.color = wallColor;
+                        }
+                    }
                 }
             }
 
             Camera.main.orthographicSize = currentLevelSize + 2f;
             Camera.main.transform.position = new Vector3(currentLevelSize/2f,currentLevelSize/2f,-10f);
 
-            _clickHighlight.size = new Vector2(currentLevelSize/4f,currentLevelSize/4f); //mudar isso aq para diminuir o tamanho do ponteiro
+            _clickHighlight.size = new Vector2(currentLevelSize/4f,currentLevelSize/4f);
             _clickHighlight.transform.position = Vector3.zero;
             _clickHighlight.gameObject.SetActive(false);
         }
@@ -93,6 +103,12 @@ namespace Connect.Core
                     spawnPos = new Vector3(i + 0.5f, j + 0.5f, 0f);
                     spawnedNode = Instantiate(_nodePrefab,spawnPos,Quaternion.identity);
                     spawnedNode.Init();
+
+                    //Marcar como parede se for o quadrado [0,0] e o nível não for fácil
+                    if (currentLevelSize > 5 && i == 0 && j == 5)
+                    {
+                        spawnedNode.IsWall = true;
+                    }
 
                     int colorIdForSpawnedNode = GetColorId(i, j);
 
@@ -201,7 +217,7 @@ namespace Connect.Core
                 {
                     if(hit && hit.collider.gameObject.TryGetComponent(out Node tNode)
                     //if (hitCollider && hitCollider.TryGetComponent(out Node tNode))
-                        && tNode.IsClickable)
+                        && tNode.IsClickable && !tNode.IsWall)
                     {
                         startNode = tNode;
                         _clickHighlight.gameObject.SetActive(true);
@@ -218,6 +234,11 @@ namespace Connect.Core
                     && startNode != tempNode)
                 {
                     if(startNode.colorId != tempNode.colorId && tempNode.IsEndNode) 
+                    {
+                        return;
+                    }
+
+                    if (tempNode.IsWall)
                     {
                         return;
                     }
