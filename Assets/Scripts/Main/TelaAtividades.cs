@@ -28,7 +28,8 @@ public class TelaAtividades : MonoBehaviour
     }
     public void ActivityLink()
     {
-        GameManager.Instance.CarregarComAnimacao("MainMenu");
+        //GameManager.Instance.CarregarComAnimacao("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
     public void ActivityFound()
     {
