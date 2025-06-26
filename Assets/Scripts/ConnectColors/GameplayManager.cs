@@ -43,7 +43,8 @@ namespace Connect.Core
 
         private void SpawnBoard()
         {
-            int currentLevelSize = GameManager.Instance.CurrentStage + 4;
+            int stage = GameManager.Instance.CurrentStage;
+            int currentLevelSize = stage + 4;
 
             var board = Instantiate(_boardPrefab,
                 new Vector3(currentLevelSize / 2f,currentLevelSize /2f,0f),
@@ -58,10 +59,10 @@ namespace Connect.Core
                     var cell = Instantiate(_bgCellPrefab, new Vector3(i + 0.5f, j + 0.5f, 0f), Quaternion.identity);
 
                     // Cor da parede
-                    if (currentLevelSize > 5 && i == 0 && j == 5)
+                    if ((stage == 2 && ((i == 0 && j == 5) || (i == 5 && j == 3) || (i == 4 && j == 1))) || (stage == 3 && ((i == 3 && j == 6) || (i == 5 && j == 5) || (i == 6 && j == 3) || (i == 5 && j == 1))))
                     {
                         Color wallColor;
-                        if (ColorUtility.TryParseHtmlString("#E2D2AE", out wallColor)) //
+                        if (ColorUtility.TryParseHtmlString("#E2D2AE", out wallColor))
                         {
                             cell.color = wallColor;
                         }
@@ -91,8 +92,8 @@ namespace Connect.Core
         {
             _nodes = new List<Node>();
             _nodeGrid = new Dictionary<Vector2Int, Node>();
-
-            int currentLevelSize = GameManager.Instance.CurrentStage + 4;
+            int stage = GameManager.Instance.CurrentStage;
+            int currentLevelSize = stage + 4;
             Node spawnedNode;
             Vector3 spawnPos;
 
@@ -104,8 +105,8 @@ namespace Connect.Core
                     spawnedNode = Instantiate(_nodePrefab,spawnPos,Quaternion.identity);
                     spawnedNode.Init();
 
-                    //Marcar como parede se for o quadrado [0,0] e o nível não for fácil
-                    if (currentLevelSize > 5 && i == 0 && j == 5)
+                    //Marca como parede
+                    if ((stage == 2 && ((i == 0 && j == 5) || (i == 5 && j == 3) || (i == 4 && j == 1))) || (stage == 3 && ((i == 3 && j == 6) || (i == 5 && j == 5) || (i == 6 && j == 3) || (i == 5 && j == 1))))
                     {
                         spawnedNode.IsWall = true;
                     }
@@ -267,19 +268,37 @@ namespace Connect.Core
         {
             bool IsWinning = true;
 
+            //foreach (var item in _nodes)
+            //{
+            //    item.SolveHighlight();
+            //}
+
+            //foreach (var item in _nodes)
+            //{
+            //    IsWinning &= item.IsWin;
+            //    if(!IsWinning)
+            //    {
+            //        return;
+            //    }
+            //}
+
             foreach (var item in _nodes)
             {
-                item.SolveHighlight();
+                if (!item.IsWall) // Só aplica o destaque se não for parede
+                    item.SolveHighlight();
             }
 
             foreach (var item in _nodes)
             {
-                IsWinning &= item.IsWin;
-                if(!IsWinning)
+                if (item.IsWall) continue; // Ignora paredes na checagem
+
+                if (!item.IsWin)
                 {
+                    IsWinning = false;
                     return;
                 }
             }
+
 
             GameManager.Instance.UnlockLevel();
 

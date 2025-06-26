@@ -27,7 +27,7 @@ public class TelaAtividades : MonoBehaviour
     }
     public void ActivityLink()
     {
-        GameManager.Instance.CarregarComAnimacao("MainMenu");
+        GameManager.Instance.CarregarComAnimacao("Link");
     }
     public void Matematica()
     {
