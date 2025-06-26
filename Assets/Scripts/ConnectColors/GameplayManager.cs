@@ -2,6 +2,7 @@ using Connect.Common;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Connect.Core
 {
@@ -16,6 +17,7 @@ namespace Connect.Core
         [SerializeField] private TMP_Text _titleText;
         [SerializeField] private GameObject _winText;
         [SerializeField] private SpriteRenderer _clickHighlight;
+        [SerializeField] private Button btnHowToPlay;
 
         private void Awake()
         {
@@ -28,6 +30,7 @@ namespace Connect.Core
                 " - " + GameManager.Instance.CurrentLevel.ToString();
 
             CurrentLevelData = GameManager.Instance.GetLevel();
+            btnHowToPlay.onClick.AddListener(ShowHowToPlay);
 
             SpawnBoard();
 
@@ -369,6 +372,13 @@ namespace Connect.Core
                 ResetLevel();
                 ResetGameplay();
             }
+        }
+
+        public void ShowHowToPlay()
+        {
+
+    
+        
         }
 
         #endregion
