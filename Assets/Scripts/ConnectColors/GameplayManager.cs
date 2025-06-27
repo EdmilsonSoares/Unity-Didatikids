@@ -18,7 +18,8 @@ namespace Connect.Core
         [SerializeField] private GameObject _winText;
         [SerializeField] private SpriteRenderer _clickHighlight;
         [SerializeField] private Button btnHowToPlay;
-
+        [SerializeField] private GameObject PanelHowToPlay;
+        [SerializeField] private Button DarkBackground;
         private void Awake()
         {
             Instance = this;
@@ -31,6 +32,7 @@ namespace Connect.Core
 
             CurrentLevelData = GameManager.Instance.GetLevel();
             btnHowToPlay.onClick.AddListener(ShowHowToPlay);
+            DarkBackground.onClick.AddListener(HideHowToPlay);
 
             SpawnBoard();
 
@@ -350,7 +352,7 @@ namespace Connect.Core
             int nextLevel = GameManager.Instance.CurrentLevel + 1;
             int nextStage = GameManager.Instance.CurrentStage;
 
-            if (nextLevel > 5)
+            if (nextLevel > 1)
             {
                 nextLevel = 1;
                 nextStage++;
@@ -373,12 +375,16 @@ namespace Connect.Core
                 ResetGameplay();
             }
         }
-
         public void ShowHowToPlay()
         {
+            PanelHowToPlay.SetActive(true);
+            DarkBackground.gameObject.SetActive(true);
+        }
 
-    
-        
+        public void HideHowToPlay()
+        {
+            PanelHowToPlay.SetActive(false);
+            DarkBackground.gameObject.SetActive(false);
         }
 
         #endregion
