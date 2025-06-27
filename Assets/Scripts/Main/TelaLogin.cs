@@ -4,10 +4,7 @@ using TMPro;
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using System.Linq;
-using System;
-using UnityEngine.SceneManagement;
-
+ 
 public class TelaLogin : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputEmail;
@@ -47,10 +44,7 @@ public class TelaLogin : MonoBehaviour
             Debug.LogError("Remember Me Toggle não atribuído no Inspector do script TelaLogin!");
         }
     }
-    private void ForcedLogin()
-    {
-        telaGerenciador.MostrarTela("Perfis");
-    }
+
     private void LembrarUsuario()
     {
         // Verifica se a opção "Lembrar Usuário" está ativada (lida do PlayerPrefs)
@@ -185,6 +179,7 @@ public class TelaLogin : MonoBehaviour
     private void EsqueceuSenha()
     {
         Debug.Log("Botão Esqueceu senha clicado!");
+        telaGerenciador.MostrarTela("RecuperacaoEmail");
     }
 
     private void Cadastro()

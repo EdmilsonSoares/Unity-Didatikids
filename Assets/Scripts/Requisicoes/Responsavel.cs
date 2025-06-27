@@ -21,6 +21,8 @@ internal class Responsavel : Connection
     private readonly string RouteCodigo = "/cadastro/enviar_codigo/";
     private readonly string RouteCadastro = "/cadastro/verificar_codigo/";
     private readonly string RouteCriancas = "/criancas/";
+    private readonly string RouteRecuperarSenha = "/recuperacao_senha/enviar_codigo/";
+    private readonly string RouteRedefinirSenha = "/recuperacao_senha/verificar_codigo/";
 
     public class ResponsavelLocal
     {
@@ -163,6 +165,50 @@ internal class Responsavel : Connection
         var perfis = JsonConvert.DeserializeObject<List<CriancaResponse>>(responseBody);
 
         return perfis!;
+    }
+
+    public class EnviarCodigoSenhaRequest
+    {
+        [JsonProperty("email")]
+        public string Email { get; set; }
+    }
+    public async Task<HttpStatusCode> EnviarCodigoSenhaAsync()
+    {
+        var request = new EnviarCodigoSenhaRequest { Email = Email };
+
+        var json = JsonConvert.SerializeObject(request);
+
+        var response = await Post(RouteRecuperarSenha, json);
+
+        response.EnsureSuccessStatusCode();
+
+        return response.StatusCode!;
+    }
+
+    public class RecuperarSenhaRequest
+    {
+        [JsonProperty("email")]
+        public string Email { get; set; }
+        [JsonProperty("senha")]
+        public string Senha { get; set; }
+        [JsonProperty("codigo")]
+        public int Codigo { get; set; }
+    }
+    public async Task<HttpStatusCode> RecuperarSenhaAsync()
+    {
+        var request = new RecuperarSenhaRequest { 
+            Email = Email,
+            Codigo = Codigo,
+            Senha = Senha
+        };
+
+        var json = JsonConvert.SerializeObject(request);
+
+        var response = await Post(RouteRedefinirSenha, json);
+
+        response.EnsureSuccessStatusCode();
+
+        return response.StatusCode!;
     }
 }
 
