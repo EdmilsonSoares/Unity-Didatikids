@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class ConjuntoNaoValido
 {
@@ -33,6 +34,7 @@ public class NumerosValidos
 
 public class Sortear : MonoBehaviour
 {
+    [SerializeField] private TMP_Text textDica;
     [SerializeField] private AtivadorDeTelas ativadorDeTelas;
     private int limitValid = 0;
     private int limitNotValid = 0;
@@ -53,6 +55,7 @@ public class Sortear : MonoBehaviour
         limitValid = ativadorDeTelas.GetLimitValid();
         limitNotValid = ativadorDeTelas.GetLimitNotValid();
         nivelDaTorre = ativadorDeTelas.GetNivel();
+        textDica.text = "";
     }
 
     void Start()
@@ -120,6 +123,7 @@ public class Sortear : MonoBehaviour
         {
             AoTerminarSorteio(listaNaoValidos, listaValidos); // Dispara o evento ao terminar o sorteio passando as duas listas
         }
+
     }
 
     private bool Verificar(int n1, int n2, int n3)
@@ -137,7 +141,7 @@ public class Sortear : MonoBehaviour
         }
         else if (SomaSubtracao(n1, n2, n3))
         {
-           //Debug.LogWarning($"SORTEAR: Válido encontrado em SOMA SUBTRAÇÃO");
+            //Debug.LogWarning($"SORTEAR: Válido encontrado em SOMA SUBTRAÇÃO");
             return true;
         }
         else if (ApenasSoma(n1, n2, n3))
@@ -192,6 +196,10 @@ public class Sortear : MonoBehaviour
         return false;
     }
 
-
+    public void MostrarDica()
+    {
+        textDica.text = "O conjunto correto é o que possui a sequência " + listaValidos[0].ToString();
+        Debug.LogWarning(listaValidos[0].ToString());
+    }
 
 }
