@@ -20,6 +20,7 @@ namespace Connect.Core
         [SerializeField] private Button btnHowToPlay;
         [SerializeField] private GameObject PanelHowToPlay;
         [SerializeField] private Button DarkBackground;
+
         private void Awake()
         {
             Instance = this;

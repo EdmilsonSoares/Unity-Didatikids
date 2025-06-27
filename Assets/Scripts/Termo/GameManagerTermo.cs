@@ -20,7 +20,9 @@ namespace Termo
         [SerializeField] public GameObject easyBoard;
         [SerializeField] public GameObject mediumBoard;
         [SerializeField] public GameObject hardBoard;
-        [SerializeField] private Button btnNextLevel;
+        [SerializeField] private GameObject PanelHowToPlay;
+        [SerializeField] private Button DarkBackground;
+
         private void Awake()
         {
             if (Instance == null)
@@ -196,6 +198,18 @@ namespace Termo
                 ResetLevel();
                 GoToGameplay();
             }
+        }
+
+        public void ShowHowToPlay()
+        {
+            PanelHowToPlay.SetActive(true);
+            DarkBackground.gameObject.SetActive(true);
+        }
+
+        public void HideHowToPlay()
+        {
+            PanelHowToPlay.SetActive(false);
+            DarkBackground.gameObject.SetActive(false);
         }
         #endregion
     }
