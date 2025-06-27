@@ -38,7 +38,7 @@ public class Sortear : MonoBehaviour
     private int limitNotValid = 0;
     private List<ConjuntoNaoValido> listaNaoValidos;
     private List<NumerosValidos> listaValidos;
-    public int nivelDaTorre = 1;
+    private int nivelDaTorre = 0;
     private bool isValid = false;
     private int calculos;
     private int A;
@@ -52,6 +52,7 @@ public class Sortear : MonoBehaviour
     {
         limitValid = ativadorDeTelas.GetLimitValid();
         limitNotValid = ativadorDeTelas.GetLimitNotValid();
+        nivelDaTorre = ativadorDeTelas.GetNivel();
     }
 
     void Start()

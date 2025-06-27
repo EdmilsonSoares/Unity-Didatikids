@@ -24,8 +24,8 @@ public class VerificarOperacao : MonoBehaviour
     private int resultado;
     private bool isSomaOpe01;
     private bool isSomaOpe02;
-    private int nivel = 1;
-    private int maxNivel;
+    private int nivel = 0;
+    //private int maxNivel;
     private int tentativas = 0;
 
     void Awake()
@@ -33,14 +33,15 @@ public class VerificarOperacao : MonoBehaviour
         btnCalcular.onClick.AddListener(PegarNumero);
         btnAvancar.onClick.AddListener(SubirNivel);
         btnBack.onClick.AddListener(Recarregar);
-        maxNivel = ativadorDeTelas.GetMaxNivel();
+        //maxNivel = ativadorDeTelas.GetMaxNivel();
         tentativas = ativadorDeTelas.GetTentativas();
+        nivel = ativadorDeTelas.GetNivel();
     }
 
     void Start()
     {
         btnAvancar.gameObject.SetActive(false);
-        textNivel.text = "Nível " + nivel.ToString() + " de " + maxNivel.ToString() + "\nChances " + tentativas.ToString();
+        textNivel.text = "Chances " + tentativas.ToString();
         textNumber.text = nivel.ToString();
         textResultado.text = "?";
         textFeedback.text = "";
@@ -118,7 +119,7 @@ public class VerificarOperacao : MonoBehaviour
         if (resultado != nivel) // Se errar
         {
             tentativas--;
-            textNivel.text = "Nível " + nivel.ToString() + " de " + maxNivel.ToString() + "\nChances " + tentativas.ToString();
+            textNivel.text = "Chances " + tentativas.ToString();
             coletar01.LiberarObjetoColetado();
             coletar02.LiberarObjetoColetado();
             coletar03.LiberarObjetoColetado();
@@ -140,6 +141,9 @@ public class VerificarOperacao : MonoBehaviour
 
     private void SubirNivel()
     {
+        ativadorDeTelas.MostrarTela("Victory");
+        Time.timeScale = 1;
+        /*
         nivel++;
         if (nivel > maxNivel)
         {
@@ -151,13 +155,14 @@ public class VerificarOperacao : MonoBehaviour
         habilitarDesabilitar.ResetarTodosExibidores();
         sortear.nivelDaTorre = nivel;
         sortear.Roletar();
-        textNivel.text = "Nível " + nivel.ToString() + " de " + maxNivel.ToString() + "\nChances " + tentativas.ToString();
+        textNivel.text = "Chances " + tentativas.ToString();
         textNumber.text = nivel.ToString();
         textFeedback.text = "";
         textResultado.text = "?";
         btnAvancar.gameObject.SetActive(false);
         habilitarDesabilitar.SetBotoes(true);
         Time.timeScale = 1;
+        */
 
     }
 
