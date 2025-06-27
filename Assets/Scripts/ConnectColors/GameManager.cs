@@ -16,7 +16,8 @@ namespace Connect.Core
             {
                 Instance = this;
                 Init();
-                DontDestroyOnLoad(gameObject);
+                // Não pode ser DontDestroyOnLoad senão ao voltar para tela atividades ele perde todas referencias
+                //DontDestroyOnLoad(gameObject);
                 return;
             }
             else

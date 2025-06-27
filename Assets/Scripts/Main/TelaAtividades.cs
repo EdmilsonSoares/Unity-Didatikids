@@ -7,13 +7,14 @@ public class TelaAtividades : MonoBehaviour
     [SerializeField] private Button btnBack;
     [SerializeField] private Button btnSettings;
     [SerializeField] private Button btnAtividadeLink;
-    [SerializeField] private Button btnAtividadeMat;
+    [SerializeField] private Button btnFound;
     [SerializeField] private Button btnAtividadeTermo;
     [SerializeField] private TelaGerenciador telaGerenciador;
     private void Awake()
     {
         btnAtividadeLink.onClick.AddListener(ActivityLink);
         btnAtividadeTermo.onClick.AddListener(ActivityTermo);
+        btnFound.onClick.AddListener(ActivityFound);
         btnBack.onClick.AddListener(Perfis);
         btnSettings.onClick.AddListener(Settings);
     }
@@ -27,11 +28,11 @@ public class TelaAtividades : MonoBehaviour
     }
     public void ActivityLink()
     {
-        GameManager.Instance.CarregarComAnimacao("Link");
+        SceneManager.LoadScene("Link");
     }
-    public void Matematica()
+    public void ActivityFound()
     {
-        SceneManager.LoadScene("Matematica");
+        SceneManager.LoadScene("Found");
     }
     public void ActivityTermo()
     {

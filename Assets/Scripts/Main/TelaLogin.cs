@@ -4,9 +4,7 @@ using TMPro;
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using System.Linq;
-using System;
-
+ 
 public class TelaLogin : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputEmail;
@@ -28,6 +26,7 @@ public class TelaLogin : MonoBehaviour
 
     private void Awake()
     {
+        //btnEntrar.onClick.AddListener(ForcedLogin);
         btnEntrar.onClick.AddListener(Entrar);
         btnEsqueceuSenha.onClick.AddListener(EsqueceuSenha);
         btnCadastro.onClick.AddListener(Cadastro);
@@ -180,6 +179,7 @@ public class TelaLogin : MonoBehaviour
     private void EsqueceuSenha()
     {
         Debug.Log("Botão Esqueceu senha clicado!");
+        telaGerenciador.MostrarTela("RecuperacaoEmail");
     }
 
     private void Cadastro()

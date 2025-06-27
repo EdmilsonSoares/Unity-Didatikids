@@ -29,7 +29,8 @@ namespace Termo
             {
                 Instance = this;
                 Init();
-                DontDestroyOnLoad(gameObject);
+                // NÃ£o pode ser DontDestroyOnLoad senÃ£o ao voltar para tela atividades ele perde todas referencias
+                //DontDestroyOnLoad(gameObject);
                 return;
             }
             else
@@ -90,7 +91,7 @@ namespace Termo
         }
         public void UnlockLevel()
         {
-            CurrentLevel++; //Aumenta só para desbloquear o próximo nível
+            CurrentLevel++; //Aumenta sï¿½ para desbloquear o prï¿½ximo nï¿½vel
 
             if (CurrentLevel == 51)
             {
@@ -107,7 +108,7 @@ namespace Termo
             string levelName = "Level" + "T" + CurrentStage.ToString() + CurrentLevel.ToString();
             PlayerPrefs.SetInt(levelName, 1);
 
-            CurrentLevel--; //Volta ao nível que estava
+            CurrentLevel--; //Volta ao nï¿½vel que estava
         }
 
         #endregion
@@ -182,14 +183,14 @@ namespace Termo
                 nextStage++;
 
                 if(nextStage == 2)
-                    StageName = "Médio";
+                    StageName = "Mï¿½dio";
                 else if(nextStage == 3)
-                    StageName = "Difícil";
+                    StageName = "Difï¿½cil";
                 if (nextStage > 3)
                     return;
             }
 
-            // Verifica se o próximo nível está desbloqueado
+            // Verifica se o prï¿½ximo nï¿½vel estï¿½ desbloqueado
             string levelName = "LevelT" + nextStage.ToString() + nextLevel.ToString();
             if (PlayerPrefs.GetInt(levelName, 0) == 1)
             {
