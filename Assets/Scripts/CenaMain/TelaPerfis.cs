@@ -147,7 +147,7 @@ public class TelaPerfis : MonoBehaviour
         if (btnAdicionarPerfil != null)
         {
             btnAdicionarPerfil.gameObject.SetActive(currentChildCount < 3);
-            imageMax.gameObject.SetActive(currentChildCount == 3);
+            //imageMax.gameObject.SetActive(currentChildCount == 3);
             if (currentChildCount >= 3)
             {
                 Debug.Log("Botão 'Adicionar Perfil' desativado, limite de crianças atingido.");

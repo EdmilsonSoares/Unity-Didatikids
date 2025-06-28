@@ -29,9 +29,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Link.unity
     guid: 930d7cc5bc91a0841a553bd0bcc842d2
-  - enabled: 0
-    path: Assets/Scenes/Gameplay.unity
-    guid: 6840100d1fc3a9c459a5ef4d8d46bb82
   - enabled: 1
     path: Assets/Scenes/Termo.unity
     guid: 4fc813e5991b6c545ab963b1cbf44206
