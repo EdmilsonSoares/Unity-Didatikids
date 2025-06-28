@@ -117,7 +117,7 @@ public class TelaPerfis : MonoBehaviour
     {
         if (selectedChild == null)
         {
-            Debug.LogError("Tentativa de selecionar uma criança nula.");
+            Debug.LogWarning("Tentativa de selecionar uma criança nula.");
             return;
         }
 
@@ -128,7 +128,7 @@ public class TelaPerfis : MonoBehaviour
         }
         else
         {
-            Debug.LogError("GameManager.Instance não encontrado ao tentar selecionar criança.");
+            Debug.LogWarning("GameManager.Instance não encontrado ao tentar selecionar criança.");
         }
     }
 

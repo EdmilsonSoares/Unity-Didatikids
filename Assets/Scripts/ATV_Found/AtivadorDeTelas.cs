@@ -78,8 +78,7 @@ public class AtivadorDeTelas : MonoBehaviour
 
     private void VoltarParaActivity()
     {
-        GameManager.Instance.Carregar("Main");
-        //SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Atividades");
     }
 
     private void CarregarNiveis(String gameModo)

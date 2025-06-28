@@ -69,14 +69,14 @@ public class TelaNovoPerfil : MonoBehaviour
 
         if (string.IsNullOrEmpty(nomeCrianca) || string.IsNullOrEmpty(dataCrianca))
         {
-            Debug.LogError("Todos os campos devem ser preenchidos corretamente!");
+            Debug.LogWarning("Todos os campos devem ser preenchidos corretamente!");
             return;
         }
 
         string caminhoDoArquivoUser = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
         if (!File.Exists(caminhoDoArquivoUser))
         {
-            Debug.LogError("Erro: O arquivo de dados do responsável não foi encontrado. Cadastre-se primeiro.");
+            Debug.LogWarning("Erro: O arquivo de dados do responsável não foi encontrado. Cadastre-se primeiro.");
             return;
         }
 
@@ -100,7 +100,7 @@ public class TelaNovoPerfil : MonoBehaviour
             if (GameManager.Instance != null)
                 GameManager.Instance.AddChildProfile(novaCrianca);
             else
-                Debug.LogError("GameManager.Instance não encontrado!");
+                Debug.LogWarning("GameManager.Instance não encontrado!");
 
             // 7. Serializa o objeto UserModel atualizado de volta para JSON
             string updatedJsonResponsavel = JsonUtility.ToJson(currentUser, true);
@@ -111,7 +111,7 @@ public class TelaNovoPerfil : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Erro ao cadastrar perfil da criança: {e.Message}");
+            Debug.LogWarning($"Erro ao cadastrar perfil da criança: {e.Message}");
         }
     }
 

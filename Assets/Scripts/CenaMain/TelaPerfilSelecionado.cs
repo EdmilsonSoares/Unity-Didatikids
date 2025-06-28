@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TelaPerfilSelecionado : MonoBehaviour
 {
@@ -51,7 +52,7 @@ public class TelaPerfilSelecionado : MonoBehaviour
 
     private void Atividades()
     {
-        telaGerenciador.MostrarTela("Atividades");
+        SceneManager.LoadScene("Atividades");
     }
 
     // Metodo para carregar e exibir os dados da crianca selecionada
@@ -106,7 +107,7 @@ public class TelaPerfilSelecionado : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Tela Perfil Selecionado: Nenhuma criança selecionada no GameManager para exibir. Voltando para a tela de perfis.");
+            Debug.LogWarning("Tela Perfil Selecionado: Nenhuma criança selecionada no GameManager para exibir. Voltando para a tela de perfis.");
             Perfis(); // Volta para a tela de perfis se nao houver crianca selecionada
         }
     }

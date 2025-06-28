@@ -26,7 +26,7 @@ public class ValoresABC : MonoBehaviour
     {
         if (textNumero == null)
         {
-            Debug.LogError($"ValoresABC: Objeto '{gameObject.name}' não possui um componente TMP_Text. ");
+            Debug.LogWarning($"ValoresABC: Objeto '{gameObject.name}' não possui um componente TMP_Text. ");
             enabled = false;
         }
         AtualizarTexto(); // Inicializa o texto para o valor padrão de _numero (que é 0 para int)

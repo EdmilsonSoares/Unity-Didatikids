@@ -22,7 +22,7 @@ namespace Connect.Core
 
         public void ClickedBackToActivities()
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("Atividades");
         }
 
         public void ClickedBackToStage()

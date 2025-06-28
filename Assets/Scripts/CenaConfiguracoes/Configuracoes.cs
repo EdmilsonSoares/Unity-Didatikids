@@ -45,7 +45,7 @@ public class Configuracoes : MonoBehaviour
     private void FazerLogout()
     {
         DescarregarUsuario();
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Login");
     }
 
     private bool CarregarUsuario()
@@ -67,7 +67,7 @@ public class Configuracoes : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
+            Debug.LogWarning($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
             usuario = null;
             return false;
         }
@@ -84,7 +84,7 @@ public class Configuracoes : MonoBehaviour
         if (GameManager.Instance != null)
             GameManager.Instance.SetChildProfiles(usuario.children); // Passa a lista de childrenProfiles
         else
-            Debug.LogError("GameManager.Instance não encontrado!");
+            Debug.LogWarning("GameManager.Instance não encontrado!");
     }
 
 }

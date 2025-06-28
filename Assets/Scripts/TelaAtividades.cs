@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using TMPro;
+
 public class TelaAtividades : MonoBehaviour
 {
     [SerializeField] private Button btnBack;
@@ -9,7 +9,7 @@ public class TelaAtividades : MonoBehaviour
     [SerializeField] private Button btnAtividadeLink;
     [SerializeField] private Button btnFound;
     [SerializeField] private Button btnAtividadeTermo;
-    [SerializeField] private TelaGerenciador telaGerenciador;
+
     private void Awake()
     {
         btnAtividadeLink.onClick.AddListener(ActivityLink);
@@ -20,8 +20,7 @@ public class TelaAtividades : MonoBehaviour
     }
     private void Perfis()
     {
-        telaGerenciador.MostrarTela("Perfis");
-        //SceneManager.LoadScene("Perfis"); 
+        SceneManager.LoadScene("Main"); 
     }
     private void Settings()
     {

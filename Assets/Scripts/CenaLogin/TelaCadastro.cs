@@ -3,9 +3,9 @@ using UnityEngine.UI;
 using TMPro;
 using System.Text.RegularExpressions;
 using System.IO;
-using Newtonsoft.Json;
-using UnityEditor;
-using static Responsavel;
+//using Newtonsoft.Json;
+//using UnityEditor;
+//using static Responsavel;
 
 public class TelaCadastro : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class TelaCadastro : MonoBehaviour
     [SerializeField] private Button btnCadastrar;
     [SerializeField] private Button btnPossuoConta;
     [SerializeField] private DataInputValidador dataInputValidador;
-    [SerializeField] private TelaGerenciador telaGerenciador; //Referência ao script TelaGerenciador
+    [SerializeField] private GerenciadorTelaLogin gerenciadorTelaLogin;
     private string nome;
     private string data;
     private string email;
@@ -41,20 +41,20 @@ public class TelaCadastro : MonoBehaviour
 
         if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(data) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
         {
-            Debug.LogError("Todos os campos devem ser preenchidos corretamente!");
+            Debug.LogWarning("Todos os campos devem ser preenchidos corretamente!");
             return;
         }
         else
         {
             if (!Regex.IsMatch(email, @"^[^@]+@[^@]+\.[a-zA-Z]{2,}$"))
             {
-                Debug.LogError("Digite um e-mail válido!");
+                Debug.LogWarning("Digite um e-mail válido!");
                 return;
             }
 
             if (!Regex.IsMatch(inputSenha.text, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{5,}$"))
             {
-                Debug.LogError("Digite uma senha válida!");
+                Debug.LogWarning("Digite uma senha válida!");
                 return;
             }
             SalvarUsuario();
@@ -70,7 +70,7 @@ public class TelaCadastro : MonoBehaviour
             await responsavel.EnviarCodigoAsync();
             */
             Debug.Log("Nome: " + nome + ", Data: " + data + ", Email: " + email + ", Senha: " + senha);
-            telaGerenciador.MostrarTela("Login");
+            gerenciadorTelaLogin.MostrarTela("Login");
         }
     }
 
@@ -100,13 +100,13 @@ public class TelaCadastro : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Erro ao salvar o arquivo JSON: {e.Message}");
+            Debug.LogWarning($"Erro ao salvar o arquivo JSON: {e.Message}");
         }
     }
 
     private void PossuoConta()
     {
-        telaGerenciador.MostrarTela("Login"); // Desativa todas as telas e ativa tela login
+        gerenciadorTelaLogin.MostrarTela("Login"); // Desativa todas as telas e ativa tela login
     }
 }
 

@@ -69,7 +69,7 @@ public class HabilitarDesabilitar : MonoBehaviour
     {
         if (exibidorParaAtivar == null)
         {
-            Debug.LogError("HabilitarDesabilitar: O exibidor passado pelo botão é nulo.", this);
+            Debug.LogWarning("HabilitarDesabilitar: O exibidor passado pelo botão é nulo.", this);
             return;
         }
         // Se o exibidor clicado já é o ativo, não faz nada

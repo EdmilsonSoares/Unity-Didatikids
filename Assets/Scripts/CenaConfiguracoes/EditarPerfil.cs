@@ -90,7 +90,7 @@ public class EditarPerfil : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Erro: Nenhuma criança selecionada no GameManager para exibir.");
+            Debug.LogWarning("Erro: Nenhuma criança selecionada no GameManager para exibir.");
             Back(); // Volta para a tela anterior se nao houver crianca selecionada
         }
     }

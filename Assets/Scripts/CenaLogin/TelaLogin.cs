@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
+//using System.Collections.Generic;
+//using Newtonsoft.Json;
+
 
 public class TelaLogin : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class TelaLogin : MonoBehaviour
     [SerializeField] private Button btnEntrar;
     [SerializeField] private Button btnEsqueceuSenha;
     [SerializeField] private Button btnCadastro;
-    [SerializeField] private TelaGerenciador telaGerenciador; //Referência ao script TelaGerenciador
+    [SerializeField] private GerenciadorTelaLogin gerenciadorTelaLogin;
     [SerializeField] private Toggle toggleLembrar;
     private const string LAST_USER_EMAIL = "LastUserEmail";
     private const string REMEMBER_EMAIL = "RememberEmail"; // Para a preferência do toggle
@@ -41,7 +43,7 @@ public class TelaLogin : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Remember Me Toggle não atribuído no Inspector do script TelaLogin!");
+            Debug.LogWarning("Remember Me Toggle não atribuído no Inspector do script TelaLogin!");
         }
     }
 
@@ -98,7 +100,7 @@ public class TelaLogin : MonoBehaviour
 
         if (string.IsNullOrEmpty(inputEmail.text) || string.IsNullOrEmpty(inputSenha.text))
         {
-            Debug.LogError("Todos os campos devem ser preenchidos!");
+            Debug.LogWarning("Todos os campos devem ser preenchidos!");
             return;
         }
         /*
@@ -168,12 +170,12 @@ public class TelaLogin : MonoBehaviour
                 if (GameManager.Instance != null)
                     GameManager.Instance.SetChildProfiles(usuarioSalvo.children); // Passa a lista de childrenProfiles diretamente
                 else
-                    Debug.LogError("GameManager.Instance não encontrado!");
-                telaGerenciador.MostrarTela("Perfis");
+                    Debug.LogWarning("GameManager.Instance não encontrado!");
+                SceneManager.LoadScene("Main"); // Vai para tela perfis na cena main
             }
             else
             {
-                Debug.LogError("Email ou senha incorretos.");
+                Debug.LogWarning("Email ou senha incorretos.");
             }
         }
     }
@@ -196,7 +198,7 @@ public class TelaLogin : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
+            Debug.LogWarning($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
             usuarioSalvo = null;
             return false;
         }
@@ -210,6 +212,6 @@ public class TelaLogin : MonoBehaviour
 
     private void Cadastro()
     {
-        telaGerenciador.MostrarTela("Cadastro"); // Desativa todas telas e ativa tela de cadastro
+        gerenciadorTelaLogin.MostrarTela("Cadastro"); // Desativa todas telas e ativa tela de cadastro
     }
 }

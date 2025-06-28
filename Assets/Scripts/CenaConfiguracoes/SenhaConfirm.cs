@@ -57,7 +57,7 @@ public class SenhaConfirm : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Não há Usuario carregado no GameManager.");
+            Debug.LogWarning("Não há Usuario carregado no GameManager.");
         }
     }
 
@@ -105,7 +105,7 @@ public class SenhaConfirm : MonoBehaviour
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"Erro ao remover perfil de criança do JSON: {e.Message}");
+                Debug.LogWarning($"Erro ao remover perfil de criança do JSON: {e.Message}");
             }
         }
         else

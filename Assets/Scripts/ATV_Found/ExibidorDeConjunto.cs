@@ -22,7 +22,7 @@ public class ExibidorDeConjunto : MonoBehaviour
     {
         if (objetoA == null || objetoB == null || objetoC == null)
         {
-            Debug.LogError($"ExibConj: Um ou mais scripts ValoresABC não foram encontrados em {gameObject.name}.");
+            Debug.LogWarning($"ExibConj: Um ou mais scripts ValoresABC não foram encontrados em {gameObject.name}.");
             enabled = false; // Desabilita este script para evitar NullReferenceException
         }
         objetosFilhosArrastaveis.Add(objetoA.gameObject);
