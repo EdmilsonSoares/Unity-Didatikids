@@ -2,10 +2,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 using System.IO;
+using Newtonsoft.Json;
 using UnityEditor;
 using static Responsavel;
+
 public class TelaCadastro : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputNome;
@@ -15,10 +16,14 @@ public class TelaCadastro : MonoBehaviour
     [SerializeField] private Button btnPossuoConta;
     [SerializeField] private DataInputValidador dataInputValidador;
     [SerializeField] private TelaGerenciador telaGerenciador; //Referência ao script TelaGerenciador
-    internal string nome { get; set; }
-    internal string data { get; set; }
-    internal string email { get; set; }
-    internal string senha { get; set; }
+    private string nome;
+    private string data;
+    private string email;
+    private string senha;
+    // internal string nome { get; set; }
+    // internal string data { get; set; }
+    // internal string email { get; set; }
+    //internal string senha { get; set; }
 
     private void Awake()
     {
@@ -26,7 +31,7 @@ public class TelaCadastro : MonoBehaviour
         btnPossuoConta.onClick.AddListener(PossuoConta);
     }
 
-    private async void Cadastrar()
+    private void Cadastrar() //async
     {
         // Pega o texto dos InputFields
         nome = inputNome.text;
@@ -52,7 +57,8 @@ public class TelaCadastro : MonoBehaviour
                 Debug.LogError("Digite uma senha válida!");
                 return;
             }
-            //SalvarUsuario();
+            SalvarUsuario();
+            /*
             var responsavel = new Responsavel()
             {
                 Email = email,
@@ -60,11 +66,11 @@ public class TelaCadastro : MonoBehaviour
                 Senha = senha,
                 DtNascimento = data
             };
-
             telaGerenciador.MostrarTela("Verificacao");
             await responsavel.EnviarCodigoAsync();
+            */
             Debug.Log("Nome: " + nome + ", Data: " + data + ", Email: " + email + ", Senha: " + senha);
-            SalvarUsuario();
+            telaGerenciador.MostrarTela("Login");
         }
     }
 
@@ -72,6 +78,7 @@ public class TelaCadastro : MonoBehaviour
 
     private void SalvarUsuario()
     {
+        /*
         var responsavel = new ResponsavelLocal()
         {
             nome = nome,
@@ -79,9 +86,12 @@ public class TelaCadastro : MonoBehaviour
             senha = senha,
             dt_nascimento = data
         };
-
         string json = JsonConvert.SerializeObject(responsavel);
-        string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
+        string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");*/
+
+        UserModel novoUsuario = new UserModel(nome, data, email, senha); // 1. Cria uma instância da classe DadosUsuario
+        string json = JsonUtility.ToJson(novoUsuario, true); // 2. Converte a instância para uma string JSON
+        string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json"); // 3. Define o caminho do arquivo para Application.persistentDataPath
 
         try
         {

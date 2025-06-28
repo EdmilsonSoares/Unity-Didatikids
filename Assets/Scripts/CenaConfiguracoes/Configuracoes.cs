@@ -23,6 +23,7 @@ public class Configuracoes : MonoBehaviour
         btnBack.onClick.AddListener(Back);
         btnChild.onClick.AddListener(Childrens);
         btnClose.onClick.AddListener(Sair);
+        btnLogout.onClick.AddListener(FazerLogout);
     }
 
     private void Back()
@@ -39,6 +40,12 @@ public class Configuracoes : MonoBehaviour
     private void Sair()
     {
         switchTela.ExibirAviso("ExitConfirm");
+    }
+
+    private void FazerLogout()
+    {
+        DescarregarUsuario();
+        SceneManager.LoadScene("Main");
     }
 
     private bool CarregarUsuario()

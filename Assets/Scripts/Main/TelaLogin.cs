@@ -4,7 +4,7 @@ using TMPro;
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
- 
+
 public class TelaLogin : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputEmail;
@@ -16,8 +16,9 @@ public class TelaLogin : MonoBehaviour
     [SerializeField] private Toggle toggleLembrar;
     private const string LAST_USER_EMAIL = "LastUserEmail";
     private const string REMEMBER_EMAIL = "RememberEmail"; // Para a preferência do toggle
-    private string email { get; set; }
-    private string senha { get; set; }
+    //private string email { get; set; }
+    //private string senha { get; set; }
+    private UserModel usuarioSalvo;
 
     private void OnEnable()
     {
@@ -26,7 +27,6 @@ public class TelaLogin : MonoBehaviour
 
     private void Awake()
     {
-        //btnEntrar.onClick.AddListener(ForcedLogin);
         btnEntrar.onClick.AddListener(Entrar);
         btnEsqueceuSenha.onClick.AddListener(EsqueceuSenha);
         btnCadastro.onClick.AddListener(Cadastro);
@@ -56,7 +56,7 @@ public class TelaLogin : MonoBehaviour
             if (!string.IsNullOrEmpty(savedEmail))
             {
                 inputEmail.text = savedEmail;
-                inputSenha.text = "123Aa*";
+                //inputSenha.text = "123Aa*";
                 Debug.Log($"Email lembrado: {savedEmail}");
             }
             else
@@ -89,17 +89,19 @@ public class TelaLogin : MonoBehaviour
         }
     }
 
-    private async void Entrar()
+    private void Entrar() //async
     {
-        email = inputEmail.text;
-        senha = inputSenha.text;
+        //email = inputEmail.text;
+        //senha = inputSenha.text;
+        string emailDigitado = inputEmail.text;
+        string senhaDigitada = inputSenha.text;
 
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+        if (string.IsNullOrEmpty(inputEmail.text) || string.IsNullOrEmpty(inputSenha.text))
         {
             Debug.LogError("Todos os campos devem ser preenchidos!");
             return;
         }
-
+        /*
         var responsavel = new Responsavel()
         {
             Email = email,
@@ -149,37 +151,61 @@ public class TelaLogin : MonoBehaviour
                     Debug.LogError("GameManager.Instance não encontrado!");
             }
             telaGerenciador.MostrarTela("Perfis"); // Desativa todas telas e ativa tela de perfis
+        }*/
+        bool usuarioEncontrado = ProcurarUsuario();
+        if (usuarioEncontrado)
+        {
+            if (emailDigitado == usuarioSalvo.userEmail && senhaDigitada == usuarioSalvo.userSenha) // Compara o email e a senha digitados com os dados lidos do JSON
+            {
+                Debug.Log("Login bem-sucedido!");
+                if (toggleLembrar != null && toggleLembrar.isOn) // Salva o e-mail recém-logado APENAS se o toggle "Lembrar Usuário" estiver ativo
+                {
+                    PlayerPrefs.SetString(LAST_USER_EMAIL, emailDigitado);
+                    PlayerPrefs.Save();
+                    Debug.Log($"Email '{emailDigitado}' salvo para lembrar.");
+                }
+                // Aqui os dados do usuário não são carregados, apeas a lista de crianças é carregada no GameManager
+                if (GameManager.Instance != null)
+                    GameManager.Instance.SetChildProfiles(usuarioSalvo.children); // Passa a lista de childrenProfiles diretamente
+                else
+                    Debug.LogError("GameManager.Instance não encontrado!");
+                telaGerenciador.MostrarTela("Perfis");
+            }
+            else
+            {
+                Debug.LogError("Email ou senha incorretos.");
+            }
         }
     }
 
-    //private bool ProcurarUsuario()
-    //{
-    //    string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuarioLogin.json");
-    //    if (!File.Exists(caminhoDoArquivo))
-    //    {
-    //        Debug.LogWarning("Arquivo 'DadosUsuario.json' não encontrado.");
-    //        usuarioSalvo = null;
-    //        return false;
-    //    }
+    private bool ProcurarUsuario()
+    {
+        string caminhoDoArquivo = Path.Combine(Application.persistentDataPath, "DadosUsuario.json");
+        if (!File.Exists(caminhoDoArquivo))
+        {
+            Debug.LogWarning("Arquivo 'DadosUsuario.json' não encontrado.");
+            usuarioSalvo = null;
+            return false;
+        }
 
-    //    try
-    //    {
-    //        string jsonLido = File.ReadAllText(caminhoDoArquivo); // Lê o conteúdo do arquivo JSON
-    //        usuarioSalvo = JsonConvert.DeserializeObject<Responsavel>(jsonLido); // Desserializa o JSON para um objeto DadosUsuario
-    //        return true;
-    //    }
-    //    catch (System.Exception e)
-    //    {
-    //        Debug.LogError($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
-    //        usuarioSalvo = null;
-    //        return false;
-    //    }
-    //}
+        try
+        {
+            string jsonLido = File.ReadAllText(caminhoDoArquivo); // Lê o conteúdo do arquivo JSON
+            usuarioSalvo = JsonUtility.FromJson<UserModel>(jsonLido); // Desserializa o JSON para um objeto DadosUsuario
+            return true;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Erro ao ler ou processar o arquivo JSON: {e.Message}");
+            usuarioSalvo = null;
+            return false;
+        }
+    }
 
     private void EsqueceuSenha()
     {
         Debug.Log("Botão Esqueceu senha clicado!");
-        telaGerenciador.MostrarTela("RecuperacaoEmail");
+        //telaGerenciador.MostrarTela("RecuperacaoEmail");
     }
 
     private void Cadastro()

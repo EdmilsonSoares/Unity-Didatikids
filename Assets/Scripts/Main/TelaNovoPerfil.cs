@@ -127,7 +127,7 @@ public class TelaNovoPerfil : MonoBehaviour
             case 0: topico = "Nenhum"; Debug.Log(topico); break;
             case 1: topico = "Gramática"; Debug.Log(topico); break;
             case 2: topico = "Lógica"; Debug.Log(topico); break;
-            case 3: topico = "Ciências"; Debug.Log(topico); break;
+            case 3: topico = "Matemática"; Debug.Log(topico); break;
         }
     }
 

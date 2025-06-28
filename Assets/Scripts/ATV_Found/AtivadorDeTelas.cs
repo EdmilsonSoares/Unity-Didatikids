@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AtivadorDeTelas : MonoBehaviour
 {
@@ -78,6 +79,7 @@ public class AtivadorDeTelas : MonoBehaviour
     private void VoltarParaActivity()
     {
         GameManager.Instance.Carregar("Main");
+        //SceneManager.LoadScene("Main");
     }
 
     private void CarregarNiveis(String gameModo)

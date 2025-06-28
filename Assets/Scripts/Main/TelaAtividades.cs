@@ -19,8 +19,9 @@ public class TelaAtividades : MonoBehaviour
         btnSettings.onClick.AddListener(Settings);
     }
     private void Perfis()
-    { 
-        telaGerenciador.MostrarTela("Perfis"); 
+    {
+        telaGerenciador.MostrarTela("Perfis");
+        //SceneManager.LoadScene("Perfis"); 
     }
     private void Settings()
     {
