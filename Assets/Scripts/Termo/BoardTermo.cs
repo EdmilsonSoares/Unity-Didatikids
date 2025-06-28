@@ -21,6 +21,8 @@ namespace Termo
 
         private RootData data;
         private string Word;
+        private string previousText = "";
+        private string currentText = "";
 
         [Header("States")]
         public Tile.State emptyState;
@@ -33,15 +35,18 @@ namespace Termo
             LoadJson();
             rows = GetComponentsInChildren<Row>();
             GameManagerTermo.board = this;
+            hiddenInputField.ActivateInputField();
         }
         private void Start()
         {
             wonGame = false;
             GetWord();
-
+            hiddenInputField.ActivateInputField();
             hiddenInputField.caretWidth = 0; // esconde o caret
             hiddenInputField.text = "";
             hiddenInputField.onValueChanged.AddListener(HandleInput);
+            hiddenInputField.ActivateInputField();
+            
         }
         private void LoadJson()
         {
@@ -76,24 +81,8 @@ namespace Termo
         }
         private void Update()
         {
-            if(!hiddenInputField.isFocused)
-                hiddenInputField.ActivateInputField(); // mantém o foco no campo
-
-            Row currentRow = rows[rowIndex];
-
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                columnIndex = Mathf.Max(columnIndex - 1, 0);
-                currentRow.tiles[columnIndex].SetLetter('\0');
-                currentRow.tiles[columnIndex].SetState(emptyState);
-            }
-            else if (columnIndex >= rows[rowIndex].tiles.Length)
-            {
-                if (Input.GetKeyDown(KeyCode.Return))
-                {
-                    SubmitRow(currentRow);
-                }
-            }         
+            //if(!hiddenInputField.isFocused)
+            //    hiddenInputField.ActivateInputField(); // mantém o foco no campo           
         }
         private void HandleInput(string input)
         {
@@ -103,77 +92,104 @@ namespace Termo
 
             char newChar = input[0];
             if (!char.IsLetter(newChar)) return;
-
-
+                        
             Row currentRow = rows[rowIndex];
+               
             if (columnIndex < currentRow.tiles.Length)
             {
                 currentRow.tiles[columnIndex].SetLetter(newChar);
                 currentRow.tiles[columnIndex].SetState(occupiedState);
                 columnIndex++;
             }
-
+            
             hiddenInputField.text = ""; // limpa o input pra próxima letra
             hiddenInputField.caretWidth = 0; // esconde o caret
+            hiddenInputField.ActivateInputField();
         }
-        private void SubmitRow(Row row)
+        public void Apagar()
         {
-            string remaining = Word;
+            if (rows == null)
+                return;
 
-            for (int i = 0; i < row.tiles.Length; i++)
+            Row currentRow = rows[rowIndex];
+            columnIndex = Mathf.Max(columnIndex - 1, 0);
+            currentRow.tiles[columnIndex].SetLetter('\0');
+            currentRow.tiles[columnIndex].SetState(emptyState);
+            hiddenInputField.ActivateInputField();
+        }
+        public void Enviar()
+        {
+            if (rows == null)
+                return;
+
+            if (columnIndex >= rows[rowIndex].tiles.Length)
             {
-                Tile tile = row.tiles[i];
+                Row row = rows[rowIndex];
+                string remaining = Word;
 
-                if (tile.letter == Word[i])
+                for (int i = 0; i < row.tiles.Length; i++)
                 {
-                    tile.SetState(CorrectState);
+                    Tile tile = row.tiles[i];
 
-                    remaining = remaining.Remove(i, 1);
-                    remaining = remaining.Insert(i, " ");
-                }
-                else if (!Word.Contains(tile.letter))
-                {
-                    tile.SetState(incorrectState);
-                }
-            }
-
-            for (int i = 0; i < row.tiles.Length; i++)
-            {
-                Tile tile = row.tiles[i];
-
-                if (tile.state != CorrectState && tile.state != incorrectState)
-                {
-                    if (remaining.Contains(tile.letter))
+                    if (tile.letter == Word[i])
                     {
-                        tile.SetState(wrongSpotState);
+                        tile.SetState(CorrectState);
 
-                        int index = remaining.IndexOf(tile.letter);
-                        remaining = remaining.Remove(index, 1);
-                        remaining = remaining.Insert(index, " ");
+                        remaining = remaining.Remove(i, 1);
+                        remaining = remaining.Insert(i, " ");
                     }
-                    else
+                    else if (!Word.Contains(tile.letter))
                     {
                         tile.SetState(incorrectState);
                     }
                 }
-            }
-            if (HasWon(row))
-            {
-                GameManagerTermo.Instance._winText.SetActive(true);
-                enabled = false;
-                wonGame = true;
-                hiddenInputField.gameObject.SetActive(false);
-                GameManagerTermo.Instance.UnlockLevel();
-                MainMenuManagerTermo.Instance.RefreshLevelButtons(); // <-- força a atualização visual dos botões
-            }
 
-            rowIndex++;
-            columnIndex = 0;
+                for (int i = 0; i < row.tiles.Length; i++)
+                {
+                    Tile tile = row.tiles[i];
 
-            if (rowIndex >= rows.Length)
+                    if (tile.state != CorrectState && tile.state != incorrectState)
+                    {
+                        if (remaining.Contains(tile.letter))
+                        {
+                            tile.SetState(wrongSpotState);
+
+                            int index = remaining.IndexOf(tile.letter);
+                            remaining = remaining.Remove(index, 1);
+                            remaining = remaining.Insert(index, " ");
+                        }
+                        else
+                        {
+                            tile.SetState(incorrectState);
+                        }
+                    }
+                }
+                if (HasWon(row))
+                {
+                    GameManagerTermo.Instance._winText.SetActive(true);
+                    enabled = false;
+                    wonGame = true;
+                    hiddenInputField.gameObject.SetActive(false);
+                    GameManagerTermo.Instance.UnlockLevel();
+                    MainMenuManagerTermo.Instance.RefreshLevelButtons(); // <-- força a atualização visual dos botões
+                }
+                else
+                {
+                    hiddenInputField.ActivateInputField();
+                }
+
+                rowIndex++;
+                columnIndex = 0;
+
+                if (rowIndex >= rows.Length)
+                {
+                    hiddenInputField.gameObject.SetActive(false);
+                    enabled = false;
+                }
+            }
+            else
             {
-                hiddenInputField.gameObject.SetActive(false);
-                enabled = false;
+                hiddenInputField.ActivateInputField();
             }
         }
         private bool HasWon(Row row)
